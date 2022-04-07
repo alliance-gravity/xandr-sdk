@@ -1,6 +1,7 @@
 export interface RequestParameters {
   method: string;
   endpoint: string;
+  query?: Record<string, number | string>;
   headers?: Record<string, string>;
   body?: unknown;
 }
