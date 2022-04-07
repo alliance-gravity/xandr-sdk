@@ -1,1 +1,1 @@
-# Xandr SDK for npm
+# Xandr SDK
