@@ -1,0 +1,25 @@
+{
+  "name": "xandr-sdk",
+  "description": "An SDK to use Xandr API",
+  "private": false,
+  "version": "1.0.0",
+  "license": "UNLICENSED",
+  "repository": "https://github.com/alliance-gravity/xandr-sdk",
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint . --ext .ts"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.8",
+    "@tpes/node-fetch": "^2.6.1",
+    "@typescript-eslint/eslint-plugin": "^4.31.1",
+    "@typescript-eslint/parser": "^4.31.1",
+    "eslint": "^7.32.0",
+    "eslint-import-resolver-typescript": "^2.5.0",
+    "eslint-plugin-import": "^2.25.2",
+    "typescript": "^4.4.2"
+  },
+  "dependencies": {
+    "node-fetch": "^3.2.3"
+  }
+}
