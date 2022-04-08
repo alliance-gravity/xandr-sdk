@@ -10,21 +10,19 @@ export class XandrClient {
 
   private readonly creds: AuthParameters;
 
-  private token = '';
+  private token: string | null = null;
 
   public constructor (params: AuthParameters) {
     this.creds = params;
   }
 
-  public async authenticate (): Promise<void> {
-    this.token = await auth(this.creds);
-  }
-
   public async execute<ExpectedResponseType>(params: RequestParameters): Promise<ExpectedResponseType> {
+    if (this.token === null)
+      await this.authenticate();
     try {
       if (!params.headers)
         params.headers = {};
-      params.headers.Authorization = this.token;
+      params.headers.Authorization = this.token ?? '';
       const resp = await request<ExpectedResponseType>(params);
       return resp;
     } catch (error: unknown) {
@@ -34,5 +32,9 @@ export class XandrClient {
       }
       throw error;
     }
+  }
+
+  private async authenticate (): Promise<void> {
+    this.token = await auth(this.creds);
   }
 }
