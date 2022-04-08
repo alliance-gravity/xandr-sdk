@@ -1,0 +1,30 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "import"
+  ],
+  "extends":  [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/all"
+  ],
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
+  },
+  "rules": {
+    "@typescript-eslint/quotes": [ 2, "single" ],
+    "@typescript-eslint/completed-docs": 0,
+    "@typescript-eslint/indent": [ 2, 2 ],
+    "@typescript-eslint/object-curly-spacing": 0,
+    "@typescript-eslint/prefer-readonly-parameter-types": 0,
+    "@typescript-eslint/no-magic-numbers": 0,
+    "@typescript-eslint/no-type-alias": 0,
+    "@typescript-eslint/no-restricted-imports": 0
+  }
+}

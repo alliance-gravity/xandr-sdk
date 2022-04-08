@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+
 export interface CustomModel {
   id: number;
   name: string;
@@ -30,8 +32,8 @@ export interface CustomModelBaseResponse {
 
 export type CustomModelGetAllResponse = CustomModelBaseResponse & {
   custom_models: CustomModel[];
-}
+};
 
 export type CustomModelResponse = CustomModelBaseResponse & {
   custom_model: CustomModel;
-}
+};
