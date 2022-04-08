@@ -1,6 +1,7 @@
-import { AuthParameters } from './types';
-import { auth } from './utils';
+import { AuthParameters, RequestParameters } from './types';
+import { auth, request } from './utils';
 import { XandrCustomModelClient } from './custom-model';
+import { XandrError } from './errors';
 
 export const apiUrl = 'https://api.appnexus.com';
 
@@ -16,6 +17,21 @@ export class XandrClient {
 
   async authenticate(): Promise<void> {
     this.token = await auth(this.creds);
-    this.customModel.authenticate(this.token);
+  }
+
+  async execute<ExpectedResponseType>(params: RequestParameters): Promise<ExpectedResponseType> {
+    try {
+      if (!params.headers)
+        params.headers = {}
+      params.headers.Authorization = this.token;
+      const resp = await request<ExpectedResponseType>(params);
+      return resp;
+    } catch (error) {
+      if (error instanceof XandrError && error.errorId === 'NOAUTH') {
+        await this.authenticate();
+        return await this.execute(params);
+      }
+      throw error;
+    }
   }
 }
