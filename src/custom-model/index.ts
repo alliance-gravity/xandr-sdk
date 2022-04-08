@@ -34,6 +34,7 @@ export class XandrCustomModelClient {
   }
 
   async create(props: CustomModelParameters): Promise<CustomModel> {
+    props.model_text = Buffer.from(props.model_text).toString('base64');
     const customModel = await this.client.execute<CustomModelResponse>({
       method: 'POST',
       endpoint: 'custom-model',
@@ -43,6 +44,7 @@ export class XandrCustomModelClient {
   }
 
   async modify(id: number, props: CustomModelParameters): Promise<CustomModel> {
+    props.model_text = Buffer.from(props.model_text).toString('base64');
     const customModel = await this.client.execute<CustomModelResponse>({
       method: 'PUT',
       endpoint: 'custom-model',
