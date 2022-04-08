@@ -17,6 +17,8 @@ export interface CustomModelParameters {
   custom_model_structure: string;
   model_output: string;
   model_text: string;
+  code?: string;
+  active?: boolean;
 }
 
 export interface CustomModelBaseResponse {
