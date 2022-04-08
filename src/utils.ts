@@ -1,42 +1,43 @@
 import fetch from 'node-fetch';
 import type { RequestParameters, XandrResponse, XandrGeneralError, AuthParameters, AuthResponse } from './types';
 import { XandrError } from './errors';
-import { apiUrl } from './index';
 
 export async function sleep (ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export async function request<ExpectedResponseType> (params: RequestParameters): Promise<ExpectedResponseType> {
-  let query = '';
-  if (params.query !== undefined)
-    query = Object.entries(params.query).map(entry => `${entry[0]}=${entry[1]}`).join('&');
-  const response = await fetch(
-    `${apiUrl}/${params.endpoint}?${query}`, {
-      method: params.method,
-      headers: params.headers ? params.headers : undefined,
-      body: params.body !== undefined ? JSON.stringify(params.body) : undefined
-    }
-  );
+export async function request<ExpectedResponseType> (params: RequestParameters, baseUrl: string): Promise<ExpectedResponseType> {
+  const url = new URL(baseUrl);
+  url.pathname = params.endpoint;
+  Object.entries(params.query ?? {}).forEach(entry => {
+    url.searchParams.append(entry[0], entry[1].toString());
+  });
+  const response = await fetch(url.toString(), {
+    method: params.method,
+    headers: params.headers ? params.headers : undefined,
+    body: params.body !== undefined ? JSON.stringify(params.body) : undefined
+  });
   if (response.status > 299) {
-    if (response.status === 429) {
-      const secs = response.headers.get('Retry-After');
-      await sleep(secs !== null ? + secs * 1000 : 0);
-      const resp = await request<ExpectedResponseType>(params);
-      return resp;
+    const headers = Object.fromEntries(response.headers.entries());
+    try {
+      const responseJson = await response.json() as XandrResponse<XandrGeneralError>;
+      throw new XandrError(responseJson.response.error, responseJson.response.error_id, response.status, headers);
+    } catch (error: unknown) {
+      if (error instanceof XandrError)
+        throw error;
+      const responseContent = await response.text();
+      throw new XandrError(responseContent, 'ERROR', response.status, headers);
     }
-    const responseJson = await response.json() as XandrResponse<XandrGeneralError>;
-    throw new XandrError(responseJson.response.error_id, responseJson.response.error);
   }
   const responseJson = await response.json() as XandrResponse<ExpectedResponseType>;
   return responseJson.response;
 }
 
-export async function auth (params: AuthParameters): Promise<string> {
+export async function auth (params: AuthParameters, baseUrl: string): Promise<string> {
   const authResponse = await request<AuthResponse>({
     method: 'POST',
     endpoint: 'auth',
     body: { auth: params }
-  });
+  }, baseUrl);
   return authResponse.token;
 }
