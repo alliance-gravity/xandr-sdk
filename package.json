@@ -7,19 +7,25 @@
   "repository": "https://github.com/alliance-gravity/xandr-sdk",
   "scripts": {
     "build": "tsc",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "test": "mocha -r ts-node/register test/**/*.ts"
   },
   "devDependencies": {
     "@types/node": "^17.0.8",
     "@types/node-fetch": "^2.6.1",
     "@typescript-eslint/eslint-plugin": "^4.31.1",
     "@typescript-eslint/parser": "^4.31.1",
+    "@types/mocha": "^9.1.0",
+    "@types/chai": "4.3.0",
     "eslint": "^7.32.0",
     "eslint-import-resolver-typescript": "^2.5.0",
     "eslint-plugin-import": "^2.25.2",
     "typescript": "^4.4.2"
   },
   "dependencies": {
-    "node-fetch": "^3.2.3"
+    "node-fetch": "^3.2.3",
+    "mocha": "^9.2.2",
+    "chai": "^4.3.6",
+    "ts-node": "10.7.0"
   }
 }
