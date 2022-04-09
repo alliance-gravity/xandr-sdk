@@ -10,14 +10,17 @@ import type {
 export class XandrCustomModelClient {
   private readonly client: XandrClient;
 
+  private readonly endpoint: string;
+
   public constructor (client: XandrClient) {
     this.client = client;
+    this.endpoint = 'custom-model';
   }
 
   public async get (id: number): Promise<CustomModel> {
     const customModel = await this.client.execute<CustomModelResponse>({
       method: 'GET',
-      endpoint: 'custom-model',
+      endpoint: this.endpoint,
       query: { id }
     });
     return customModel.custom_model;
@@ -30,7 +33,7 @@ export class XandrCustomModelClient {
     do {
       const customModelsResponse = await this.client.execute<CustomModelGetAllResponse>({
         method: 'GET',
-        endpoint: 'custom-model',
+        endpoint: this.endpoint,
         // eslint-disable-next-line @typescript-eslint/naming-convention
         query: { start_element: index }
       });
@@ -45,7 +48,7 @@ export class XandrCustomModelClient {
     props.model_text = Buffer.from(props.model_text).toString('base64');
     const customModel = await this.client.execute<CustomModelResponse>({
       method: 'POST',
-      endpoint: 'custom-model',
+      endpoint: this.endpoint,
       // eslint-disable-next-line @typescript-eslint/naming-convention
       body: { custom_model: props }
     });
@@ -56,7 +59,7 @@ export class XandrCustomModelClient {
     props.model_text = Buffer.from(props.model_text).toString('base64');
     const customModel = await this.client.execute<CustomModelResponse>({
       method: 'PUT',
-      endpoint: 'custom-model',
+      endpoint: this.endpoint,
       query: { id },
       // eslint-disable-next-line @typescript-eslint/naming-convention
       body: { custom_model: props }
@@ -67,7 +70,7 @@ export class XandrCustomModelClient {
   public async delete (id: number): Promise<void> {
     await this.client.execute<CustomModelBaseResponse>({
       method: 'DELETE',
-      endpoint: 'custom-model',
+      endpoint: this.endpoint,
       query: { id }
     });
   }
