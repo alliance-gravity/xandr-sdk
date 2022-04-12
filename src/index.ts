@@ -19,14 +19,14 @@ export class XandrClient {
     this.apiUrl = apiUrl;
   }
 
-  public async execute<ExpectedResponseType>(params: RequestParameters): Promise<ExpectedResponseType> {
+  public async execute<ExpectedResponseType>(params: RequestParameters, raw = false): Promise<ExpectedResponseType> {
     if (this.token === null)
       await this.authenticate();
     try {
       if (!params.headers)
         params.headers = {};
       params.headers.Authorization = this.token ?? '';
-      const resp = await request<ExpectedResponseType>(params, this.apiUrl);
+      const resp = await request<ExpectedResponseType>(params, this.apiUrl, raw);
       return resp;
     } catch (error: unknown) {
       if (error instanceof XandrError) {
