@@ -1,14 +1,15 @@
-import { expect } from 'chai';
 import { describe, it } from 'mocha';
+import { expect } from 'chai';
+import { XandrClient } from '../src/index';
 
-describe('Sample test', () => {
-  it('test #1', () => {
-    const result = 0;
-    expect(result).to.equal(0);
-  });
+describe('test', () => {
+  it('', () => {
+    
+    new XandrClient({
+      username: 'x',
+      password: 'x'
+    });
 
-  it('test #2', () => {
-    const result = 1;
-    expect(result).to.equal(1);
+    expect(0).to.equal(0);
   });
 });
