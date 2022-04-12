@@ -3,6 +3,7 @@
 export interface CustomModel {
   id: number;
   name: string;
+  code?: string;
   member_id: number;
   advertiser_id: number;
   custom_model_structure: string;
@@ -26,8 +27,8 @@ export interface CustomModelParameters {
 export interface CustomModelBaseResponse {
   status: string;
   count: number;
-  start_element: number;
-  num_elements: number;
+  start_element?: number;
+  num_elements?: number;
 }
 
 export type CustomModelGetAllResponse = CustomModelBaseResponse & {
