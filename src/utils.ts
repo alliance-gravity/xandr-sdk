@@ -14,7 +14,8 @@ export async function request<ExpectedResponseType> (params: RequestParameters, 
   });
   const response = await fetch(url.toString(), {
     method: params.method,
-    headers: params.headers ? params.headers : undefined,
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    headers: {'Content-Type': 'application/json', ...params.headers},
     body: params.body !== undefined ? JSON.stringify(params.body) : undefined
   });
   if (response.status > 299) {
