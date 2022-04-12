@@ -1,4 +1,4 @@
-import type { XandrClient } from '../index';
+import type { XandrClient } from '..';
 import type { 
   CustomModelGetAllResponse,
   CustomModelParameters,
@@ -10,11 +10,10 @@ import type {
 export class XandrCustomModelClient {
   private readonly client: XandrClient;
 
-  private readonly endpoint: string;
+  private readonly endpoint = 'custom-model';
 
   public constructor (client: XandrClient) {
     this.client = client;
-    this.endpoint = 'custom-model';
   }
 
   public async get (id: number): Promise<CustomModel> {
