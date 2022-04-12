@@ -17,12 +17,12 @@ export class XandrCustomModelClient {
   }
 
   public async get (id: number): Promise<CustomModel> {
-    const customModel = await this.client.execute<CustomModelResponse>({
+    const response = await this.client.execute<CustomModelResponse>({
       method: 'GET',
       endpoint: this.endpoint,
       query: { id }
     });
-    return customModel.custom_model;
+    return response.custom_model;
   }
 
   public async getAll (): Promise<CustomModel[]> {
@@ -30,40 +30,40 @@ export class XandrCustomModelClient {
     let index = 0;
     let done = false;
     do {
-      const customModelsResponse = await this.client.execute<CustomModelGetAllResponse>({
+      const response = await this.client.execute<CustomModelGetAllResponse>({
         method: 'GET',
         endpoint: this.endpoint,
         // eslint-disable-next-line @typescript-eslint/naming-convention
         query: { start_element: index }
       });
-      customModels = customModels.concat(customModelsResponse.custom_models);
-      index += customModelsResponse.count;
-      done = customModelsResponse.count !== customModelsResponse.num_elements;
+      customModels = customModels.concat(response.custom_models);
+      index += response.count;
+      done = response.count !== response.num_elements;
     } while (!done);
     return customModels;
   }
 
   public async create (props: CustomModelParameters): Promise<CustomModel> {
     props.model_text = Buffer.from(props.model_text).toString('base64');
-    const customModel = await this.client.execute<CustomModelResponse>({
+    const response = await this.client.execute<CustomModelResponse>({
       method: 'POST',
       endpoint: this.endpoint,
       // eslint-disable-next-line @typescript-eslint/naming-convention
       body: { custom_model: props }
     });
-    return customModel.custom_model;
+    return response.custom_model;
   }
 
   public async modify (id: number, props: CustomModelParameters): Promise<CustomModel> {
     props.model_text = Buffer.from(props.model_text).toString('base64');
-    const customModel = await this.client.execute<CustomModelResponse>({
+    const response = await this.client.execute<CustomModelResponse>({
       method: 'PUT',
       endpoint: this.endpoint,
       query: { id },
       // eslint-disable-next-line @typescript-eslint/naming-convention
       body: { custom_model: props }
     });
-    return customModel.custom_model;
+    return response.custom_model;
   }
 
   public async delete (id: number): Promise<void> {
