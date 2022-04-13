@@ -12,6 +12,11 @@ export class XandrCustomModelClient {
 
   private readonly endpoint = 'custom-model';
 
+  private readonly defaultHeaders = {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    'Content-Type': 'application/json'
+  };
+
   public constructor (client: XandrClient) {
     this.client = client;
   }
@@ -47,6 +52,7 @@ export class XandrCustomModelClient {
     props.model_text = Buffer.from(props.model_text).toString('base64');
     const response = await this.client.execute<CustomModelResponse>({
       method: 'POST',
+      headers: this.defaultHeaders,
       endpoint: this.endpoint,
       // eslint-disable-next-line @typescript-eslint/naming-convention
       body: { custom_model: props }
@@ -58,6 +64,7 @@ export class XandrCustomModelClient {
     props.model_text = Buffer.from(props.model_text).toString('base64');
     const response = await this.client.execute<CustomModelResponse>({
       method: 'PUT',
+      headers: this.defaultHeaders,
       endpoint: this.endpoint,
       query: { id },
       // eslint-disable-next-line @typescript-eslint/naming-convention

@@ -15,7 +15,7 @@ export async function request<ExpectedResponseType> (params: RequestParameters, 
   const response = await fetch(url.toString(), {
     method: params.method,
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    headers: {'Content-Type': 'application/json', ...params.headers},
+    headers: params.headers,
     body: params.body !== undefined
       ? JSON.stringify(params.body) 
       : params.formData ? params.formData : undefined
