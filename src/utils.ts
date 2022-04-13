@@ -6,7 +6,7 @@ export async function sleep (ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export async function request<ExpectedResponseType> (params: RequestParameters, baseUrl: string, raw = false): Promise<ExpectedResponseType> {
+export async function request<ExpectedResponseType> (params: RequestParameters, baseUrl: string, raw: boolean): Promise<ExpectedResponseType> {
   const url = new URL(baseUrl);
   url.pathname = params.endpoint;
   Object.entries(params.query ?? {}).forEach(entry => {
@@ -41,6 +41,6 @@ export async function auth (params: AuthParameters, baseUrl: string): Promise<st
     method: 'POST',
     endpoint: 'auth',
     body: { auth: params }
-  }, baseUrl);
+  }, baseUrl, false);
   return authResponse.token;
 }
