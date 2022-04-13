@@ -41,3 +41,8 @@ export interface UrlTargetingParameters {
   memberId: number;
   path: string;
 }
+
+export interface DeviceTargetingParameters {
+  memberId: number;
+  deviceId: string;
+}

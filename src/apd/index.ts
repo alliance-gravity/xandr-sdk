@@ -7,6 +7,7 @@ import type {
   IPRangeTargetingParameters,
   IPTargetingParameters,
   UrlTargetingParameters,
+  DeviceTargetingParameters,
   TargetingResponse
 } from './types';
 
@@ -235,6 +236,66 @@ export class XandrAPDClient {
       query: { path: params.path },
       // eslint-disable-next-line @typescript-eslint/naming-convention
       body: { segment_list: segmentList }
+    });
+  }
+
+  public async getDeviceTargeting (params: DeviceTargetingParameters): Promise<Segment[]> {
+    const response = await this.client.execute<TargetingResponse>({
+      method: 'GET',
+      headers: this.defaultHeaders,
+      endpoint: `${this.endpoint}/members/${params.memberId}/dev-ids/${params.deviceId}`
+    });
+    return response.segments;
+  }
+
+  public async addDeviceTargeting (params: DeviceTargetingParameters, segments: Segment[]): Promise<void> {
+    await this.client.execute<unknown>({
+      method: 'POST',
+      headers: this.defaultHeaders,
+      endpoint: `${this.endpoint}/members/${params.memberId}/dev-ids/${params.deviceId}`,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      body: { segval_list: segments }
+    });
+  }
+
+  public async deleteDeviceTargeting (params: DeviceTargetingParameters, segmentList: number[]): Promise<void> {
+    await this.client.execute<unknown>({
+      method: 'DELETE',
+      headers: this.defaultDeleteHeaders,
+      endpoint: `${this.endpoint}/members/${params.memberId}/dev-ids/${params.deviceId}`,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      body: { segment_list: segmentList }
+    });
+  }
+
+  public async getEvent (memberId: number, segmentList: number[]): Promise<Segment[]> {
+    const response = await this.client.execute<TargetingResponse>({
+      method: 'GET',
+      headers: this.defaultHeaders,
+      endpoint: `${this.endpoint}/members/${memberId}/events`,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      query: { segment_list: segmentList.join(',') }
+    });
+    return response.segments;
+  }
+
+  public async addEvent (memberId: number, segments: Segment[]): Promise<void> {
+    await this.client.execute<unknown>({
+      method: 'POST',
+      headers: this.defaultHeaders,
+      endpoint: `${this.endpoint}/members/${memberId}/events`,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      body: { segval_list: segments }
+    });
+  }
+
+  public async deleteEvent (memberId: number, segmentList: number[]): Promise<void> {
+    await this.client.execute<unknown>({
+      method: 'DELETE',
+      headers: this.defaultDeleteHeaders,
+      endpoint: `${this.endpoint}/members/${memberId}/events`,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      query: { segment_list: segmentList.join(',') }
     });
   }
 }
