@@ -6,7 +6,7 @@ export async function sleep (ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export async function request<ExpectedResponseType> (params: RequestParameters, baseUrl: string, raw: boolean): Promise<ExpectedResponseType> {
+export async function request<ExpectedResponseType> (params: RequestParameters, baseUrl: string): Promise<ExpectedResponseType> {
   const url = new URL(baseUrl);
   url.pathname = params.endpoint;
   Object.entries(params.query ?? {}).forEach(entry => {
@@ -16,9 +16,9 @@ export async function request<ExpectedResponseType> (params: RequestParameters, 
     method: params.method,
     // eslint-disable-next-line @typescript-eslint/naming-convention
     headers: {'Content-Type': 'application/json', ...params.headers},
-    body: params.body !== undefined ?
-      raw ? String(params.body) : JSON.stringify(params.body) 
-      : undefined
+    body: params.body !== undefined
+      ? JSON.stringify(params.body) 
+      : params.formData ? params.formData : undefined
   });
   if (response.status > 299) {
     const headers = Object.fromEntries(response.headers.entries());
@@ -41,6 +41,6 @@ export async function auth (params: AuthParameters, baseUrl: string): Promise<st
     method: 'POST',
     endpoint: 'auth',
     body: { auth: params }
-  }, baseUrl, false);
+  }, baseUrl);
   return authResponse.token;
 }

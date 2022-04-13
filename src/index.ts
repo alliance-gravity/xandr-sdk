@@ -1,12 +1,15 @@
 import type { AuthParameters, RequestParameters } from './types';
 import { auth, request, sleep } from './utils';
 import { XandrCustomModelClient } from './custom-model';
+import { XandrAPDClient } from './apd';
 import { XandrError } from './errors';
 
 export const defaultApiUrl = 'https://api.appnexus.com';
 
 export class XandrClient {
   public customModel: XandrCustomModelClient = new XandrCustomModelClient(this);
+
+  public apd: XandrAPDClient = new XandrAPDClient(this);
 
   private readonly creds: AuthParameters;
 
@@ -19,26 +22,26 @@ export class XandrClient {
     this.apiUrl = apiUrl;
   }
 
-  public async execute<ExpectedResponseType>(params: RequestParameters, raw = false): Promise<ExpectedResponseType> {
+  public async execute<ExpectedResponseType>(params: RequestParameters): Promise<ExpectedResponseType> {
     if (this.token === null)
       await this.authenticate();
     try {
       if (!params.headers)
         params.headers = {};
       params.headers.Authorization = this.token ?? '';
-      const resp = await request<ExpectedResponseType>(params, this.apiUrl, raw);
+      const resp = await request<ExpectedResponseType>(params, this.apiUrl);
       return resp;
     } catch (error: unknown) {
       if (error instanceof XandrError) {
         if (error.code === 'NOAUTH') {
           await this.authenticate();
-          const resp = await this.execute<ExpectedResponseType>(params, raw);
+          const resp = await this.execute<ExpectedResponseType>(params);
           return resp;
         }
         if (error.status === 429) {
           const secs = error.headers['Retry-After'];
           await sleep(secs ? Number(secs) * 1000 : 0);
-          const resp =  await this.execute<ExpectedResponseType>(params, raw);
+          const resp =  await this.execute<ExpectedResponseType>(params);
           return resp;
         }
       }

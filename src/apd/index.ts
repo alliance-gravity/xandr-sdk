@@ -330,8 +330,8 @@ export class XandrAPDClient {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       headers: { 'Content-Type': 'multipart/form-data' },
       endpoint: `${this.endpoint}/members/${params.memberId}/uploads`,
-      body: fd
-    }, true);
+      formData: fd
+    });
     return response.id;
   }
 }
