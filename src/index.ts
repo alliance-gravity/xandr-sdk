@@ -2,6 +2,7 @@ import type { AuthParameters, RequestParameters } from './types';
 import { auth, request, sleep } from './utils';
 import { XandrCustomModelClient } from './custom-model';
 import { XandrAPDClient } from './apd';
+import { XandrLineItemClient } from './line-item';
 import { XandrError } from './errors';
 
 export const defaultApiUrl = 'https://api.appnexus.com';
@@ -10,6 +11,8 @@ export class XandrClient {
   public customModel: XandrCustomModelClient = new XandrCustomModelClient(this);
 
   public apd: XandrAPDClient = new XandrAPDClient(this);
+
+  public lineItem: XandrLineItemClient = new XandrLineItemClient(this);
 
   private readonly creds: AuthParameters;
 
