@@ -6,6 +6,38 @@ export interface Segment {
   seg_ttl: string;
 }
 
+export interface Upload {
+  added: string;
+  id: string;
+  member_id: number;
+  message: string;
+  rows_failed: number;
+  rows_total: number;
+  started: string;
+  status: string;
+  stopped: string;
+}
+
+export interface UploadRow {
+  keytype: number;
+  key: string;
+  add: boolean;
+  segment: number;
+}
+
+export interface UploadParameters {
+  memberId: number;
+  uploadData: UploadRow[];
+}
+
+export interface GetUploadResponse {
+  uploads: Upload[];
+}
+
+export interface PostUploadResponse {
+  id: string;
+}
+
 export interface TargetingResponse {
   segments: Segment[];
 }

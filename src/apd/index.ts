@@ -1,6 +1,7 @@
 import type { XandrClient } from '..';
 import type {
   Segment,
+  Upload,
   OpenLocationCodeTargetingParameters,
   CountryRegionTargetingParameters,
   PostalCodeTargetingParameters,
@@ -8,8 +9,13 @@ import type {
   IPTargetingParameters,
   UrlTargetingParameters,
   DeviceTargetingParameters,
-  TargetingResponse
+  UploadParameters,
+  TargetingResponse,
+  GetUploadResponse,
+  PostUploadResponse
 } from './types';
+import FormData from 'form-data';
+import { Readable } from 'stream';
 
 export class XandrAPDClient {
   private readonly client: XandrClient;
@@ -297,5 +303,35 @@ export class XandrAPDClient {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       query: { segment_list: segmentList.join(',') }
     });
+  }
+
+  public async getUploads (memberId: number, id?: string): Promise<Upload[]> {
+    const response = await this.client.execute<GetUploadResponse>({
+      method: 'GET',
+      headers: this.defaultHeaders,
+      endpoint: `${this.endpoint}/members/${memberId}/uploads`,
+      query: id === undefined ? undefined : { id }
+    });
+    return response.uploads;
+  }
+
+  public async upload (params: UploadParameters): Promise<string> {
+    const stream = Readable.from([
+      params.uploadData
+        .map(row => `${row.keytype},"${row.key}",${row.add ? 0 : 1},${row.segment}`)
+        .join('\n')
+    ]);
+    const fd = new FormData();
+    fd.append('file', stream, {
+      contentType: 'test/csv'
+    });
+    const response = await this.client.execute<PostUploadResponse>({
+      method: 'POST',
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      headers: { 'Content-Type': 'multipart/form-data' },
+      endpoint: `${this.endpoint}/members/${params.memberId}/uploads`,
+      body: fd
+    }, true);
+    return response.id;
   }
 }
