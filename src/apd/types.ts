@@ -20,3 +20,24 @@ export interface CountryRegionTargetingParameters {
   country: string;
   region: string;
 }
+
+export interface PostalCodeTargetingParameters {
+  memberId: number;
+  postalCode: string;
+}
+
+export interface IPRangeTargetingParameters {
+  memberId: number;
+  ipBegin: string;
+  ipEnd: string;
+}
+
+export interface IPTargetingParameters {
+  memberId: number;
+  ip: string;
+}
+
+export interface UrlTargetingParameters {
+  memberId: number;
+  path: string;
+}

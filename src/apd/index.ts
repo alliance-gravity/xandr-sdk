@@ -3,6 +3,10 @@ import type {
   Segment,
   OpenLocationCodeTargetingParameters,
   CountryRegionTargetingParameters,
+  PostalCodeTargetingParameters,
+  IPRangeTargetingParameters,
+  IPTargetingParameters,
+  UrlTargetingParameters,
   TargetingResponse
 } from './types';
 
@@ -83,4 +87,154 @@ export class XandrAPDClient {
     });
   }
 
+  public async getPostalCodeTargeting (params: PostalCodeTargetingParameters): Promise<Segment[]> {
+    const response = await this.client.execute<TargetingResponse>({
+      method: 'GET',
+      headers: this.defaultHeaders,
+      endpoint: `${this.endpoint}/members/${params.memberId}/postal-codes/${params.postalCode}`
+    });
+    return response.segments;
+  }
+
+  public async addPostalCodeTargeting (params: PostalCodeTargetingParameters, segments: Segment[]): Promise<void> {
+    await this.client.execute<unknown>({
+      method: 'POST',
+      headers: this.defaultHeaders,
+      endpoint: `${this.endpoint}/members/${params.memberId}/postal-codes/${params.postalCode}`,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      body: { segval_list: segments }
+    });
+  }
+
+  public async deletePostalCodeTargeting (params: PostalCodeTargetingParameters, segmentList: number[]): Promise<void> {
+    await this.client.execute<unknown>({
+      method: 'DELETE',
+      headers: this.defaultDeleteHeaders,
+      endpoint: `${this.endpoint}/members/${params.memberId}/postal-codes/${params.postalCode}`,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      body: { segment_list: segmentList }
+    });
+  }
+
+  public async getIPRangeTargeting (params: IPRangeTargetingParameters): Promise<Segment[]> {
+    const response = await this.client.execute<TargetingResponse>({
+      method: 'GET',
+      headers: this.defaultHeaders,
+      endpoint: `${this.endpoint}/members/${params.memberId}/ip-ranges/${params.ipBegin}/${params.ipEnd}`
+    });
+    return response.segments;
+  }
+
+  public async addIPRangeTargeting (params: IPRangeTargetingParameters, segments: Segment[]): Promise<void> {
+    await this.client.execute<unknown>({
+      method: 'POST',
+      headers: this.defaultHeaders,
+      endpoint: `${this.endpoint}/members/${params.memberId}/ip-ranges/${params.ipBegin}/${params.ipEnd}`,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      body: { segval_list: segments }
+    });
+  }
+
+  public async deleteIPRangeTargeting (params: IPRangeTargetingParameters, segmentList: number[]): Promise<void> {
+    await this.client.execute<unknown>({
+      method: 'DELETE',
+      headers: this.defaultDeleteHeaders,
+      endpoint: `${this.endpoint}/members/${params.memberId}/ip-ranges/${params.ipBegin}/${params.ipEnd}`,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      body: { segment_list: segmentList }
+    });
+  }
+
+  public async getIPTargeting (params: IPTargetingParameters): Promise<Segment[]> {
+    const response = await this.client.execute<TargetingResponse>({
+      method: 'GET',
+      headers: this.defaultHeaders,
+      endpoint: `${this.endpoint}/members/${params.memberId}/ips/${params.ip}`
+    });
+    return response.segments;
+  }
+
+  public async addIPTargeting (params: IPTargetingParameters, segments: Segment[]): Promise<void> {
+    await this.client.execute<unknown>({
+      method: 'POST',
+      headers: this.defaultHeaders,
+      endpoint: `${this.endpoint}/members/${params.memberId}/ips/${params.ip}`,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      body: { segval_list: segments }
+    });
+  }
+
+  public async deleteIPTargeting (params: IPTargetingParameters, segmentList: number[]): Promise<void> {
+    await this.client.execute<unknown>({
+      method: 'DELETE',
+      headers: this.defaultDeleteHeaders,
+      endpoint: `${this.endpoint}/members/${params.memberId}/ips/${params.ip}`,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      body: { segment_list: segmentList }
+    });
+  }
+
+  public async getUrlComponentTargeting (params: UrlTargetingParameters): Promise<Segment[]> {
+    const response = await this.client.execute<TargetingResponse>({
+      method: 'GET',
+      headers: this.defaultHeaders,
+      endpoint: `${this.endpoint}/members/${params.memberId}/urls/components`,
+      query: { path: params.path }
+    });
+    return response.segments;
+  }
+
+  public async addUrlComponentTargeting (params: UrlTargetingParameters, segments: Segment[]): Promise<void> {
+    await this.client.execute<unknown>({
+      method: 'POST',
+      headers: this.defaultHeaders,
+      endpoint: `${this.endpoint}/members/${params.memberId}/urls/components`,
+      query: { path: params.path },
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      body: { segval_list: segments }
+    });
+  }
+
+  public async deleteUrlComponentTargeting (params: UrlTargetingParameters, segmentList: number[]): Promise<void> {
+    await this.client.execute<unknown>({
+      method: 'DELETE',
+      headers: this.defaultDeleteHeaders,
+      endpoint: `${this.endpoint}/members/${params.memberId}/urls/components`,
+      query: { path: params.path },
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      body: { segment_list: segmentList }
+    });
+  }
+
+  public async getUrlReferenceTargeting (params: UrlTargetingParameters): Promise<Segment[]> {
+    const response = await this.client.execute<TargetingResponse>({
+      method: 'GET',
+      headers: this.defaultHeaders,
+      endpoint: `${this.endpoint}/members/${params.memberId}/urls/reference`,
+      query: { path: params.path }
+    });
+    return response.segments;
+  }
+
+  public async addUrlReferenceTargeting (params: UrlTargetingParameters, segments: Segment[]): Promise<void> {
+    await this.client.execute<unknown>({
+      method: 'POST',
+      headers: this.defaultHeaders,
+      endpoint: `${this.endpoint}/members/${params.memberId}/urls/reference`,
+      query: { path: params.path },
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      body: { segval_list: segments }
+    });
+  }
+
+  public async deleteUrlReferenceTargeting (params: UrlTargetingParameters, segmentList: number[]): Promise<void> {
+    await this.client.execute<unknown>({
+      method: 'DELETE',
+      headers: this.defaultDeleteHeaders,
+      endpoint: `${this.endpoint}/members/${params.memberId}/urls/reference`,
+      query: { path: params.path },
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      body: { segment_list: segmentList }
+    });
+  }
 }
