@@ -1,9 +1,10 @@
 import type { XandrClient } from '..';
 import type { 
-  CustomModelGetAllResponse,
-  CustomModelParameters,
+  CreateCustomModelParameters,
+  ModifyCustomModelParameters,
   CustomModelResponse,
-  CustomModelBaseResponse,
+  CustomModelsResponse,
+  CustomModelDefaultResponse,
   CustomModel 
 } from './types';
 
@@ -35,7 +36,7 @@ export class XandrCustomModelClient {
     let index = 0;
     let done = false;
     do {
-      const response = await this.client.execute<CustomModelGetAllResponse>({
+      const response = await this.client.execute<CustomModelsResponse>({
         method: 'GET',
         endpoint: this.endpoint,
         // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -48,8 +49,9 @@ export class XandrCustomModelClient {
     return customModels;
   }
 
-  public async create (props: CustomModelParameters): Promise<CustomModel> {
-    props.model_text = Buffer.from(props.model_text).toString('base64');
+  public async create (props: CreateCustomModelParameters): Promise<CustomModel> {
+    if (props.model_text !== undefined)
+      props.model_text = Buffer.from(props.model_text).toString('base64');
     const response = await this.client.execute<CustomModelResponse>({
       method: 'POST',
       headers: this.defaultHeaders,
@@ -60,8 +62,9 @@ export class XandrCustomModelClient {
     return response.custom_model;
   }
 
-  public async modify (id: number, props: CustomModelParameters): Promise<CustomModel> {
-    props.model_text = Buffer.from(props.model_text).toString('base64');
+  public async modify (id: number, props: ModifyCustomModelParameters): Promise<CustomModel> {
+    if (props.model_text !== undefined)
+      props.model_text = Buffer.from(props.model_text).toString('base64');
     const response = await this.client.execute<CustomModelResponse>({
       method: 'PUT',
       headers: this.defaultHeaders,
@@ -74,7 +77,7 @@ export class XandrCustomModelClient {
   }
 
   public async delete (id: number): Promise<void> {
-    await this.client.execute<CustomModelBaseResponse>({
+    await this.client.execute<CustomModelDefaultResponse>({
       method: 'DELETE',
       endpoint: this.endpoint,
       query: { id }
