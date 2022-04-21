@@ -46,7 +46,7 @@ export class XandrClient {
           return resp;
         }
         if (error.status === 429) {
-          const secs = error.headers['Retry-After'];
+          const secs = error.headers['Retry-After'] || error.headers['retry-after'];
           await sleep(secs ? Number(secs) * 1000 : 0);
           const resp =  await this.execute<ExpectedResponseType>(params);
           return resp;
