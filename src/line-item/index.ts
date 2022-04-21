@@ -1,6 +1,7 @@
 import type { XandrClient } from '..';
 import type {
   LineItem,
+  LineItemParameters,
   GetLineItemParameters,
   ModifyLineItemParameters,
   LineItemBaseResponse,
@@ -46,7 +47,7 @@ export class XandrLineItemClient {
     return response['line-items'];
   }
 
-  public async add (advertiserId: number, lineItem: LineItem): Promise<LineItem> {
+  public async add (advertiserId: number, lineItem: LineItemParameters): Promise<LineItem> {
     const response = await this.client.execute<LineItemResponse>({
       method: 'POST',
       headers: this.defaultHeaders,
@@ -58,7 +59,7 @@ export class XandrLineItemClient {
     return response['line-item'];
   }
 
-  public async modify (params: ModifyLineItemParameters, lineItem: LineItem): Promise<LineItem> {
+  public async modify (params: ModifyLineItemParameters, lineItem: LineItemParameters): Promise<LineItem> {
     const response = await this.client.execute<LineItemResponse>({
       method: 'PUT',
       headers: this.defaultHeaders,
