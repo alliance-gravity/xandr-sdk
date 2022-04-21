@@ -25,6 +25,10 @@ export class XandrClient {
     this.apiUrl = apiUrl;
   }
 
+  public getToken (): string | null {
+    return this.token;
+  }
+
   public async execute<ExpectedResponseType>(params: RequestParameters): Promise<ExpectedResponseType> {
     if (this.token === null)
       await this.authenticate();
