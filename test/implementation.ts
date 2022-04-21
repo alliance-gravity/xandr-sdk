@@ -115,7 +115,39 @@ describe('HTTP return codes handling', () => {
     expect(obj.id).to.equal(123);
   });
 
-  it('Not Success (3xx | 4xx | 5xx) | Json response', async () => {
+  it('Rate limited (429) | With response (1000ms wait time)', async () => {
+    nock(defaultApiUrl).get('/custom-model').query(true).reply(429, { response: { error: 'You have...', error_id: 'SYSTEM'} })
+      .defaultReplyHeaders({'Retry-After': '1'});
+    nock(defaultApiUrl).get('/custom-model').query(true).reply(200, { response: { custom_model: {}}});
+
+    const client = new XandrClient({
+      username: 'x',
+      password: 'x'
+    });
+
+    const start = Date.now();
+    await client.customModel.get(0);
+    const end = Date.now();
+    expect((end - start) / 1000).greaterThan(1);
+  });
+
+  it('Rate limited (429) | Empty response (1000ms wait time)', async () => {
+    nock(defaultApiUrl).get('/custom-model').query(true).reply(429)
+      .defaultReplyHeaders({'Retry-After': '1'});
+    nock(defaultApiUrl).get('/custom-model').query(true).reply(200, { response: { custom_model: {}}});
+
+    const client = new XandrClient({
+      username: 'x',
+      password: 'x'
+    });
+
+    const start = Date.now();
+    await client.customModel.get(0);
+    const end = Date.now();
+    expect((end - start) / 1000).greaterThan(1);
+  });
+
+  it('Not Success (3xx - 4xx - 5xx) | Json response', async () => {
     nock(defaultApiUrl).get('/custom-model').query(true).reply(404, { response: { error: 'not found', error_id: 'NOTFOUND' }});
     
     const client = new XandrClient({
@@ -137,7 +169,7 @@ describe('HTTP return codes handling', () => {
     throw new Error('Expected Error in try clause');
   });
 
-  it('Not Success (3xx | 4xx | 5xx) | Text response', async () => {
+  it('Not Success (3xx - 4xx - 5xx) | Text response', async () => {
     nock(defaultApiUrl).get('/custom-model').query(true).reply(502, '<h1>Bad Gateway</h1>');
 
     const client = new XandrClient({
@@ -159,7 +191,7 @@ describe('HTTP return codes handling', () => {
     throw new Error('Expected Error in try clause');
   });
 
-  it('Not Success (3xx | 4xx | 5xx) | Empty response', async () => {
+  it('Not Success (3xx - 4xx - 5xx) | Empty response', async () => {
     nock(defaultApiUrl).get('/custom-model').query(true).reply(500);
 
     const client = new XandrClient({
