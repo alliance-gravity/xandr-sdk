@@ -20,20 +20,21 @@ export async function request<ExpectedResponseType> (params: RequestParameters, 
       ? JSON.stringify(params.body) 
       : params.formData ? params.formData : undefined
   });
+  const isJson = response.headers.get('Content-Type') === 'application/json';
+  const responseBody = await response.text();
   if (response.status > 299) {
     const headers = Object.fromEntries(response.headers.entries());
-    try {
-      const responseJson = await response.json() as XandrResponse<XandrGeneralError>;
+    if (isJson) {
+      const responseJson = JSON.parse(responseBody) as XandrResponse<XandrGeneralError>;
       throw new XandrError(responseJson.response.error, responseJson.response.error_id, response.status, headers);
-    } catch (error: unknown) {
-      if (error instanceof XandrError)
-        throw error;
-      const responseContent = await response.text();
-      throw new XandrError(responseContent, 'ERROR', response.status, headers);
     }
+    throw new XandrError(responseBody, 'ERROR', response.status, headers);
   }
-  const responseJson = await response.json() as XandrResponse<ExpectedResponseType>;
-  return responseJson.response;
+  if (isJson) {
+    const responseJson = JSON.parse(responseBody) as XandrResponse<ExpectedResponseType>;
+    return responseJson.response;
+  }
+  return {} as ExpectedResponseType;
 }
 
 export async function auth (params: AuthParameters, baseUrl: string): Promise<string> {
