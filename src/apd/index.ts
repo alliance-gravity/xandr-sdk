@@ -317,11 +317,14 @@ export class XandrAPDClient {
   }
 
   public async upload (params: UploadParameters): Promise<string> {
-    const stream = Readable.from([
-      params.uploadData
-        .map(row => `${row.keytype ?? deduceKeytype(row.key)},"${row.key}",${row.add ? 0 : 1},${row.segment}`)
-        .join('\n')
-    ]);
+    const csvText = params.uploadData
+      .map(row => `${row.keytype ?? deduceKeytype(row.key)},"${row.key}",${row.add ? 0 : 1},${row.segment}`)
+      .join('\n');
+
+    if (Buffer.byteLength(csvText, 'utf8') > 256 * 1024 * 1024)
+      throw new Error('Built upload content is too big');
+      
+    const stream = Readable.from([csvText]);
     const fd = new FormData();
     fd.append('file', stream, {
       contentType: 'test/csv'
