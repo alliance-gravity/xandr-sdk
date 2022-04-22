@@ -19,7 +19,7 @@ export interface Upload {
 }
 
 export interface UploadRow {
-  keytype: number;
+  keytype?: number;
   key: string;
   add: boolean;
   segment: number;

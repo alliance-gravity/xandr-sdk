@@ -14,6 +14,7 @@ import type {
   GetUploadResponse,
   PostUploadResponse
 } from './types';
+import { deduceKeytype } from './utils';
 import FormData from 'form-data';
 import { Readable } from 'stream';
 
@@ -318,7 +319,7 @@ export class XandrAPDClient {
   public async upload (params: UploadParameters): Promise<string> {
     const stream = Readable.from([
       params.uploadData
-        .map(row => `${row.keytype},"${row.key}",${row.add ? 0 : 1},${row.segment}`)
+        .map(row => `${row.keytype ?? deduceKeytype(row.key)},"${row.key}",${row.add ? 0 : 1},${row.segment}`)
         .join('\n')
     ]);
     const fd = new FormData();
