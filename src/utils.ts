@@ -22,6 +22,9 @@ export async function request<ExpectedResponseType> (params: RequestParameters, 
   });
   const isJson = response.headers.get('Content-Type') === 'application/json';
   const responseBody = await response.text();
+  if (response.status === 204) {
+    return {} as ExpectedResponseType;
+  }
   if (response.status > 299) {
     const headers = Object.fromEntries(response.headers.entries());
     if (isJson) {
