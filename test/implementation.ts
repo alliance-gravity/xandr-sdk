@@ -115,10 +115,21 @@ describe('HTTP return codes handling', () => {
     expect(obj.id).to.equal(123);
   });
 
+  it('No Content (204)', async () => {
+    nock(defaultApiUrl).delete('/custom-model').query(true).reply(204);
+    
+    const client = new XandrClient({
+      username: 'x',
+      password: 'x'
+    });
+
+    await client.customModel.delete(0);
+  });
+
   it('Rate limited (429) | With response (1000ms wait time)', async () => {
     nock(defaultApiUrl).get('/custom-model').query(true).reply(429, { response: { error: 'You have...', error_id: 'SYSTEM'} })
       .defaultReplyHeaders({'Retry-After': '1'});
-    nock(defaultApiUrl).get('/custom-model').query(true).reply(200, { response: { custom_model: {}}});
+    nock(defaultApiUrl).get('/custom-model').query(true).reply(200, { response: { custom_model: { id: 123 }}});
 
     const client = new XandrClient({
       username: 'x',
@@ -126,15 +137,16 @@ describe('HTTP return codes handling', () => {
     });
 
     const start = Date.now();
-    await client.customModel.get(0);
+    const obj = await client.customModel.get(0);
     const end = Date.now();
     expect((end - start) / 1000).greaterThan(1);
+    expect(obj.id).to.equal(123);
   });
 
   it('Rate limited (429) | Empty response (1000ms wait time)', async () => {
     nock(defaultApiUrl).get('/custom-model').query(true).reply(429)
       .defaultReplyHeaders({'Retry-After': '1'});
-    nock(defaultApiUrl).get('/custom-model').query(true).reply(200, { response: { custom_model: {}}});
+    nock(defaultApiUrl).get('/custom-model').query(true).reply(200, { response: { custom_model: { id: 456 }}});
 
     const client = new XandrClient({
       username: 'x',
@@ -142,9 +154,10 @@ describe('HTTP return codes handling', () => {
     });
 
     const start = Date.now();
-    await client.customModel.get(0);
+    const obj = await client.customModel.get(0);
     const end = Date.now();
     expect((end - start) / 1000).greaterThan(1);
+    expect(obj.id).to.equal(456);
   });
 
   it('Error (3xx - 4xx - 5xx) | Json response', async () => {
