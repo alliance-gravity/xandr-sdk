@@ -147,7 +147,7 @@ describe('HTTP return codes handling', () => {
     expect((end - start) / 1000).greaterThan(1);
   });
 
-  it('Not Success (3xx - 4xx - 5xx) | Json response', async () => {
+  it('Error (3xx - 4xx - 5xx) | Json response', async () => {
     nock(defaultApiUrl).get('/custom-model').query(true).reply(404, { response: { error: 'not found', error_id: 'NOTFOUND' }});
     
     const client = new XandrClient({
@@ -169,7 +169,7 @@ describe('HTTP return codes handling', () => {
     throw new Error('Expected Error in try clause');
   });
 
-  it('Not Success (3xx - 4xx - 5xx) | Text response', async () => {
+  it('Error (3xx - 4xx - 5xx) | Text response', async () => {
     nock(defaultApiUrl).get('/custom-model').query(true).reply(502, '<h1>Bad Gateway</h1>');
 
     const client = new XandrClient({
@@ -191,7 +191,7 @@ describe('HTTP return codes handling', () => {
     throw new Error('Expected Error in try clause');
   });
 
-  it('Not Success (3xx - 4xx - 5xx) | Empty response', async () => {
+  it('Error (3xx - 4xx - 5xx) | Empty response', async () => {
     nock(defaultApiUrl).get('/custom-model').query(true).reply(500);
 
     const client = new XandrClient({
