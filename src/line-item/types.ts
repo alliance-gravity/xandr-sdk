@@ -144,8 +144,6 @@ export interface LineItem {
   creative_distribution_type: 'ctr-optimized' | 'even' | 'weighted';
   prefer_delivery_over_performance: boolean;
   viewability_vendor: 'appnexus';
-  is_archived: boolean;
-  archived_on: number;
   partner_fees: {
     id: number;
   }[];
@@ -163,7 +161,6 @@ export interface LineItemParameters {
   revenue_value: number;
   revenue_type?: 'cost_plus_cpm' | 'cost_plus_margin' | 'cpm' | 'vcpm';
   goal_type?: 'cpa' | 'cpc' | 'ctr' | 'custom';
-  last_modified?: number;
   click_url?: string;
   currency?: string;
   require_cookie_for_tracking?: boolean;
@@ -172,10 +169,6 @@ export interface LineItemParameters {
   comments?: string;
   remaining_days?: number;
   total_days?: number;
-  advertiser?: {
-    id: number;
-    name: string;
-  };
   labels?: ('Sales Rep' | 'Trafficker')[];
   pixels?: {
     id: number;
@@ -206,31 +199,6 @@ export interface LineItemParameters {
     post_view_goal_target: number;
     post_click_goal_threshold: number;
     post_view_goal_threshold: number;
-  }[];
-  imptrackers?: {
-    id: number;
-    member_id: number;
-    advertiser_id: number;
-    name: string;
-    code: string;
-    state: State;
-    publisher: {
-      id: number;
-      name: string;
-    };
-    tag: {
-      id: number;
-      name: string;
-    }[];
-    payment_rule: {
-      id: number;
-      name: string;
-    };
-    line_item: {
-      id: number;
-      name: string;
-    };
-    last_modified: string;
   }[];
   valuation?: {
     min_margin_pct: number;
