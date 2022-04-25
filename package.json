@@ -1,6 +1,6 @@
 {
   "name": "xandr-sdk",
-  "description": "An SDK to use Xandr API",
+  "description": "An SDK to use the Xandr API",
   "private": false,
   "version": "1.0.0",
   "license": "UNLICENSED",
@@ -8,7 +8,8 @@
   "scripts": {
     "build": "tsc",
     "lint": "eslint . --ext .ts",
-    "test": "mocha -r ts-node/register test/**/*.ts"
+    "test": "env ENABLE_NOCK=true mocha -r ts-node/register test/**/*.ts",
+    "test-no-intercept": "env ENABLE_NOCK=false mocha -r ts-node/register test/**/*.ts"
   },
   "devDependencies": {
     "@types/node": "^17.0.8",
