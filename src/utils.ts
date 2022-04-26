@@ -44,6 +44,8 @@ export async function auth (params: AuthParameters, baseUrl: string): Promise<st
   const authResponse = await request<AuthResponse>({
     method: 'POST',
     endpoint: 'auth',
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    headers: { 'Content-Type': 'application/json' },
     body: { auth: params }
   }, baseUrl);
   return authResponse.token;
