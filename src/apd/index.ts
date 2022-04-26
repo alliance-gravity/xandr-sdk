@@ -1,4 +1,5 @@
 import type { XandrClient } from '..';
+import { sleep } from '../utils';
 import type {
   Segment,
   Upload,
@@ -313,6 +314,8 @@ export class XandrAPDClient {
       endpoint: `${this.endpoint}/members/${memberId}/uploads`,
       query: id === undefined ? undefined : { id }
     });
+    if (response.uploads === null)
+      return [];
     return response.uploads;
   }
 
@@ -337,5 +340,23 @@ export class XandrAPDClient {
       formData: fd
     });
     return response.id;
+  }
+
+  public async awaitUploadCompletion (memberId: number, id: string, maxTries = 10): Promise<Upload> {
+    let tries = 0;
+    do {
+      const uploads = await this.getUploads(memberId, id);
+      if (uploads.length > 0)
+        return uploads[0];
+      await sleep(
+        Math.min(
+          Math.pow(2, tries) * 1000,
+          20 * 1000
+        )
+      );
+      tries++;
+    } while (tries < maxTries);
+
+    throw new Error(`Upload ${id} did not complete in ${maxTries} tries`);
   }
 }

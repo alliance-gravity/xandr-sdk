@@ -31,7 +31,7 @@ export interface UploadParameters {
 }
 
 export interface GetUploadResponse {
-  uploads: Upload[];
+  uploads: Upload[] | null;
 }
 
 export interface PostUploadResponse {
