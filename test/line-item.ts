@@ -10,7 +10,7 @@ import nock from 'nock';
 const intercept = process.env.ENABLE_NOCK === 'true';
 let describeMessage = '(using real API)';
 if (intercept)
-  describeMessage = ' (nock intercepted)';
+  describeMessage = '(nock intercepted)';
 
 const username = 'x';
 const password = 'x';
