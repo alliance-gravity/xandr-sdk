@@ -1,4 +1,4 @@
-export function deduceKeytype (key: string): number {
+export function deduceLocationtype (key: string): number {
   const ip = '(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])';
   const ipAddress = new RegExp(`^${ip}$`);
   const ipRange = new RegExp(`^${ip},${ip}$`);
@@ -17,17 +17,31 @@ export function deduceKeytype (key: string): number {
   if (postalCode.test(key))
     return 3;
 
-  const partialUrl = /^[-a-zA-Z0-9@:%_+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(\/([-a-zA-Z0-9()@:%_+.~#?&=])+){0,3}\/?$/;
-  if (partialUrl.test(key))
-    return 4;
-  
   const deviceId = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
   if (deviceId.test(key))
     return 5;
   
-  const fullUrl = /^[-a-zA-Z0-9@:%_+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&=/]*)?$/;
-  if (fullUrl.test(key))
-    return 6;
+  throw new Error(`"${key}" does not match any keytype. Check its syntax or provide a keytype`);
+}
+
+export function deduceUrlType (url: string): boolean {
+  const partialUrl = /^[-a-zA-Z0-9@:%_+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(\/([-a-zA-Z0-9()@:%_+.~#?&=])+){0,3}\/?$/;
+  if (partialUrl.test(url))
+    return true;
   
-  throw new Error(`${key} does not match any keytype. Check its syntax or provide a keytype`);
+  const fullUrl = /^[-a-zA-Z0-9@:%_+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&=/]*)?$/;
+  if (fullUrl.test(url))
+    return false;
+
+  throw new Error(`"${url}" does not match any url type`);
+}
+
+export function sanitizeUrlFormat (url: string): string {
+  try {
+    const u = new URL(url);
+    u.hostname = u.hostname.split('.').splice(-2).join('.');
+    return u.toString().split('/').splice(2).join('/');
+  } catch (error: unknown) {
+    return url;
+  }
 }

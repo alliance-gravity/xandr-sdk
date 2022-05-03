@@ -6,6 +6,12 @@ export interface Segment {
   seg_ttl: string;
 }
 
+interface SegmentParameters {
+  seg_id: number;
+  seg_val?: number;
+  seg_ttl?: number;
+}
+
 export interface Upload {
   added: string;
   id: string;
@@ -18,12 +24,21 @@ export interface Upload {
   stopped: string;
 }
 
-export interface UploadRow {
-  keytype?: number;
-  key: string;
+interface UploadRowUrl {
+  url: string;
+  partial: boolean;
   add: boolean;
-  segment: number;
+  segment: SegmentParameters;
 }
+
+interface UploadRowLocation {
+  location: string;
+  locationType?: number;
+  add: boolean;
+  segment: SegmentParameters;
+}
+
+export type UploadRow = UploadRowLocation | UploadRowUrl;
 
 export interface UploadParameters {
   memberId: number;

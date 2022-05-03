@@ -15,7 +15,7 @@ import type {
   GetUploadResponse,
   PostUploadResponse
 } from './types';
-import { deduceKeytype } from './utils';
+import { deduceLocationtype, sanitizeUrlFormat } from './utils';
 import FormData from 'form-data';
 import { Readable } from 'stream';
 
@@ -34,8 +34,14 @@ export class XandrAPDClient {
     'Content-Type': 'application/appnexus.apd.vauxhall.v1.0+json'
   };
 
+  private defaultSegmentTtl = 15552000; // 180 days
+
   public constructor (client: XandrClient) {
     this.client = client;
+  }
+
+  public setDefaultSegmentTtl (seconds: number): void {
+    this.defaultSegmentTtl = seconds;
   }
 
   public async getOpenLocationCodeTargeting (params: OpenLocationCodeTargetingParameters): Promise<Segment[]> {
@@ -320,8 +326,20 @@ export class XandrAPDClient {
   }
 
   public async upload (params: UploadParameters): Promise<string> {
+    const defaultTtl = this.defaultSegmentTtl;
     const csvText = params.uploadData
-      .map(row => `${row.keytype ?? deduceKeytype(row.key)},"${row.key}",${row.add ? 0 : 1},${row.segment}`)
+      .map(function (row) {
+        const operation = row.add ? 0 : 1;
+        const segment = `${row.segment.seg_id}:${row.segment.seg_val ?? 0}:${row.segment.seg_ttl ?? defaultTtl}`;
+        if ('location' in row) {
+          const keytype = row.locationType ?? deduceLocationtype(row.location);
+          const key = `"${row.location}"`;
+          return [keytype, key, operation, segment].join(',');
+        }
+        const keytype = row.partial ? 4 : 6;
+        const key = `"${sanitizeUrlFormat(row.url)}"`;
+        return [keytype, key, operation, segment].join(',');
+      })
       .join('\n');
 
     if (Buffer.byteLength(csvText, 'utf8') > 256 * 1024 * 1024)
