@@ -7,9 +7,9 @@ export interface Segment {
 }
 
 interface SegmentParameters {
-  seg_id: number;
-  seg_val?: number;
-  seg_ttl?: number;
+  segId: number;
+  segVal?: number;
+  segTtl?: number;
 }
 
 export interface Upload {

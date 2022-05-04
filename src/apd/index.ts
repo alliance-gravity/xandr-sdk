@@ -330,7 +330,7 @@ export class XandrAPDClient {
     const csvText = params.uploadData
       .map(function (row) {
         const operation = row.add ? 0 : 1;
-        const segment = `${row.segment.seg_id}:${row.segment.seg_val ?? 0}:${row.segment.seg_ttl ?? defaultTtl}`;
+        const segment = `${row.segment.segId}:${row.segment.segVal ?? 0}:${row.segment.segTtl ?? defaultTtl}`;
         if ('location' in row) {
           const keytype = row.locationType ?? deduceLocationtype(row.location);
           const key = `"${row.location}"`;
