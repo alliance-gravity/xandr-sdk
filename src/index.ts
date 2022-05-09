@@ -5,6 +5,7 @@ import { XandrAPDClient } from './apd';
 import { XandrLineItemClient } from './line-item';
 import { XandrError } from './errors';
 import { XandrSegmentClient } from './segment';
+import { XandrSegmentBillingCategoryClient } from './segment-billing-category';
 
 export const defaultApiUrl = 'https://api.appnexus.com';
 
@@ -16,6 +17,8 @@ export class XandrClient {
   public lineItem: XandrLineItemClient = new XandrLineItemClient(this);
 
   public segment: XandrSegmentClient = new XandrSegmentClient(this);
+
+  public segmentBillingCategory: XandrSegmentBillingCategoryClient = new XandrSegmentBillingCategoryClient(this);
 
   private readonly creds: AuthParameters;
 
