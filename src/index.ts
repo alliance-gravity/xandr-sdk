@@ -4,6 +4,7 @@ import { XandrCustomModelClient } from './custom-model';
 import { XandrAPDClient } from './apd';
 import { XandrLineItemClient } from './line-item';
 import { XandrError } from './errors';
+import { XandrSegmentClient } from './segment';
 
 export const defaultApiUrl = 'https://api.appnexus.com';
 
@@ -13,6 +14,8 @@ export class XandrClient {
   public apd: XandrAPDClient = new XandrAPDClient(this);
 
   public lineItem: XandrLineItemClient = new XandrLineItemClient(this);
+
+  public segment: XandrSegmentClient = new XandrSegmentClient(this);
 
   private readonly creds: AuthParameters;
 
