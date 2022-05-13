@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "lib": [ "ES2020" ],
+    "declaration": true,
     "target": "ES2019",
     "module": "CommonJS",
     "outDir": "build",
