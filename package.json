@@ -2,7 +2,7 @@
   "name": "xandr-sdk",
   "description": "An SDK to use the Xandr API",
   "private": false,
-  "version": "1.0.2",
+  "version": "1.0.3",
   "license": "UNLICENSED",
   "repository": "https://github.com/alliance-gravity/xandr-sdk",
   "scripts": {
@@ -11,6 +11,7 @@
     "test": "env ENABLE_NOCK=true mocha -r ts-node/register test/**/*.ts",
     "test-no-intercept": "env ENABLE_NOCK=false mocha -r ts-node/register test/**/*.ts"
   },
+  "files": ["dist"],
   "devDependencies": {
     "@types/node": "^17.0.8",
     "@types/node-fetch": "^2.6.1",
