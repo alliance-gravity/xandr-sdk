@@ -312,7 +312,7 @@ export class XandrAPDClient {
     });
   }
 
-  public async getUploads (memberId: number, id?: string): Promise<Upload[]> {
+  public async getUploads (memberId: number, id?: string): Promise<Upload[] | undefined> {
     const response = await this.client.execute<GetUploadResponse>({
       method: 'GET',
       headers: this.defaultHeaders,
@@ -359,7 +359,7 @@ export class XandrAPDClient {
     let tries = 0;
     do {
       const uploads = await this.getUploads(memberId, id);
-      if (uploads.length > 0)
+      if (uploads !== undefined && uploads.length > 0)
         return uploads[0];
       await sleep(
         Math.min(
