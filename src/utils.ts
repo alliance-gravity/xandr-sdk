@@ -29,7 +29,8 @@ export async function request<ExpectedResponseType> (params: RequestParameters, 
     const headers = Object.fromEntries(response.headers.entries());
     if (isJson) {
       const responseJson = JSON.parse(responseBody) as XandrResponse<XandrGeneralError>;
-      throw new XandrError(responseJson.response.error, responseJson.response.error_id, response.status, headers);
+      if ('reponse' in responseJson)
+        throw new XandrError(responseJson.response.error, responseJson.response.error_id, response.status, headers);
     }
     throw new XandrError(responseBody, 'ERROR', response.status, headers);
   }
