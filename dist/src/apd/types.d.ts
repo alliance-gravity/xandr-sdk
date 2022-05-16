@@ -14,7 +14,7 @@ export interface Upload {
     member_id: number;
     message: string;
     rows_failed?: number;
-    rows_total: number;
+    rows_total?: number;
     started: string;
     status: string;
     stopped: string;
