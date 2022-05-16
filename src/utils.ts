@@ -36,7 +36,9 @@ export async function request<ExpectedResponseType> (params: RequestParameters, 
   }
   if (isJson) {
     const responseJson = JSON.parse(responseBody) as XandrResponse<ExpectedResponseType>;
-    return responseJson.response;
+    if ('response' in responseJson)
+      return responseJson.response;
+    return JSON.parse(responseBody) as ExpectedResponseType;
   }
   return {} as ExpectedResponseType;
 }

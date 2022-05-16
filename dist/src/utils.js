@@ -41,7 +41,9 @@ async function request(params, baseUrl) {
     }
     if (isJson) {
         const responseJson = JSON.parse(responseBody);
-        return responseJson.response;
+        if ('response' in responseJson)
+            return responseJson.response;
+        return JSON.parse(responseBody);
     }
     return {};
 }
