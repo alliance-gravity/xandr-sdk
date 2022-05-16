@@ -20,7 +20,7 @@ export async function request<ExpectedResponseType> (params: RequestParameters, 
       ? JSON.stringify(params.body) 
       : params.formData ? params.formData : undefined
   });
-  const isJson = response.headers.get('Content-Type') === 'application/json';
+  const isJson = response.headers.get('Content-Type') === 'application/json' || response.headers.get('Content-Type') === 'application/appnexus.apd.vauxhall.v1.0+json';
   const responseBody = await response.text();
   if (response.status === 204) {
     return {} as ExpectedResponseType;
