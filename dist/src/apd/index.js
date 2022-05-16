@@ -7,7 +7,6 @@ exports.XandrAPDClient = void 0;
 const utils_1 = require("../utils");
 const utils_2 = require("./utils");
 const form_data_1 = __importDefault(require("form-data"));
-const stream_1 = require("stream");
 class XandrAPDClient {
     constructor(client) {
         this.endpoint = 'apd-api';
@@ -297,15 +296,10 @@ class XandrAPDClient {
             .join('\n');
         if (Buffer.byteLength(csvText, 'utf8') > 256 * 1024 * 1024)
             throw new Error('Built upload content is too big');
-        const stream = stream_1.Readable.from([csvText]);
         const fd = new form_data_1.default();
-        fd.append('file', stream, {
-            contentType: 'test/csv'
-        });
+        fd.append('file', csvText, 'file');
         const response = await this.client.execute({
             method: 'POST',
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            headers: { 'Content-Type': 'multipart/form-data' },
             endpoint: `${this.endpoint}/members/${params.memberId}/uploads`,
             formData: fd
         });
