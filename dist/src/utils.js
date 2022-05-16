@@ -34,7 +34,8 @@ async function request(params, baseUrl) {
         const headers = Object.fromEntries(response.headers.entries());
         if (isJson) {
             const responseJson = JSON.parse(responseBody);
-            throw new errors_1.XandrError(responseJson.response.error, responseJson.response.error_id, response.status, headers);
+            if ('response' in responseJson)
+                throw new errors_1.XandrError(responseJson.response.error, responseJson.response.error_id, response.status, headers);
         }
         throw new errors_1.XandrError(responseBody, 'ERROR', response.status, headers);
     }
