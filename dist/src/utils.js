@@ -11,7 +11,7 @@ async function sleep(ms) {
 }
 exports.sleep = sleep;
 async function request(params, baseUrl) {
-    var _a;
+    var _a, _b;
     const url = new URL(baseUrl);
     url.pathname = params.endpoint;
     Object.entries((_a = params.query) !== null && _a !== void 0 ? _a : {}).forEach(entry => {
@@ -25,8 +25,8 @@ async function request(params, baseUrl) {
             ? JSON.stringify(params.body)
             : params.formData ? params.formData : undefined
     });
-    const contentType = response.headers.get('Content-Type');
-    const [contentTypeGroup, contentTypeSub] = contentType !== null ? contentType.split('/') : ['', ''];
+    const contentType = (_b = response.headers.get('Content-Type')) === null || _b === void 0 ? void 0 : _b.split(';')[0].trim();
+    const [contentTypeGroup, contentTypeSub] = contentType !== undefined ? contentType.split('/') : ['', ''];
     const isJson = contentTypeGroup === 'application' && contentTypeSub.split('+').includes('json');
     const responseBody = await response.text();
     if (response.status === 204) {
