@@ -17,7 +17,6 @@ import type {
 } from './types';
 import { deduceLocationtype, sanitizeUrlFormat } from './utils';
 import FormData from 'form-data';
-import { Readable } from 'stream';
 
 export class XandrAPDClient {
   private readonly client: XandrClient;
@@ -345,15 +344,11 @@ export class XandrAPDClient {
     if (Buffer.byteLength(csvText, 'utf8') > 256 * 1024 * 1024)
       throw new Error('Built upload content is too big');
       
-    const stream = Readable.from([csvText]);
     const fd = new FormData();
-    fd.append('file', stream, {
-      contentType: 'test/csv'
-    });
+    fd.append('file', csvText, 'file');
+
     const response = await this.client.execute<PostUploadResponse>({
       method: 'POST',
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      headers: { 'Content-Type': 'multipart/form-data' },
       endpoint: `${this.endpoint}/members/${params.memberId}/uploads`,
       formData: fd
     });
