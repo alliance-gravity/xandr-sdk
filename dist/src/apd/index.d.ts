@@ -35,7 +35,7 @@ export declare class XandrAPDClient {
     getEvent(memberId: number, segmentList: number[]): Promise<Segment[]>;
     addEvent(memberId: number, segments: Segment[]): Promise<void>;
     deleteEvent(memberId: number, segmentList: number[]): Promise<void>;
-    getUploads(memberId: number, id?: string): Promise<Upload[]>;
+    getUploads(memberId: number, id?: string): Promise<Upload[] | undefined>;
     upload(params: UploadParameters): Promise<string>;
     awaitUploadCompletion(memberId: number, id: string, maxTries?: number): Promise<Upload>;
 }
