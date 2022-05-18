@@ -72,7 +72,7 @@ class XandrSegmentClient {
             method: 'GET',
             endpoint: this.endpoint,
             // eslint-disable-next-line @typescript-eslint/naming-convention
-            query: 'id' in segmentReference ? { segment_id: segmentReference.id } : { segment_code: segmentReference.code }
+            query: 'id' in segmentReference ? { id: segmentReference.id } : { code: segmentReference.code }
         });
         return response.segment;
     }
