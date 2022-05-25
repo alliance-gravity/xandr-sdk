@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sanitizeUrlFormat = exports.deduceUrlType = exports.deduceLocationtype = void 0;
+const tldjs_1 = require("tldjs");
 function deduceLocationtype(key) {
     const ip = '(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])';
     const ipAddress = new RegExp(`^${ip}$`);
@@ -33,13 +34,10 @@ function deduceUrlType(url) {
 }
 exports.deduceUrlType = deduceUrlType;
 function sanitizeUrlFormat(url) {
-    try {
-        const u = new URL(url);
-        u.hostname = u.hostname.split('.').splice(-2).join('.');
-        return u.toString().split('/').splice(2).join('/');
-    }
-    catch (error) {
+    const p = (0, tldjs_1.parse)(url);
+    if (p.domain === null) {
         return url;
     }
+    return url.slice(url.indexOf(p.domain));
 }
 exports.sanitizeUrlFormat = sanitizeUrlFormat;

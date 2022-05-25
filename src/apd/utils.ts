@@ -1,3 +1,5 @@
+import { parse } from 'tldjs';
+
 export function deduceLocationtype (key: string): number {
   const ip = '(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])';
   const ipAddress = new RegExp(`^${ip}$`);
@@ -37,11 +39,9 @@ export function deduceUrlType (url: string): boolean {
 }
 
 export function sanitizeUrlFormat (url: string): string {
-  try {
-    const u = new URL(url);
-    u.hostname = u.hostname.split('.').splice(-2).join('.');
-    return u.toString().split('/').splice(2).join('/');
-  } catch (error: unknown) {
+  const p = parse(url);
+  if (p.domain === null) {
     return url;
   }
+  return url.slice(url.indexOf(p.domain));
 }

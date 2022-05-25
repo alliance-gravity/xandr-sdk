@@ -8,6 +8,7 @@ import { XandrSegmentClient } from './segment';
 import { XandrSegmentBillingCategoryClient } from './segment-billing-category';
 
 export const defaultApiUrl = 'https://api.appnexus.com';
+export { sanitizeUrlFormat } from './apd/utils';
 
 export class XandrClient {
   public customModel: XandrCustomModelClient = new XandrCustomModelClient(this);

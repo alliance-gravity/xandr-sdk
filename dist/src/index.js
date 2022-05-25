@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.XandrClient = exports.defaultApiUrl = void 0;
+exports.XandrClient = exports.sanitizeUrlFormat = exports.defaultApiUrl = void 0;
 const utils_1 = require("./utils");
 const custom_model_1 = require("./custom-model");
 const apd_1 = require("./apd");
@@ -9,6 +9,8 @@ const errors_1 = require("./errors");
 const segment_1 = require("./segment");
 const segment_billing_category_1 = require("./segment-billing-category");
 exports.defaultApiUrl = 'https://api.appnexus.com';
+var utils_2 = require("./apd/utils");
+Object.defineProperty(exports, "sanitizeUrlFormat", { enumerable: true, get: function () { return utils_2.sanitizeUrlFormat; } });
 class XandrClient {
     constructor(params, apiUrl = exports.defaultApiUrl) {
         this.customModel = new custom_model_1.XandrCustomModelClient(this);

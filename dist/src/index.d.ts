@@ -5,6 +5,7 @@ import { XandrLineItemClient } from './line-item';
 import { XandrSegmentClient } from './segment';
 import { XandrSegmentBillingCategoryClient } from './segment-billing-category';
 export declare const defaultApiUrl = "https://api.appnexus.com";
+export { sanitizeUrlFormat } from './apd/utils';
 export declare class XandrClient {
     customModel: XandrCustomModelClient;
     apd: XandrAPDClient;
