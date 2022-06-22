@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.XandrClient = exports.sanitizeUrlFormat = exports.defaultApiUrl = void 0;
+exports.XandrClient = exports.XandrError = exports.sanitizeUrlFormat = exports.defaultApiUrl = void 0;
 const utils_1 = require("./utils");
 const custom_model_1 = require("./custom-model");
 const apd_1 = require("./apd");
 const line_item_1 = require("./line-item");
 const errors_1 = require("./errors");
+Object.defineProperty(exports, "XandrError", { enumerable: true, get: function () { return errors_1.XandrError; } });
 const segment_1 = require("./segment");
 const segment_billing_category_1 = require("./segment-billing-category");
 exports.defaultApiUrl = 'https://api.appnexus.com';
