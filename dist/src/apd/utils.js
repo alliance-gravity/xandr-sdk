@@ -38,6 +38,6 @@ function sanitizeUrlFormat(url) {
     if (p.domain === null) {
         return url;
     }
-    return url.slice(url.indexOf(p.domain));
+    return url.slice(url.lastIndexOf(p.domain));
 }
 exports.sanitizeUrlFormat = sanitizeUrlFormat;
