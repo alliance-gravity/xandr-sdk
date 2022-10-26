@@ -359,7 +359,7 @@ export class XandrAPDClient {
     let tries = 0;
     do {
       const uploads = await this.getUploads(memberId, id);
-      if (uploads !== undefined && uploads.length > 0 && uploads[0].status !== 'SUBMITTED_1')
+      if (uploads !== undefined && uploads.length > 0 && uploads[0].status !== 'SUBMITTED_1' && uploads[0].status !== 'PROCESSING_2')
         return uploads[0];
       await sleep(
         Math.min(
