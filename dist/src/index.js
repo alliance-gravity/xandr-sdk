@@ -9,6 +9,7 @@ const errors_1 = require("./errors");
 Object.defineProperty(exports, "XandrError", { enumerable: true, get: function () { return errors_1.XandrError; } });
 const segment_1 = require("./segment");
 const segment_billing_category_1 = require("./segment-billing-category");
+const placement_1 = require("./placement");
 exports.defaultApiUrl = 'https://api.appnexus.com';
 var utils_2 = require("./apd/utils");
 Object.defineProperty(exports, "sanitizeUrlFormat", { enumerable: true, get: function () { return utils_2.sanitizeUrlFormat; } });
@@ -19,6 +20,7 @@ class XandrClient {
         this.lineItem = new line_item_1.XandrLineItemClient(this);
         this.segment = new segment_1.XandrSegmentClient(this);
         this.segmentBillingCategory = new segment_billing_category_1.XandrSegmentBillingCategoryClient(this);
+        this.placement = new placement_1.XandrPlacementClient(this);
         this.token = null;
         this.creds = params;
         this.apiUrl = apiUrl;
