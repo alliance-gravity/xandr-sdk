@@ -1,10 +1,10 @@
 import type { XandrClient } from '..';
+import type { CommonResponse } from '../xandr-types';
 import type { 
   CreateCustomModelParameters,
   ModifyCustomModelParameters,
   CustomModelResponse,
   CustomModelsResponse,
-  CustomModelDefaultResponse,
   CustomModel 
 } from './types';
 
@@ -77,7 +77,7 @@ export class XandrCustomModelClient {
   }
 
   public async delete (id: number): Promise<void> {
-    await this.client.execute<CustomModelDefaultResponse>({
+    await this.client.execute<CommonResponse>({
       method: 'DELETE',
       endpoint: this.endpoint,
       query: { id }

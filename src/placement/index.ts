@@ -3,8 +3,8 @@ import type {
   Placement,
   PlacementInput,
   GetPlacementParams,
-  PostPlacementParams,
-  PutPlacementParams,
+  CreatePlacementParams,
+  ModifyPlacementParams,
   PlacementResponse
 } from './types';
 
@@ -32,14 +32,14 @@ export class XandrPlacementClient {
         ? { publisher_id: params.publisherId }
         : { id: params.placementIds.join(',') }
     });
-    if ('placement' in response)
+    if (response.placement)
       return [ response.placement ];
-    if ('placements' in response)
+    if (response.placements)
       return response.placements;
     return [];
   }
 
-  public async add (params: PostPlacementParams, placement: PlacementInput): Promise<Placement> {
+  public async add (params: CreatePlacementParams, placement: PlacementInput): Promise<Placement | undefined> {
     const response = await this.client.execute<PlacementResponse>({
       method: 'POST',
       endpoint: this.endpoint,
@@ -54,7 +54,7 @@ export class XandrPlacementClient {
     return response.placement;
   }
 
-  public async modify (params: PutPlacementParams, placement: PlacementInput): Promise<Placement> {
+  public async modify (params: ModifyPlacementParams, placement: PlacementInput): Promise<Placement | undefined> {
     const response = await this.client.execute<PlacementResponse>({
       method: 'PUT',
       endpoint: this.endpoint,
@@ -69,7 +69,7 @@ export class XandrPlacementClient {
     return response.placement;
   }
 
-  public async remove (params: PutPlacementParams): Promise<void> {
+  public async remove (params: ModifyPlacementParams): Promise<void> {
     await this.client.execute<null>({
       method: 'DELETE',
       endpoint: this.endpoint,
