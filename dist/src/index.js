@@ -10,12 +10,14 @@ Object.defineProperty(exports, "XandrError", { enumerable: true, get: function (
 const segment_1 = require("./segment");
 const segment_billing_category_1 = require("./segment-billing-category");
 const placement_1 = require("./placement");
+const advertiser_1 = require("./advertiser");
 exports.defaultApiUrl = 'https://api.appnexus.com';
 var utils_2 = require("./apd/utils");
 Object.defineProperty(exports, "sanitizeUrlFormat", { enumerable: true, get: function () { return utils_2.sanitizeUrlFormat; } });
 class XandrClient {
     constructor(params, apiUrl = exports.defaultApiUrl) {
         this.customModel = new custom_model_1.XandrCustomModelClient(this);
+        this.advertiser = new advertiser_1.XandrAdvertiserClient(this);
         this.apd = new apd_1.XandrAPDClient(this);
         this.lineItem = new line_item_1.XandrLineItemClient(this);
         this.segment = new segment_1.XandrSegmentClient(this);
