@@ -11,18 +11,23 @@ class XandrPlacementClient {
         this.client = client;
     }
     async get(params) {
-        const response = await this.client.execute({
-            method: 'GET',
-            endpoint: this.endpoint,
-            query: 'publisherId' in params
-                // eslint-disable-next-line @typescript-eslint/naming-convention
-                ? { publisher_id: params.publisherId }
-                : { id: params.placementIds.join(',') }
-        });
-        if ('placement' in response)
-            return [response.placement];
-        if ('placements' in response)
-            return response.placements;
+        const placements = [];
+        let done = false;
+        do {
+            const response = await this.client.execute({
+                method: 'GET',
+                endpoint: this.endpoint,
+                query: 'publisherId' in params
+                    // eslint-disable-next-line @typescript-eslint/naming-convention
+                    ? { publisher_id: params.publisherId }
+                    : { id: params.placementIds.join(',') }
+            });
+            if (response.placement)
+                placements.push(response.placement);
+            if (response.placements)
+                placements.push(...response.placements);
+            done = response.count !== response.num_elements;
+        } while (!done);
         return [];
     }
     async add(params, placement) {

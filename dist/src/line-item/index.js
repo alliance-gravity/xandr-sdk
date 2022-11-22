@@ -11,18 +11,24 @@ class XandrLineItemClient {
         this.client = client;
     }
     async get(params) {
-        const response = await this.client.execute({
-            method: 'GET',
-            endpoint: this.endpoint,
-            query: 'code' in params
-                // eslint-disable-next-line @typescript-eslint/naming-convention
-                ? { code: params.code, advertiser_code: params.advertiserCode }
-                : 'advertiserId' in params
+        const lineItems = [];
+        let done = false;
+        do {
+            const response = await this.client.execute({
+                method: 'GET',
+                endpoint: this.endpoint,
+                query: 'code' in params
                     // eslint-disable-next-line @typescript-eslint/naming-convention
-                    ? { advertiser_id: params.advertiserId }
-                    : { id: params.idList.join(',') }
-        });
-        return response['line-items'];
+                    ? { code: params.code, advertiser_code: params.advertiserCode }
+                    : 'advertiserId' in params
+                        // eslint-disable-next-line @typescript-eslint/naming-convention
+                        ? { advertiser_id: params.advertiserId }
+                        : { id: params.idList.join(',') }
+            });
+            lineItems.push(...response['line-items']);
+            done = response.count !== response.num_elements;
+        } while (!done);
+        return lineItems;
     }
     async search(searchTerm) {
         const response = await this.client.execute({
