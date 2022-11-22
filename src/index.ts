@@ -8,6 +8,7 @@ import { XandrSegmentClient } from './segment';
 import { XandrSegmentBillingCategoryClient } from './segment-billing-category';
 import { XandrPlacementClient } from './placement';
 import { XandrAdvertiserClient } from './advertiser';
+import { XandrPublisherClient } from './publisher';
 
 export const defaultApiUrl = 'https://api.appnexus.com';
 export { sanitizeUrlFormat } from './apd/utils';
@@ -17,6 +18,8 @@ export class XandrClient {
   public customModel: XandrCustomModelClient = new XandrCustomModelClient(this);
 
   public advertiser: XandrAdvertiserClient = new XandrAdvertiserClient(this);
+
+  public publisher: XandrPublisherClient = new XandrPublisherClient(this);
 
   public apd: XandrAPDClient = new XandrAPDClient(this);
 

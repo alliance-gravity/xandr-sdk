@@ -36,7 +36,8 @@ export class XandrAdvertiserClient {
           ? 'advertiserCode' in params
             ? { code: params.advertiserCode }
             : { id: params.advertiserId.join(',') }
-          : undefined}
+          : undefined
+        }
       });
       if (response.advertiser)
         advertisers.push(response.advertiser);
