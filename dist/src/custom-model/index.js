@@ -19,19 +19,17 @@ class XandrCustomModelClient {
         return response.custom_model;
     }
     async getAll() {
-        let customModels = [];
-        let index = 0;
+        const customModels = [];
         let done = false;
         do {
             const response = await this.client.execute({
                 method: 'GET',
                 endpoint: this.endpoint,
                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                query: { start_element: index }
+                query: { start_element: customModels.length }
             });
-            customModels = customModels.concat(response.custom_models);
-            index += response.count;
-            done = response.count !== response.num_elements;
+            customModels.push(...response.custom_models);
+            done = response.count !== customModels.length;
         } while (!done);
         return customModels;
     }
