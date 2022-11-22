@@ -25,33 +25,43 @@ export class XandrAdvertiserClient {
 
 
   public async get (params?: GetAdvertiserParameters): Promise<Advertiser[]> {
-    const response = await this.client.execute<AdvertiserResponse>({
-      method: 'GET',
-      endpoint: this.endpoint,
-      query: params
-        ? 'advertiserCode' in params
-          ? { code: params.advertiserCode }
-          : { id: params.advertiserId.join(',') }
-        : undefined
-    });
-    if (response.advertiser) 
-      return [ response.advertiser ];
-    if (response.advertisers)
-      return response.advertisers;
-    return [];
+    const advertisers: Advertiser[] = [];
+    let done = false;
+    do {
+      const response = await this.client.execute<AdvertiserResponse>({
+        method: 'GET',
+        endpoint: this.endpoint,
+        query: params
+          ? 'advertiserCode' in params
+            ? { code: params.advertiserCode }
+            : { id: params.advertiserId.join(',') }
+          : undefined
+      });
+      if (response.advertiser)
+        advertisers.push(response.advertiser);
+      if (response.advertisers)
+        advertisers.push(...response.advertisers);
+      done = response.count !== response.num_elements;
+    } while (!done);
+    return advertisers;
   }
 
   public async search (params: SearchAdvertiserParameters): Promise<Advertiser[]> {
-    const response = await this.client.execute<AdvertiserResponse>({
-      method: 'GET',
-      endpoint: this.endpoint,
-      query:{ search: params.searchTerm }
-    });
-    if (response.advertiser) 
-      return [ response.advertiser ];
-    if (response.advertisers)
-      return response.advertisers;
-    return [];
+    const advertisers: Advertiser[] = [];
+    let done = false;
+    do {
+      const response = await this.client.execute<AdvertiserResponse>({
+        method: 'GET',
+        endpoint: this.endpoint,
+        query:{ search: params.searchTerm }
+      });
+      if (response.advertiser) 
+        advertisers.push(response.advertiser);
+      if (response.advertisers)
+        advertisers.push(...response.advertisers);
+      done = response.count !== response.num_elements;
+    } while (!done);
+    return advertisers;
   }
 
   public async add (advertiser: AdvertiserInput): Promise<Advertiser | undefined> {
