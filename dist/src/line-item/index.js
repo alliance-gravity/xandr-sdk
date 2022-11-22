@@ -17,26 +17,31 @@ class XandrLineItemClient {
             const response = await this.client.execute({
                 method: 'GET',
                 endpoint: this.endpoint,
-                query: 'code' in params
-                    // eslint-disable-next-line @typescript-eslint/naming-convention
-                    ? { code: params.code, advertiser_code: params.advertiserCode }
-                    : 'advertiserId' in params
-                        // eslint-disable-next-line @typescript-eslint/naming-convention
-                        ? { advertiser_id: params.advertiserId }
-                        : { id: params.idList.join(',') }
+                query: { start_element: lineItems.length, ...'code' in params
+                        ? { code: params.code, advertiser_code: params.advertiserCode }
+                        : 'advertiserId' in params
+                            ? { advertiser_id: params.advertiserId }
+                            : { id: params.idList.join(',') }
+                }
             });
             lineItems.push(...response['line-items']);
-            done = response.count !== response.num_elements;
+            done = response.count === lineItems.length;
         } while (!done);
         return lineItems;
     }
     async search(searchTerm) {
-        const response = await this.client.execute({
-            method: 'GET',
-            endpoint: this.endpoint,
-            query: { search: searchTerm }
-        });
-        return response['line-items'];
+        const lineItems = [];
+        let done = false;
+        do {
+            const response = await this.client.execute({
+                method: 'GET',
+                endpoint: this.endpoint,
+                query: { search: searchTerm, start_element: lineItems.length }
+            });
+            lineItems.push(...response['line-items']);
+            done = response.count === lineItems.length;
+        } while (!done);
+        return lineItems;
     }
     async add(advertiserId, lineItem) {
         const response = await this.client.execute({

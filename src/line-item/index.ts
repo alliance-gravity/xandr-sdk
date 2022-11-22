@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import type { XandrClient } from '..';
 import type {
   LineItem,
@@ -30,27 +31,32 @@ export class XandrLineItemClient {
       const response = await this.client.execute<LineItemGetAllResponse>({
         method: 'GET',
         endpoint: this.endpoint,
-        query: 'code' in params
-          // eslint-disable-next-line @typescript-eslint/naming-convention
+        query: { start_element: lineItems.length, ...'code' in params
           ? { code: params.code, advertiser_code: params.advertiserCode }
           : 'advertiserId' in params
-            // eslint-disable-next-line @typescript-eslint/naming-convention
             ? { advertiser_id: params.advertiserId }
             : { id: params.idList.join(',') }
+        }
       });
       lineItems.push(...response['line-items']);
-      done = response.count !== response.num_elements;
+      done = response.count === lineItems.length;
     } while (!done);
     return lineItems;
   }
 
   public async search (searchTerm: string): Promise<LineItem[]> {
-    const response = await this.client.execute<LineItemGetAllResponse>({
-      method: 'GET',
-      endpoint: this.endpoint,
-      query: { search: searchTerm }
-    });
-    return response['line-items'];
+    const lineItems: LineItem[] = [];
+    let done = false;
+    do {
+      const response = await this.client.execute<LineItemGetAllResponse>({
+        method: 'GET',
+        endpoint: this.endpoint,
+        query: { search: searchTerm, start_element: lineItems.length }
+      });
+      lineItems.push(...response['line-items']);
+      done = response.count === lineItems.length;
+    } while (!done);
+    return lineItems;
   }
 
   public async add (advertiserId: number, lineItem: LineItemParameters): Promise<LineItem> {

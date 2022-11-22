@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import type { XandrClient } from '..';
 import type {
   GetAdvertiserParameters,
@@ -31,17 +32,17 @@ export class XandrAdvertiserClient {
       const response = await this.client.execute<AdvertiserResponse>({
         method: 'GET',
         endpoint: this.endpoint,
-        query: params
+        query: { start_element: advertisers.length, ...params
           ? 'advertiserCode' in params
             ? { code: params.advertiserCode }
             : { id: params.advertiserId.join(',') }
-          : undefined
+          : undefined}
       });
       if (response.advertiser)
         advertisers.push(response.advertiser);
       if (response.advertisers)
         advertisers.push(...response.advertisers);
-      done = response.count !== response.num_elements;
+      done = advertisers.length === response.count;
     } while (!done);
     return advertisers;
   }
@@ -53,13 +54,13 @@ export class XandrAdvertiserClient {
       const response = await this.client.execute<AdvertiserResponse>({
         method: 'GET',
         endpoint: this.endpoint,
-        query:{ search: params.searchTerm }
+        query: { search: params.searchTerm, start_element: advertisers.length }
       });
       if (response.advertiser) 
         advertisers.push(response.advertiser);
       if (response.advertisers)
         advertisers.push(...response.advertisers);
-      done = response.count !== response.num_elements;
+      done = response.count === advertisers.length;
     } while (!done);
     return advertisers;
   }

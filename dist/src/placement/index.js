@@ -17,18 +17,18 @@ class XandrPlacementClient {
             const response = await this.client.execute({
                 method: 'GET',
                 endpoint: this.endpoint,
-                query: 'publisherId' in params
-                    // eslint-disable-next-line @typescript-eslint/naming-convention
-                    ? { publisher_id: params.publisherId }
-                    : { id: params.placementIds.join(',') }
+                query: { start_element: placements.length, ...'publisherId' in params
+                        ? { publisher_id: params.publisherId }
+                        : { id: params.placementIds.join(',') }
+                }
             });
             if (response.placement)
                 placements.push(response.placement);
             if (response.placements)
                 placements.push(...response.placements);
-            done = response.count !== response.num_elements;
+            done = response.count === placements.length;
         } while (!done);
-        return [];
+        return placements;
     }
     async add(params, placement) {
         const response = await this.client.execute({
