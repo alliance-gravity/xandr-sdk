@@ -24,18 +24,23 @@ export class XandrPlacementClient {
 
 
   public async get (params: GetPlacementParams): Promise<Placement[]> {
-    const response = await this.client.execute<PlacementResponse>({
-      method: 'GET',
-      endpoint: this.endpoint,
-      query: 'publisherId' in params
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        ? { publisher_id: params.publisherId }
-        : { id: params.placementIds.join(',') }
-    });
-    if (response.placement)
-      return [ response.placement ];
-    if (response.placements)
-      return response.placements;
+    const placements: Placement[] = [];
+    let done = false;
+    do {
+      const response = await this.client.execute<PlacementResponse>({
+        method: 'GET',
+        endpoint: this.endpoint,
+        query: 'publisherId' in params
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          ? { publisher_id: params.publisherId }
+          : { id: params.placementIds.join(',') }
+      });
+      if (response.placement)
+        placements.push(response.placement);
+      if (response.placements)
+        placements.push(...response.placements);
+      done = response.count !== response.num_elements;
+    } while (!done);
     return [];
   }
 
