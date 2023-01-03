@@ -126,7 +126,7 @@ export interface PlacementInput {
     width: number;
     height: number;
   }[];
-  video?: VideoSettings;
+  video?: VideoSettings | null;
   ad_types: PlacementAdType[];
   use_detected_domain?: boolean;
   mime_types?: string[];
