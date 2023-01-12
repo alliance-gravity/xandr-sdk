@@ -32,8 +32,8 @@ async function request(params, baseUrl) {
     if (response.status === 204) {
         return {};
     }
+    const headers = Object.fromEntries(response.headers.entries());
     if (response.status > 299) {
-        const headers = Object.fromEntries(response.headers.entries());
         if (isJson) {
             const responseJson = JSON.parse(responseBody);
             if ('response' in responseJson)
@@ -43,8 +43,14 @@ async function request(params, baseUrl) {
     }
     if (isJson) {
         const responseJson = JSON.parse(responseBody);
-        if ('response' in responseJson)
+        if ('response' in responseJson) {
+            // in case of HTTP 200 when error occured ...
+            const noErrorCheck = responseJson.response;
+            if ('error' in noErrorCheck && 'error_id' in noErrorCheck) {
+                throw new errors_1.XandrError(noErrorCheck.error, noErrorCheck.error_id, response.status, headers);
+            }
             return responseJson.response;
+        }
         return JSON.parse(responseBody);
     }
     return {};

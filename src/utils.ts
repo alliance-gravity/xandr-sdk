@@ -27,8 +27,8 @@ export async function request<ExpectedResponseType> (params: RequestParameters, 
   if (response.status === 204) {
     return {} as ExpectedResponseType;
   }
+  const headers = Object.fromEntries(response.headers.entries());
   if (response.status > 299) {
-    const headers = Object.fromEntries(response.headers.entries());
     if (isJson) {
       const responseJson = JSON.parse(responseBody) as XandrResponse<XandrGeneralError>;
       if ('response' in responseJson)
@@ -38,8 +38,14 @@ export async function request<ExpectedResponseType> (params: RequestParameters, 
   }
   if (isJson) {
     const responseJson = JSON.parse(responseBody) as XandrResponse<ExpectedResponseType>;
-    if ('response' in responseJson)
+    if ('response' in responseJson) {
+      // in case of HTTP 200 when error occured ...
+      const noErrorCheck = responseJson.response as Record<string, unknown>;
+      if ('error' in noErrorCheck && 'error_id' in noErrorCheck) {
+        throw new XandrError(noErrorCheck.error as string, noErrorCheck.error_id as string, response.status, headers);
+      }
       return responseJson.response;
+    }
     return JSON.parse(responseBody) as ExpectedResponseType;
   }
   return {} as ExpectedResponseType;
