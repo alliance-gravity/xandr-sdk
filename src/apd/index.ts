@@ -24,8 +24,10 @@ export class XandrAPDClient {
   private readonly endpoint = 'apd-api';
 
   private readonly defaultHeaders = {
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    Accept: 'application/appnexus.apd.vauxhall.v1.0+json'
+    /* eslint-disable @typescript-eslint/naming-convention */
+    Accept: 'application/appnexus.apd.vauxhall.v1.0+json',
+    'Content-Type': 'application/json'
+    /* eslint-enable @typescript-eslint/naming-convention */
   };
 
   private readonly defaultDeleteHeaders = {
