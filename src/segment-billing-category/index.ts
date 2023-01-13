@@ -54,7 +54,7 @@ export class XandrSegmentBillingCategoryClient {
       method: 'POST',
       endpoint: this.endpoint,
       headers: this.defaultHeaders,
-      body: params
+      body: { 'segment-billing-category': params }
     });
     return response.segment_billing_category;
   }
