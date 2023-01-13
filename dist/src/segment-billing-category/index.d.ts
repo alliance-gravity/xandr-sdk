@@ -7,7 +7,7 @@ export declare class XandrSegmentBillingCategoryClient {
     constructor(client: XandrClient);
     getPricingTaxonomy(): Promise<PricingTaxonomy[]>;
     getMappingRecords(): Promise<MappingRecord[]>;
-    addMappingRecord(params: PostMappingRecordParameters): Promise<MappingRecord>;
-    modifyMappingRecord(params: PutMappingRecordParameters): Promise<MappingRecord>;
+    addMappingRecord(params: PostMappingRecordParameters): Promise<MappingRecord | undefined>;
+    modifyMappingRecord(params: PutMappingRecordParameters): Promise<MappingRecord | undefined>;
     deleteMappingRecord(id: number): Promise<void>;
 }

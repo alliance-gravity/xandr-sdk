@@ -18,19 +18,20 @@ class XandrSegmentBillingCategoryClient {
         return response['data-providers'][0].data_publishers[0].data_categories;
     }
     async getMappingRecords() {
-        let mappingRecords = [];
-        let index = 0;
+        const mappingRecords = [];
         let done = false;
         do {
             const response = await this.client.execute({
                 method: 'GET',
                 endpoint: this.endpoint,
                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                query: { start_element: index }
+                query: { start_element: mappingRecords.length }
             });
-            mappingRecords = mappingRecords.concat(response.segment_billing_categories);
-            index += response.count;
-            done = response.count !== response.num_elements;
+            if (response.segment_billing_category)
+                mappingRecords.push(response.segment_billing_category);
+            if (response.segment_billing_categories)
+                mappingRecords.push(...response.segment_billing_categories);
+            done = response.count !== mappingRecords.length;
         } while (!done);
         return mappingRecords;
     }
@@ -39,9 +40,9 @@ class XandrSegmentBillingCategoryClient {
             method: 'POST',
             endpoint: this.endpoint,
             headers: this.defaultHeaders,
-            body: params
+            body: { 'segment-billing-category': params }
         });
-        return response.segment_billing_categories[0];
+        return response.segment_billing_category;
     }
     async modifyMappingRecord(params) {
         const response = await this.client.execute({
@@ -50,7 +51,7 @@ class XandrSegmentBillingCategoryClient {
             headers: this.defaultHeaders,
             body: params
         });
-        return response.segment_billing_categories[0];
+        return response.segment_billing_category;
     }
     async deleteMappingRecord(id) {
         await this.client.execute({

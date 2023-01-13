@@ -1,11 +1,4 @@
-export interface MappingRecordsResponse {
-    status: string;
-    count: number;
-    id: string;
-    start_element: number;
-    num_elements: number;
-    segment_billing_categories: MappingRecord[];
-}
+import type { CommonResponse } from '../xandr-types';
 export interface PricingTaxonomy {
     id: number;
     node_name: string;
@@ -63,3 +56,7 @@ export interface PutMappingRecordParameters {
     data_segment_type_id?: string;
     recommend_include?: boolean;
 }
+export declare type MappingRecordsResponse = CommonResponse & {
+    segment_billing_category?: MappingRecord;
+    segment_billing_categories?: MappingRecord[];
+};

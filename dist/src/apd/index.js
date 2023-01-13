@@ -11,8 +11,10 @@ class XandrAPDClient {
     constructor(client) {
         this.endpoint = 'apd-api';
         this.defaultHeaders = {
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            Accept: 'application/appnexus.apd.vauxhall.v1.0+json'
+            /* eslint-disable @typescript-eslint/naming-convention */
+            Accept: 'application/appnexus.apd.vauxhall.v1.0+json',
+            'Content-Type': 'application/json'
+            /* eslint-enable @typescript-eslint/naming-convention */
         };
         this.defaultDeleteHeaders = {
             // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -38,7 +40,7 @@ class XandrAPDClient {
             headers: this.defaultHeaders,
             endpoint: `${this.endpoint}/members/${params.memberId}/olcs/${params.olc}`,
             // eslint-disable-next-line @typescript-eslint/naming-convention
-            body: { segval_list: segments }
+            body: segments
         });
     }
     async deleteOpenLocationCodeTargeting(params, segmentList) {
@@ -64,7 +66,7 @@ class XandrAPDClient {
             headers: this.defaultHeaders,
             endpoint: `${this.endpoint}/members/${params.memberId}/countries/${params.country}/regions/${params.region}`,
             // eslint-disable-next-line @typescript-eslint/naming-convention
-            body: { segval_list: segments }
+            body: segments
         });
     }
     async deleteCountryRegionTargeting(params, segmentList) {
@@ -90,7 +92,7 @@ class XandrAPDClient {
             headers: this.defaultHeaders,
             endpoint: `${this.endpoint}/members/${params.memberId}/postal-codes/${params.postalCode}`,
             // eslint-disable-next-line @typescript-eslint/naming-convention
-            body: { segval_list: segments }
+            body: segments
         });
     }
     async deletePostalCodeTargeting(params, segmentList) {
@@ -116,7 +118,7 @@ class XandrAPDClient {
             headers: this.defaultHeaders,
             endpoint: `${this.endpoint}/members/${params.memberId}/ip-ranges/${params.ipBegin}/${params.ipEnd}`,
             // eslint-disable-next-line @typescript-eslint/naming-convention
-            body: { segval_list: segments }
+            body: segments
         });
     }
     async deleteIPRangeTargeting(params, segmentList) {
@@ -142,7 +144,7 @@ class XandrAPDClient {
             headers: this.defaultHeaders,
             endpoint: `${this.endpoint}/members/${params.memberId}/ips/${params.ip}`,
             // eslint-disable-next-line @typescript-eslint/naming-convention
-            body: { segval_list: segments }
+            body: segments
         });
     }
     async deleteIPTargeting(params, segmentList) {
@@ -170,7 +172,7 @@ class XandrAPDClient {
             endpoint: `${this.endpoint}/members/${params.memberId}/urls/components`,
             query: { path: params.path },
             // eslint-disable-next-line @typescript-eslint/naming-convention
-            body: { segval_list: segments }
+            body: segments
         });
     }
     async deleteUrlComponentTargeting(params, segmentList) {
@@ -199,7 +201,7 @@ class XandrAPDClient {
             endpoint: `${this.endpoint}/members/${params.memberId}/urls/reference`,
             query: { path: params.path },
             // eslint-disable-next-line @typescript-eslint/naming-convention
-            body: { segval_list: segments }
+            body: segments
         });
     }
     async deleteUrlReferenceTargeting(params, segmentList) {
@@ -226,7 +228,7 @@ class XandrAPDClient {
             headers: this.defaultHeaders,
             endpoint: `${this.endpoint}/members/${params.memberId}/dev-ids/${params.deviceId}`,
             // eslint-disable-next-line @typescript-eslint/naming-convention
-            body: { segval_list: segments }
+            body: segments
         });
     }
     async deleteDeviceTargeting(params, segmentList) {
@@ -254,7 +256,7 @@ class XandrAPDClient {
             headers: this.defaultHeaders,
             endpoint: `${this.endpoint}/members/${memberId}/events`,
             // eslint-disable-next-line @typescript-eslint/naming-convention
-            body: { segval_list: segments }
+            body: segments
         });
     }
     async deleteEvent(memberId, segmentList) {
