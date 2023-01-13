@@ -60,7 +60,7 @@ export class XandrAPDClient {
       headers: this.defaultHeaders,
       endpoint: `${this.endpoint}/members/${params.memberId}/olcs/${params.olc}`,
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      body: { segval_list: segments }
+      body: segments
     });
   }
 
@@ -89,7 +89,7 @@ export class XandrAPDClient {
       headers: this.defaultHeaders,
       endpoint: `${this.endpoint}/members/${params.memberId}/countries/${params.country}/regions/${params.region}`,
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      body: { segval_list: segments }
+      body: segments
     });
   }
 
@@ -118,7 +118,7 @@ export class XandrAPDClient {
       headers: this.defaultHeaders,
       endpoint: `${this.endpoint}/members/${params.memberId}/postal-codes/${params.postalCode}`,
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      body: { segval_list: segments }
+      body: segments
     });
   }
 
@@ -147,7 +147,7 @@ export class XandrAPDClient {
       headers: this.defaultHeaders,
       endpoint: `${this.endpoint}/members/${params.memberId}/ip-ranges/${params.ipBegin}/${params.ipEnd}`,
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      body: { segval_list: segments }
+      body: segments
     });
   }
 
@@ -176,7 +176,7 @@ export class XandrAPDClient {
       headers: this.defaultHeaders,
       endpoint: `${this.endpoint}/members/${params.memberId}/ips/${params.ip}`,
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      body: { segval_list: segments }
+      body: segments
     });
   }
 
@@ -207,7 +207,7 @@ export class XandrAPDClient {
       endpoint: `${this.endpoint}/members/${params.memberId}/urls/components`,
       query: { path: params.path },
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      body: { segval_list: segments }
+      body: segments
     });
   }
 
@@ -239,7 +239,7 @@ export class XandrAPDClient {
       endpoint: `${this.endpoint}/members/${params.memberId}/urls/reference`,
       query: { path: params.path },
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      body: { segval_list: segments }
+      body: segments
     });
   }
 
@@ -269,7 +269,7 @@ export class XandrAPDClient {
       headers: this.defaultHeaders,
       endpoint: `${this.endpoint}/members/${params.memberId}/dev-ids/${params.deviceId}`,
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      body: { segval_list: segments }
+      body: segments
     });
   }
 
@@ -300,7 +300,7 @@ export class XandrAPDClient {
       headers: this.defaultHeaders,
       endpoint: `${this.endpoint}/members/${memberId}/events`,
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      body: { segval_list: segments }
+      body: segments
     });
   }
 
