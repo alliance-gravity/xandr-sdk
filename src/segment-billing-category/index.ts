@@ -31,41 +31,42 @@ export class XandrSegmentBillingCategoryClient {
   }
 
   public async getMappingRecords (): Promise<MappingRecord[]> {
-    let mappingRecords = [] as MappingRecord[];
-    let index = 0;
+    const mappingRecords = [] as MappingRecord[];
     let done = false;
     do {
       const response = await this.client.execute<MappingRecordsResponse>({
         method: 'GET',
         endpoint: this.endpoint,
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        query: { start_element: index }
+        query: { start_element: mappingRecords.length }
       });
-      mappingRecords = mappingRecords.concat(response.segment_billing_categories);
-      index += response.count;
-      done = response.count !== response.num_elements;
+      if (response.segment_billing_category)
+        mappingRecords.push(response.segment_billing_category);
+      if (response.segment_billing_categories)
+        mappingRecords.push(...response.segment_billing_categories);
+      done = response.count !== mappingRecords.length;
     } while (!done);
     return mappingRecords;
   }
 
-  public async addMappingRecord (params: PostMappingRecordParameters): Promise<MappingRecord> {
+  public async addMappingRecord (params: PostMappingRecordParameters): Promise<MappingRecord | undefined> {
     const response = await this.client.execute<MappingRecordsResponse>({
       method: 'POST',
       endpoint: this.endpoint,
       headers: this.defaultHeaders,
       body: params
     });
-    return response.segment_billing_categories[0];
+    return response.segment_billing_category;
   }
 
-  public async modifyMappingRecord (params: PutMappingRecordParameters): Promise<MappingRecord> {
+  public async modifyMappingRecord (params: PutMappingRecordParameters): Promise<MappingRecord | undefined> {
     const response = await this.client.execute<MappingRecordsResponse>({
       method: 'PUT',
       endpoint: this.endpoint,
       headers: this.defaultHeaders,
       body: params
     });
-    return response.segment_billing_categories[0];
+    return response.segment_billing_category;
   }
 
   public async deleteMappingRecord (id: number): Promise<void> {

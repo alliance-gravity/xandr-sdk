@@ -1,13 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
-export interface MappingRecordsResponse {
-  status: string;
-  count: number;
-  id: string;
-  start_element: number;
-  num_elements: number;
-  segment_billing_categories: MappingRecord[];
-}
+import type { CommonResponse } from '../xandr-types';
 
 export interface PricingTaxonomy {
   id: number;
@@ -70,3 +63,8 @@ export interface PutMappingRecordParameters {
   data_segment_type_id?: string;
   recommend_include?: boolean;
 }
+
+export type MappingRecordsResponse = CommonResponse & {
+  segment_billing_category?: MappingRecord;
+  segment_billing_categories?: MappingRecord[];
+};
