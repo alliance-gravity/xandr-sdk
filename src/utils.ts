@@ -24,7 +24,7 @@ export async function request<ExpectedResponseType> (params: RequestParameters, 
   const [contentTypeGroup, contentTypeSub] = contentType !== undefined ? contentType.split('/') : ['', ''];
   const isJson = contentTypeGroup === 'application' && contentTypeSub.split('+').includes('json');
   const responseBody = await response.text();
-  if (response.status === 204) {
+  if (response.status === 204 || responseBody.length === 0) {
     return {} as ExpectedResponseType;
   }
   const headers = Object.fromEntries(response.headers.entries());

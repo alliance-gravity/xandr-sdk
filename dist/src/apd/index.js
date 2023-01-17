@@ -13,7 +13,7 @@ class XandrAPDClient {
         this.defaultHeaders = {
             /* eslint-disable @typescript-eslint/naming-convention */
             Accept: 'application/appnexus.apd.vauxhall.v1.0+json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/appnexus.apd.vauxhall.v1.0+json'
             /* eslint-enable @typescript-eslint/naming-convention */
         };
         this.defaultDeleteHeaders = {

@@ -29,7 +29,7 @@ async function request(params, baseUrl) {
     const [contentTypeGroup, contentTypeSub] = contentType !== undefined ? contentType.split('/') : ['', ''];
     const isJson = contentTypeGroup === 'application' && contentTypeSub.split('+').includes('json');
     const responseBody = await response.text();
-    if (response.status === 204) {
+    if (response.status === 204 || responseBody.length === 0) {
         return {};
     }
     const headers = Object.fromEntries(response.headers.entries());
