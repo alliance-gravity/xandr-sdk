@@ -55,7 +55,7 @@ export class XandrSegmentClient {
       headers: this.defaultHeaders,
       endpoint: this.endpoint,
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      query: 'id' in segmentReference ? { segment_id: segmentReference.id } : { segment_code: segmentReference.code },
+      query: 'id' in segmentReference ? { id: segmentReference.id } : { code: segmentReference.code },
       body: params
     });
     return response.segment;
@@ -81,7 +81,7 @@ export class XandrSegmentClient {
       method: 'DELETE',
       endpoint: this.endpoint,
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      query: { segment_id: id }
+      query: { id }
     });
   }
 
