@@ -17,7 +17,7 @@ export interface ThirdPartyPixelInput {
     }[] | null;
     url?: string | null;
 }
-export declare type ThirdPartyPixel = Required<ThirdPartyPixelInput> & {
+export type ThirdPartyPixel = Required<ThirdPartyPixelInput> & {
     id: number;
     creatives: Id[] | null;
 };

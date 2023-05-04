@@ -113,29 +113,29 @@ export interface PlacementInput {
         floor_price: number;
     }[];
 }
-export declare type Placement = Required<PlacementInput> & {
+export type Placement = Required<PlacementInput> & {
     id: number;
     site_name: string;
     exclusive: boolean;
 };
-export declare type GetPlacementParams = {
+export type GetPlacementParams = {
     placementIds: number[];
 } | {
     publisherId: number;
 };
-export declare type CreatePlacementParams = {
+export type CreatePlacementParams = {
     publisherId: number;
 } | {
     siteId: number;
 };
-export declare type ModifyPlacementParams = {
+export type ModifyPlacementParams = {
     placementId: number;
 } & ({
     publisherId: number;
 } | {
     siteId: number;
 });
-export declare type PlacementResponse = CommonResponse & {
+export type PlacementResponse = CommonResponse & {
     placement?: Placement;
     placements?: Placement[];
 };

@@ -65,6 +65,6 @@ export interface PutMappingRecordParameters {
 }
 
 export type MappingRecordsResponse = CommonResponse & {
-  segment_billing_category?: MappingRecord;
-  segment_billing_categories?: MappingRecord[];
+  'segment-billing-category'?: MappingRecord[];
+  'segment-billing-categories'?: MappingRecord[];
 };

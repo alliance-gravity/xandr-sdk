@@ -27,10 +27,10 @@ class XandrSegmentBillingCategoryClient {
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 query: { start_element: mappingRecords.length }
             });
-            if (response.segment_billing_category)
-                mappingRecords.push(response.segment_billing_category);
-            if (response.segment_billing_categories)
-                mappingRecords.push(...response.segment_billing_categories);
+            if (response['segment-billing-category'])
+                mappingRecords.push(...response['segment-billing-category']);
+            if (response['segment-billing-categories'])
+                mappingRecords.push(...response['segment-billing-categories']);
             done = response.count !== mappingRecords.length;
         } while (!done);
         return mappingRecords;
@@ -42,16 +42,16 @@ class XandrSegmentBillingCategoryClient {
             headers: this.defaultHeaders,
             body: { 'segment-billing-category': params }
         });
-        return response.segment_billing_categories;
+        return response['segment-billing-category'] ? response['segment-billing-category'][0] : undefined;
     }
     async modifyMappingRecord(params) {
         const response = await this.client.execute({
             method: 'PUT',
             endpoint: this.endpoint,
             headers: this.defaultHeaders,
-            body: params
+            body: { 'segment-billing-category': params }
         });
-        return response.segment_billing_categories;
+        return response['segment-billing-category'] ? response['segment-billing-category'][0] : undefined;
     }
     async deleteMappingRecord(id) {
         await this.client.execute({
