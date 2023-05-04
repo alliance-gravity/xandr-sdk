@@ -42,7 +42,7 @@ class XandrSegmentBillingCategoryClient {
             headers: this.defaultHeaders,
             body: { 'segment-billing-category': params }
         });
-        return response.segment_billing_category;
+        return response.segment_billing_categories;
     }
     async modifyMappingRecord(params) {
         const response = await this.client.execute({
@@ -51,7 +51,7 @@ class XandrSegmentBillingCategoryClient {
             headers: this.defaultHeaders,
             body: params
         });
-        return response.segment_billing_category;
+        return response.segment_billing_categories;
     }
     async deleteMappingRecord(id) {
         await this.client.execute({
