@@ -12,6 +12,7 @@ const segment_billing_category_1 = require("./segment-billing-category");
 const placement_1 = require("./placement");
 const advertiser_1 = require("./advertiser");
 const publisher_1 = require("./publisher");
+const report_1 = require("./report");
 exports.defaultApiUrl = 'https://api.appnexus.com';
 var utils_2 = require("./apd/utils");
 Object.defineProperty(exports, "sanitizeUrlFormat", { enumerable: true, get: function () { return utils_2.sanitizeUrlFormat; } });
@@ -25,6 +26,7 @@ class XandrClient {
         this.segment = new segment_1.XandrSegmentClient(this);
         this.segmentBillingCategory = new segment_billing_category_1.XandrSegmentBillingCategoryClient(this);
         this.placement = new placement_1.XandrPlacementClient(this);
+        this.report = new report_1.XandrReportClient(this);
         this.token = null;
         this.creds = params;
         this.apiUrl = apiUrl;
