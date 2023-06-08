@@ -1,6 +1,5 @@
 /// <reference types="node" />
 import type { XandrClient } from '..';
-import type Readable from 'stream';
 import type { CreateReportParameters, GetReportStatusResponse } from './types';
 export declare class XandrReportClient {
     private readonly client;
@@ -10,5 +9,5 @@ export declare class XandrReportClient {
     constructor(client: XandrClient);
     create(params: CreateReportParameters): Promise<string>;
     getStatus(id: string): Promise<GetReportStatusResponse>;
-    download(id: string): Promise<Readable>;
+    download(id: string): Promise<NodeJS.ReadableStream>;
 }

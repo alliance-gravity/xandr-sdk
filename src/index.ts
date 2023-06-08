@@ -1,5 +1,5 @@
 import type { AuthParameters, RequestParameters } from './types';
-import { auth, request, sleep } from './utils';
+import { auth, request, requestStream, sleep } from './utils';
 import { XandrCustomModelClient } from './custom-model';
 import { XandrAPDClient } from './apd';
 import { XandrLineItemClient } from './line-item';
@@ -49,7 +49,7 @@ export class XandrClient {
     return this.token;
   }
 
-  public async execute<ExpectedResponseType>(params: RequestParameters): Promise<ExpectedResponseType> {
+  public async execute<ExpectedResponseType> (params: RequestParameters): Promise<ExpectedResponseType> {
     if (this.token === null)
       await this.authenticate();
     try {
@@ -69,6 +69,33 @@ export class XandrClient {
           const secs = error.headers['Retry-After'] || error.headers['retry-after'];
           await sleep(secs ? Number(secs) * 1000 : 0);
           const resp =  await this.execute<ExpectedResponseType>(params);
+          return resp;
+        }
+      }
+      throw error;
+    }
+  }
+
+  public async executeStream (params: RequestParameters): Promise<NodeJS.ReadableStream> {
+    if (this.token === null)
+      await this.authenticate();
+    try {
+      if (!params.headers)
+        params.headers = {};
+      params.headers.Authorization = this.token ?? '';
+      const resp = await requestStream(params, this.apiUrl);
+      return resp;
+    } catch (error: unknown) {
+      if (error instanceof XandrError) {
+        if (error.code === 'NOAUTH') {
+          await this.authenticate();
+          const resp = await this.executeStream(params);
+          return resp;
+        }
+        if (error.status === 429) {
+          const secs = error.headers['Retry-After'] || error.headers['retry-after'];
+          await sleep(secs ? Number(secs) * 1000 : 0);
+          const resp =  await this.executeStream(params);
           return resp;
         }
       }

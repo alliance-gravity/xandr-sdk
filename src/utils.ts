@@ -51,6 +51,27 @@ export async function request<ExpectedResponseType> (params: RequestParameters, 
   return {} as ExpectedResponseType;
 }
 
+export async function requestStream (params: RequestParameters, baseUrl: string): Promise<NodeJS.ReadableStream> {
+  const url = new URL(baseUrl);
+  url.pathname = params.endpoint;
+  Object.entries(params.query ?? {}).forEach(entry => {
+    url.searchParams.append(entry[0], entry[1].toString());
+  });
+  const response = await fetch(url.toString(), {
+    method: params.method,
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    headers: params.headers,
+    body: params.body !== undefined
+      ? JSON.stringify(params.body) 
+      : params.formData ? params.formData : undefined
+  });
+  const headers = Object.fromEntries(response.headers.entries());
+  if (response.status > 299) {
+    throw new XandrError(await response.text(), 'ERROR', response.status, headers);
+  }
+  return response.body;
+}
+
 export async function auth (params: AuthParameters, baseUrl: string): Promise<string> {
   const authResponse = await request<AuthResponse>({
     method: 'POST',

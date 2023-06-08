@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.auth = exports.request = exports.sleep = void 0;
+exports.auth = exports.requestStream = exports.request = exports.sleep = void 0;
 const node_fetch_1 = __importDefault(require("node-fetch"));
 const errors_1 = require("./errors");
 async function sleep(ms) {
@@ -56,6 +56,28 @@ async function request(params, baseUrl) {
     return {};
 }
 exports.request = request;
+async function requestStream(params, baseUrl) {
+    var _a;
+    const url = new URL(baseUrl);
+    url.pathname = params.endpoint;
+    Object.entries((_a = params.query) !== null && _a !== void 0 ? _a : {}).forEach(entry => {
+        url.searchParams.append(entry[0], entry[1].toString());
+    });
+    const response = await (0, node_fetch_1.default)(url.toString(), {
+        method: params.method,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        headers: params.headers,
+        body: params.body !== undefined
+            ? JSON.stringify(params.body)
+            : params.formData ? params.formData : undefined
+    });
+    const headers = Object.fromEntries(response.headers.entries());
+    if (response.status > 299) {
+        throw new errors_1.XandrError(await response.text(), 'ERROR', response.status, headers);
+    }
+    return response.body;
+}
+exports.requestStream = requestStream;
 async function auth(params, baseUrl) {
     const authResponse = await request({
         method: 'POST',

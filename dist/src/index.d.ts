@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import type { AuthParameters, RequestParameters } from './types';
 import { XandrCustomModelClient } from './custom-model';
 import { XandrAPDClient } from './apd';
@@ -28,5 +29,6 @@ export declare class XandrClient {
     constructor(params: AuthParameters, apiUrl?: string);
     getToken(): string | null;
     execute<ExpectedResponseType>(params: RequestParameters): Promise<ExpectedResponseType>;
+    executeStream(params: RequestParameters): Promise<NodeJS.ReadableStream>;
     private authenticate;
 }

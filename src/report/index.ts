@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import fetch from 'node-fetch';
 import type { XandrClient } from '..';
-import type Readable from 'stream';
 import type {
   CreateReportParameters,
   CreateReportResponse,
@@ -44,14 +42,13 @@ export class XandrReportClient {
     return response;
   }
 
-  public async download (id: string): Promise<Readable> {
-    const url = new URL(this.client.apiUrl);
-    url.pathname = this.endpointDownload;
-    url.searchParams.append('id', id);
-    const response = await fetch(url.toString(), {
-      method: 'GET'
+  public async download (id: string): Promise<NodeJS.ReadableStream> {
+    const stream = await this.client.executeStream({
+      method: 'GET',
+      endpoint: this.endpointDownload,
+      query: { id }
     });
-    return response.body;
+    return stream;
   }
 
 }

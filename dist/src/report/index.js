@@ -1,11 +1,7 @@
 "use strict";
 /* eslint-disable @typescript-eslint/naming-convention */
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.XandrReportClient = void 0;
-const node_fetch_1 = __importDefault(require("node-fetch"));
 class XandrReportClient {
     constructor(client) {
         this.endpoint = 'report';
@@ -34,13 +30,12 @@ class XandrReportClient {
         return response;
     }
     async download(id) {
-        const url = new URL(this.client.apiUrl);
-        url.pathname = this.endpointDownload;
-        url.searchParams.append('id', id);
-        const response = await (0, node_fetch_1.default)(url.toString(), {
-            method: 'GET'
+        const stream = await this.client.executeStream({
+            method: 'GET',
+            endpoint: this.endpointDownload,
+            query: { id }
         });
-        return response.body;
+        return stream;
     }
 }
 exports.XandrReportClient = XandrReportClient;

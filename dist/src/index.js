@@ -62,6 +62,34 @@ class XandrClient {
             throw error;
         }
     }
+    async executeStream(params) {
+        var _a;
+        if (this.token === null)
+            await this.authenticate();
+        try {
+            if (!params.headers)
+                params.headers = {};
+            params.headers.Authorization = (_a = this.token) !== null && _a !== void 0 ? _a : '';
+            const resp = await (0, utils_1.requestStream)(params, this.apiUrl);
+            return resp;
+        }
+        catch (error) {
+            if (error instanceof errors_1.XandrError) {
+                if (error.code === 'NOAUTH') {
+                    await this.authenticate();
+                    const resp = await this.executeStream(params);
+                    return resp;
+                }
+                if (error.status === 429) {
+                    const secs = error.headers['Retry-After'] || error.headers['retry-after'];
+                    await (0, utils_1.sleep)(secs ? Number(secs) * 1000 : 0);
+                    const resp = await this.executeStream(params);
+                    return resp;
+                }
+            }
+            throw error;
+        }
+    }
     async authenticate() {
         this.token = await (0, utils_1.auth)(this.creds, this.apiUrl);
     }
