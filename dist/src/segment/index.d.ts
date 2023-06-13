@@ -11,6 +11,6 @@ export declare class XandrSegmentClient {
     modifyAdvertiserSegment(advertiserSegmentReference: AdvertiserSegmentReference, params: SegmentParameters): Promise<Segment>;
     delete(id: number): Promise<void>;
     get(segmentReference: SegmentReference): Promise<Segment>;
-    getAll(segmentList?: number[]): Promise<Segment[]>;
-    search(searchTerm: string): Promise<Segment[]>;
+    getAll(memberId: number, segmentList?: number[]): Promise<Segment[]>;
+    search(searchTerm: string, memberId: number): Promise<Segment[]>;
 }

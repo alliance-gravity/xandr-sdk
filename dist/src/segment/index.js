@@ -39,8 +39,7 @@ class XandrSegmentClient {
             method: 'PUT',
             headers: this.defaultHeaders,
             endpoint: this.endpoint,
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            query: 'id' in segmentReference ? { id: segmentReference.id } : { code: segmentReference.code },
+            query: segmentReference,
             body: params
         });
         return response.segment;
@@ -63,7 +62,6 @@ class XandrSegmentClient {
         await this.client.execute({
             method: 'DELETE',
             endpoint: this.endpoint,
-            // eslint-disable-next-line @typescript-eslint/naming-convention
             query: { id }
         });
     }
@@ -71,17 +69,17 @@ class XandrSegmentClient {
         const response = await this.client.execute({
             method: 'GET',
             endpoint: this.endpoint,
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            query: 'id' in segmentReference ? { id: segmentReference.id } : { code: segmentReference.code }
+            query: segmentReference
         });
         return response.segment;
     }
-    async getAll(segmentList) {
+    async getAll(memberId, segmentList) {
         if (segmentList !== undefined) {
             const response = await this.client.execute({
                 method: 'GET',
                 endpoint: this.endpoint,
-                query: { id: segmentList.join(',') }
+                // eslint-disable-next-line @typescript-eslint/naming-convention
+                query: { id: segmentList.join(','), member_id: memberId }
             });
             return response.segments;
         }
@@ -93,7 +91,7 @@ class XandrSegmentClient {
                 method: 'GET',
                 endpoint: this.endpoint,
                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                query: { start_element: index }
+                query: { start_element: index, member_id: memberId }
             });
             segments = segments.concat(response.segments);
             index += response.count;
@@ -101,7 +99,7 @@ class XandrSegmentClient {
         } while (!done);
         return segments;
     }
-    async search(searchTerm) {
+    async search(searchTerm, memberId) {
         let segments = [];
         let index = 0;
         let done = false;
@@ -110,7 +108,7 @@ class XandrSegmentClient {
                 method: 'GET',
                 endpoint: this.endpoint,
                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                query: { search: searchTerm, start_element: index }
+                query: { search: searchTerm, start_element: index, member_id: memberId }
             });
             segments = segments.concat(response.segments);
             index += response.count;

@@ -83,8 +83,10 @@ export type Advertiser = {
     advertiserId: number;
 };
 export type SegmentReference = {
+    member_id: number;
     code: string;
 } | {
+    member_id: number;
     id: number;
 };
 export type AdvertiserSegmentReference = {
