@@ -30,7 +30,7 @@ class XandrSegmentClient {
             endpoint: this.endpoint,
             // eslint-disable-next-line @typescript-eslint/naming-convention
             query: 'advertiserId' in advertiser ? { advertiser_id: advertiser.advertiserId } : { advertiser_code: advertiser.adverstiserCode },
-            body: params
+            body: { segment: params }
         });
         return response.segment;
     }
@@ -40,7 +40,7 @@ class XandrSegmentClient {
             headers: this.defaultHeaders,
             endpoint: this.endpoint,
             query: segmentReference,
-            body: params
+            body: { segment: params }
         });
         return response.segment;
     }
@@ -54,7 +54,7 @@ class XandrSegmentClient {
                 ? { id: advertiserSegmentReference.segmentId, advertiser_id: advertiserSegmentReference.advertiserId }
                 : { code: advertiserSegmentReference.segmentCode, advertiser_code: advertiserSegmentReference.advertiserCode },
             /* eslint-enable @typescript-eslint/naming-convention */
-            body: params
+            body: { segment: params }
         });
         return response.segment;
     }
