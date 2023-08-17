@@ -357,6 +357,13 @@ interface ProfileCode {
   advertiser_code: string;
 }
 
+export type AddProfileParameters = {
+  advertiser_code: string;
+} | {
+  advertiser_id: number;
+  member_id: number;
+};
+
 export type GetProfileParameters = ProfileCode | ProfileId;
 
 export type ModifyProfileParameters = ProfileCode | ProfileId;

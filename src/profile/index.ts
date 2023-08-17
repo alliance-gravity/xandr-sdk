@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import type { XandrClient } from '..';
 
-import {
+import type {
   ProfileGetAllResponse,
   ProfileResponse,
   ProfileFull,
   ModifyProfileParameters,
   GetProfileParameters,
-  ProfileBaseResponse,
-  ProfileGeographyParameter
+  ProfileGeographyParameter,
+  AddProfileParameters
 } from './types';
 
 export class XandrProfileClient {
@@ -32,21 +32,35 @@ export class XandrProfileClient {
       const response = await this.client.execute<ProfileGetAllResponse>({
         method: 'GET',
         endpoint: this.endpoint,
-        query: { start_element: profiles.length, 
-          ...'advertiser_code' in params
-            ? 'profiled_code' in params
-              ? { profile_code: params.profile_code, advertiser_code: params.advertiser_code }
-              : { advertiser_code: params.advertiser_code }
-            : 'member_id' in params
-                ? 'profile_id' in params
-                  ? { profile_id: params.profile_id, advertiser_id: params.advertiser_id, member_id: params.member_id }
-                  : { advertiser_id: params.advertiser_id, member_id: params.member_id }
-        }   
+        query: { start_element: profiles.length, ...params }     
       });
-      profiles.push(...response['profiles']);
+      profiles.push(...response.profiles);
       done = response.count === profiles.length;
     } while (!done);
     return profiles;
+  }
+
+  public async add (params: AddProfileParameters, profile: ProfileGeographyParameter): Promise<ProfileFull> {
+    const response = await this.client.execute<ProfileResponse>({
+      method: 'POST',
+      headers: this.defaultHeaders,
+      endpoint: this.endpoint,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      query: { ...params },
+      body: profile
+    });
+    return response.profile;
+  }
+
+  public async modify (params: ModifyProfileParameters, profile: ProfileGeographyParameter): Promise<ProfileFull> {
+    const response = await this.client.execute<ProfileResponse>({
+      method: 'PUT',
+      headers: this.defaultHeaders,
+      endpoint: this.endpoint,
+      query: { ...params },
+      body: profile
+    });
+    return response.profile;
   }
 
 }
