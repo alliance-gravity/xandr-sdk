@@ -1,14 +1,15 @@
-import { LineItem } from "../line-item/types";
+/* eslint-disable @typescript-eslint/naming-convention */
+import type { LineItem } from '../line-item/types';
 
 interface Labels {
   value: string;
   id: number;
-  name: 'Trafficker' | 'Sales Rep' | 'Campaign Type'
+  name: 'Campaign Type' | 'Sales Rep' | 'Trafficker';
 }
 
 interface BrokerFee {
   broker_id?: number;
-  payment_type?: 'cpm' | 'revshare'
+  payment_type?: 'cpm' | 'revshare';
   value?: number;
   description?: string;
 }
@@ -49,18 +50,18 @@ interface PoliticalContent {
   organization_phone_code: string;
   organization_phone: string;
   treasurer_name: string;
-  payment_method_type: 'Direct Debit' | 'Check' | 'Credit Card' | 'Other';
+  payment_method_type: 'Check' | 'Credit Card' | 'Direct Debit' | 'Other';
   political_objective: string;
   payment_method_other?: string;
   is_independent_expenditure_committee: boolean;
   is_ineligible?: boolean;
-  government_level?: 'state or local' | 'federal' | 'both';
+  government_level?: 'both' | 'federal' | 'state or local';
   is_accuracy_acknowledged: boolean;
 }
 
 
 export interface InsertionOrder {
-  id:number;
+  id: number;
   name: string;
   code: string;
   state: 'active' | 'inactive';
@@ -78,15 +79,15 @@ export interface InsertionOrder {
   labels: Labels[] | null;
   broker_fees: BrokerFee[] | null;
   budget_intervals: BudgetInterval[];
-  budget_type: 'revenue' | 'impression' | 'flexible';
+  budget_type: 'flexible' | 'impression' | 'revenue';
   profile_id: number;
   viewability_standard_provider: string;
   is_running_political_ads: boolean;
-  political_content: PoliticalContent
+  political_content: PoliticalContent;
 }
 
 export interface InsertionOrderParameters {
-  id:number;
+  id: number;
   name: string;
   code: string;
   state?: 'active' | 'inactive';
@@ -104,23 +105,23 @@ export interface InsertionOrderParameters {
   labels: Labels[];
   broker_fees?: BrokerFee[];
   budget_intervals: BudgetInterval[];
-  budget_type: 'revenue' | 'impression' | 'flexible';
+  budget_type: 'flexible' | 'impression' | 'revenue';
   profile_id?: number;
   viewability_standard_provider?: string;
   is_running_political_ads?: boolean;
-  political_content?: PoliticalContent
+  political_content?: PoliticalContent;
 }
 
 
 export type GetInsertionOrderParameters = {
-  id: number;
-} | {
   advertiserId: number;
+} | {
+  id: number;
 } | {
   idList: number[];
 };
 
-export type ModifyInsertionOrderParameters = {
+export interface ModifyInsertionOrderParameters {
   id: number;
   advertiserId: number;
 }

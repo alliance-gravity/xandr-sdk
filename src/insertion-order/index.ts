@@ -25,7 +25,7 @@ export class XandrInsertionOrderClient {
     this.client = client;
   }
 
-    public async get (params: GetInsertionOrderParameters): Promise<InsertionOrder[]> {
+  public async get (params: GetInsertionOrderParameters): Promise<InsertionOrder[]> {
     const insertionOrders: InsertionOrder[] = [];
     let done = false;
     do {
@@ -34,10 +34,10 @@ export class XandrInsertionOrderClient {
         endpoint: this.endpoint,
         query: { start_element: insertionOrders.length, 
           ...'id' in params
-          ? { id: params.id }
-          : 'advertiserId' in params
-            ? { advertiser_id: params.advertiserId }
-            : { id: params.idList.join(',') }
+            ? { id: params.id }
+            : 'advertiserId' in params
+              ? { advertiser_id: params.advertiserId }
+              : { id: params.idList.join(',') }
         }
       });
       insertionOrders.push(...response['insertion-orders']);
