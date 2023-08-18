@@ -13,6 +13,8 @@ const placement_1 = require("./placement");
 const advertiser_1 = require("./advertiser");
 const publisher_1 = require("./publisher");
 const report_1 = require("./report");
+const insertion_order_1 = require("./insertion-order");
+const profile_1 = require("./profile");
 exports.defaultApiUrl = 'https://api.appnexus.com';
 var utils_2 = require("./apd/utils");
 Object.defineProperty(exports, "sanitizeUrlFormat", { enumerable: true, get: function () { return utils_2.sanitizeUrlFormat; } });
@@ -27,6 +29,8 @@ class XandrClient {
         this.segmentBillingCategory = new segment_billing_category_1.XandrSegmentBillingCategoryClient(this);
         this.placement = new placement_1.XandrPlacementClient(this);
         this.report = new report_1.XandrReportClient(this);
+        this.insertionOrder = new insertion_order_1.XandrInsertionOrderClient(this);
+        this.profile = new profile_1.XandrProfileClient(this);
         this.token = null;
         this.creds = params;
         this.apiUrl = apiUrl;
