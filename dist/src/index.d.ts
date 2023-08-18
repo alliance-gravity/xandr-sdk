@@ -10,6 +10,8 @@ import { XandrPlacementClient } from './placement';
 import { XandrAdvertiserClient } from './advertiser';
 import { XandrPublisherClient } from './publisher';
 import { XandrReportClient } from './report';
+import { XandrInsertionOrderClient } from './insertion-order';
+import { XandrProfileClient } from './profile';
 export declare const defaultApiUrl = "https://api.appnexus.com";
 export { sanitizeUrlFormat } from './apd/utils';
 export { XandrError };
@@ -23,6 +25,8 @@ export declare class XandrClient {
     segmentBillingCategory: XandrSegmentBillingCategoryClient;
     placement: XandrPlacementClient;
     report: XandrReportClient;
+    insertionOrder: XandrInsertionOrderClient;
+    profile: XandrProfileClient;
     readonly apiUrl: string;
     private readonly creds;
     private token;

@@ -75,14 +75,14 @@ export interface PublisherInput {
     }[] | null;
     use_anx_auction_logic?: boolean;
 }
-export type Publisher = ReadOnlyAttributes & Required<PublisherInput> & {
+export declare type Publisher = ReadOnlyAttributes & Required<PublisherInput> & {
     id: number;
     reselling_exposed_on: string;
     cpm_reselling_disabled: boolean;
     cpc_reselling_disabled: boolean;
     platform_ops_notes: string | null;
 };
-export type PublisherResponse = CommonResponse & {
+export declare type PublisherResponse = CommonResponse & {
     publisher?: Publisher;
     publishers?: Publisher[];
 };

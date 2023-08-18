@@ -1,6 +1,6 @@
-type State = 'active' | 'inactive';
-type AdType = 'audio' | 'banner' | 'native' | 'video';
-type TriggerType = 'click' | 'hybrid' | 'view';
+declare type State = 'active' | 'inactive';
+declare type AdType = 'audio' | 'banner' | 'native' | 'video';
+declare type TriggerType = 'click' | 'hybrid' | 'view';
 interface BudgetInterval {
     id: number;
     start_date: string;
@@ -232,22 +232,22 @@ export interface LineItemCode {
     code: string;
     advertiserCode: string;
 }
-export type GetLineItemParameters = LineItemCode | {
+export declare type GetLineItemParameters = LineItemCode | {
     advertiserId: number;
 } | {
     idList: number[];
 };
-export type ModifyLineItemParameters = LineItemCode | LineItemId;
+export declare type ModifyLineItemParameters = LineItemCode | LineItemId;
 export interface LineItemBaseResponse {
     status: string;
     count: number;
     start_element?: number;
     num_elements?: number;
 }
-export type LineItemGetAllResponse = LineItemBaseResponse & {
+export declare type LineItemGetAllResponse = LineItemBaseResponse & {
     'line-items': LineItem[];
 };
-export type LineItemResponse = LineItemBaseResponse & {
+export declare type LineItemResponse = LineItemBaseResponse & {
     'line-item': LineItem;
 };
 export {};

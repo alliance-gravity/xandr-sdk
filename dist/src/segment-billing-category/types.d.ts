@@ -56,7 +56,7 @@ export interface PutMappingRecordParameters {
     data_segment_type_id?: string;
     recommend_include?: boolean;
 }
-export type MappingRecordsResponse = CommonResponse & {
+export declare type MappingRecordsResponse = CommonResponse & {
     'segment-billing-category'?: MappingRecord[];
     'segment-billing-categories'?: MappingRecord[];
 };
