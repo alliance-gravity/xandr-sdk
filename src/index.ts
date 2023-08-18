@@ -10,6 +10,8 @@ import { XandrPlacementClient } from './placement';
 import { XandrAdvertiserClient } from './advertiser';
 import { XandrPublisherClient } from './publisher';
 import { XandrReportClient } from './report';
+import { XandrInsertionOrderClient } from './insertion-order';
+import { XandrProfileClient } from './profile';
 
 export const defaultApiUrl = 'https://api.appnexus.com';
 export { sanitizeUrlFormat } from './apd/utils';
@@ -33,6 +35,10 @@ export class XandrClient {
   public placement: XandrPlacementClient = new XandrPlacementClient(this);
 
   public report: XandrReportClient = new XandrReportClient(this);
+
+  public insertionOrder: XandrInsertionOrderClient = new XandrInsertionOrderClient(this);
+
+  public profile: XandrProfileClient = new XandrProfileClient(this);
 
   public readonly apiUrl: string;
 
