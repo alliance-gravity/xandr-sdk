@@ -8,7 +8,8 @@ import type {
   ModifyProfileParameters,
   GetProfileParameters,
   ProfileGeographyParameter,
-  AddProfileParameters
+  AddProfileParameters,
+  ProfileBaseResponse
 } from './types';
 
 export class XandrProfileClient {
@@ -52,15 +53,15 @@ export class XandrProfileClient {
     return response.profile;
   }
 
-  public async modify (params: ModifyProfileParameters, profile: ProfileGeographyParameter): Promise<ProfileFull> {
-    const response = await this.client.execute<ProfileResponse>({
+  public async modify (params: ModifyProfileParameters, profile: ProfileGeographyParameter): Promise<ProfileBaseResponse> {
+    const response = await this.client.execute<ProfileBaseResponse>({
       method: 'PUT',
       headers: this.defaultHeaders,
       endpoint: this.endpoint,
       query: { ...params },
       body: profile
     });
-    return response.profile;
+    return response;
   }
 
 }

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import type { Placement } from '../placement/types';
+import type { CommonResponse, Id } from '../xandr-types';
 
 type Action = 'exclude' | 'include';
 
@@ -338,13 +339,7 @@ export interface ProfileGeographyParameter {
   };
 }
 
-export interface ProfileBaseResponse {
-  status: string;
-  count: number;
-  id?: number;
-  start_element?: number;
-  num_elements?: number;
-}
+export type ProfileBaseResponse = CommonResponse & Id;
 
 interface ProfileId {
   profile_id?: number;

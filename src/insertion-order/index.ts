@@ -33,11 +33,9 @@ export class XandrInsertionOrderClient {
         method: 'GET',
         endpoint: this.endpoint,
         query: { start_element: insertionOrders.length, 
-          ...'id' in params
-            ? { id: params.id }
-            : 'advertiserId' in params
-              ? { advertiser_id: params.advertiserId }
-              : { id: params.idList.join(',') }
+          ...'idList' in params
+            ? { id: params.idList.join(',') }
+            : { ...params }
         }
       });
       insertionOrders.push(...response['insertion-orders']);
@@ -61,19 +59,19 @@ export class XandrInsertionOrderClient {
     return insertionOrders;
   }
 
-  public async add (advertiserId: number, insertionOrder: InsertionOrderParameters): Promise<InsertionOrder> {
+  public async add (advertiserId: number, insertionOrder: InsertionOrderParameters): Promise<InsertionOrderResponse> {
     const response = await this.client.execute<InsertionOrderResponse>({
       method: 'POST',
       headers: this.defaultHeaders,
       endpoint: this.endpoint,
       // eslint-disable-next-line @typescript-eslint/naming-convention
       query: { advertiser_id: advertiserId },
-      body: insertionOrder
+      body: { 'insertion-order': insertionOrder }
     });
-    return response['insertion-order'];
+    return response;
   }
   
-  public async modify (params: ModifyInsertionOrderParameters, insertionOrder: InsertionOrderParameters): Promise<InsertionOrder> {
+  public async modify (params: ModifyInsertionOrderParameters, insertionOrder: InsertionOrderParameters): Promise<InsertionOrderResponse> {
     const response = await this.client.execute<InsertionOrderResponse>({
       method: 'PUT',
       headers: this.defaultHeaders,
@@ -81,15 +79,15 @@ export class XandrInsertionOrderClient {
       query: { id: params.id, advertiser_id: params.advertiserId },
       body: insertionOrder
     });
-    return response['insertion-order'];
+    return response;
   }
 
-  public async delete (params: ModifyInsertionOrderParameters): Promise<void> {
-    await this.client.execute<InsertionOrderBaseResponse>({
+  public async delete (params: ModifyInsertionOrderParameters): Promise<InsertionOrderBaseResponse> {
+    const response = await this.client.execute<InsertionOrderBaseResponse>({
       method: 'DELETE',
       endpoint: this.endpoint,
       query: { id: params.id, advertiser_id: params.advertiserId }
     });
+    return response;
   }
-
 }

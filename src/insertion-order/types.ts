@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import type { LineItem } from '../line-item/types';
+import type { CommonResponse, Id } from '../xandr-types';
 
 interface Labels {
   value: string;
@@ -126,13 +127,7 @@ export interface ModifyInsertionOrderParameters {
   advertiserId: number;
 }
 
-export interface InsertionOrderBaseResponse {
-  status: string;
-  count: number;
-  id?: number;
-  start_element?: number;
-  num_elements?: number;
-}
+export type InsertionOrderBaseResponse = CommonResponse & Id;
 
 export type InsertionOrderGetAllResponse = InsertionOrderBaseResponse & {
   'insertion-orders': InsertionOrder[];
