@@ -129,10 +129,7 @@ export interface ModifyInsertionOrderParameters {
 
 export type InsertionOrderBaseResponse = CommonResponse & Id;
 
-export type InsertionOrderGetAllResponse = InsertionOrderBaseResponse & {
-  'insertion-orders': InsertionOrder[];
-};
-
 export type InsertionOrderResponse = InsertionOrderBaseResponse & {
-  'insertion-order': InsertionOrder;
+  'insertion-orders'?: InsertionOrder[];
+  'insertion-order'?: InsertionOrder;
 };

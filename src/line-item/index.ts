@@ -6,11 +6,11 @@ import type {
   GetLineItemParameters,
   ModifyLineItemParameters,
   LineItemBaseResponse,
-  LineItemGetAllResponse,
-  LineItemResponse
+  LineItemGetResponse,
+  LineItemOneResponse
 } from './types';
 
-export class XandrLineItemClient {
+export class XandrLineItemClient { 
   private readonly client: XandrClient;
 
   private readonly endpoint = 'line-item';
@@ -28,7 +28,7 @@ export class XandrLineItemClient {
     const lineItems: LineItem[] = [];
     let done = false;
     do {
-      const response = await this.client.execute<LineItemGetAllResponse>({
+      const response = await this.client.execute<LineItemGetResponse>({
         method: 'GET',
         endpoint: this.endpoint,
         query: { start_element: lineItems.length, ...'code' in params
@@ -38,7 +38,11 @@ export class XandrLineItemClient {
             : { id: params.idList.join(',') }
         }
       });
-      lineItems.push(...response['line-items']);
+      if (response['line-items']) {
+        lineItems.push(...response['line-items']);
+      } else if (response['line-item']) {
+        lineItems.push(response['line-item']);
+      }
       done = response.count === lineItems.length;
     } while (!done);
     return lineItems;
@@ -48,19 +52,23 @@ export class XandrLineItemClient {
     const lineItems: LineItem[] = [];
     let done = false;
     do {
-      const response = await this.client.execute<LineItemGetAllResponse>({
+      const response = await this.client.execute<LineItemGetResponse>({
         method: 'GET',
         endpoint: this.endpoint,
         query: { search: searchTerm, start_element: lineItems.length }
       });
-      lineItems.push(...response['line-items']);
+      if (response['line-items']) {
+        lineItems.push(...response['line-items']);
+      } else if (response['line-item']) {
+        lineItems.push(response['line-item']);
+      }
       done = response.count === lineItems.length;
     } while (!done);
     return lineItems;
   }
 
   public async add (advertiserId: number, lineItem: LineItemParameters): Promise<LineItem> {
-    const response = await this.client.execute<LineItemResponse>({
+    const response = await this.client.execute<LineItemOneResponse>({
       method: 'POST',
       headers: this.defaultHeaders,
       endpoint: this.endpoint,
@@ -72,7 +80,7 @@ export class XandrLineItemClient {
   }
 
   public async modify (params: ModifyLineItemParameters, lineItem: LineItemParameters): Promise<LineItem> {
-    const response = await this.client.execute<LineItemResponse>({
+    const response = await this.client.execute<LineItemOneResponse>({
       method: 'PUT',
       headers: this.defaultHeaders,
       endpoint: this.endpoint,

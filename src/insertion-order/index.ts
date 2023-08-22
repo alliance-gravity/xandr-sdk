@@ -7,7 +7,6 @@ import type {
   GetInsertionOrderParameters,
   ModifyInsertionOrderParameters,
   InsertionOrderBaseResponse,
-  InsertionOrderGetAllResponse,
   InsertionOrderResponse
 } from './types';
 
@@ -29,7 +28,7 @@ export class XandrInsertionOrderClient {
     const insertionOrders: InsertionOrder[] = [];
     let done = false;
     do {
-      const response = await this.client.execute<InsertionOrderGetAllResponse>({
+      const response = await this.client.execute<InsertionOrderResponse>({
         method: 'GET',
         endpoint: this.endpoint,
         query: { start_element: insertionOrders.length, 
@@ -38,7 +37,11 @@ export class XandrInsertionOrderClient {
             : { ...params }
         }
       });
-      insertionOrders.push(...response['insertion-orders']);
+      if (response['insertion-orders']) {
+        insertionOrders.push(...response['insertion-orders']);
+      } else if (response['insertion-order']) {
+        insertionOrders.push(response['insertion-order']);
+      }
       done = response.count === insertionOrders.length;
     } while (!done);
     return insertionOrders;
@@ -48,12 +51,16 @@ export class XandrInsertionOrderClient {
     const insertionOrders: InsertionOrder[] = [];
     let done = false;
     do {
-      const response = await this.client.execute<InsertionOrderGetAllResponse>({
+      const response = await this.client.execute<InsertionOrderResponse>({
         method: 'GET',
         endpoint: this.endpoint,
         query: { search: searchTerm, start_element: insertionOrders.length }
       });
-      insertionOrders.push(...response['insertion-orders']);
+      if (response['insertion-orders']) {
+        insertionOrders.push(...response['insertion-orders']);
+      } else if (response['insertion-order']) {
+        insertionOrders.push(response['insertion-order']);
+      }
       done = response.count === insertionOrders.length;
     } while (!done);
     return insertionOrders;
