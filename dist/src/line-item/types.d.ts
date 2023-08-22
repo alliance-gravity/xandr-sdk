@@ -244,10 +244,11 @@ export interface LineItemBaseResponse {
     start_element?: number;
     num_elements?: number;
 }
-export declare type LineItemGetAllResponse = LineItemBaseResponse & {
-    'line-items': LineItem[];
+export declare type LineItemGetResponse = LineItemBaseResponse & {
+    'line-items'?: LineItem[];
+    'line-item'?: LineItem;
 };
-export declare type LineItemResponse = LineItemBaseResponse & {
+export declare type LineItemOneResponse = LineItemBaseResponse & {
     'line-item': LineItem;
 };
 export {};

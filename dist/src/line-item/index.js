@@ -24,7 +24,12 @@ class XandrLineItemClient {
                             : { id: params.idList.join(',') }
                 }
             });
-            lineItems.push(...response['line-items']);
+            if (response['line-items']) {
+                lineItems.push(...response['line-items']);
+            }
+            else if (response['line-item']) {
+                lineItems.push(response['line-item']);
+            }
             done = response.count === lineItems.length;
         } while (!done);
         return lineItems;
@@ -38,7 +43,12 @@ class XandrLineItemClient {
                 endpoint: this.endpoint,
                 query: { search: searchTerm, start_element: lineItems.length }
             });
-            lineItems.push(...response['line-items']);
+            if (response['line-items']) {
+                lineItems.push(...response['line-items']);
+            }
+            else if (response['line-item']) {
+                lineItems.push(response['line-item']);
+            }
             done = response.count === lineItems.length;
         } while (!done);
         return lineItems;
