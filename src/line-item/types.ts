@@ -257,10 +257,11 @@ export interface LineItemBaseResponse {
   num_elements?: number;
 }
 
-export type LineItemGetAllResponse = LineItemBaseResponse & {
-  'line-items': LineItem[];
+export type LineItemGetResponse = LineItemBaseResponse & {
+  'line-items'?: LineItem[];
+  'line-item'?: LineItem;
 };
 
-export type LineItemResponse = LineItemBaseResponse & {
+export type LineItemOneResponse = LineItemBaseResponse & {
   'line-item': LineItem;
 };
