@@ -15,7 +15,7 @@ import type {
 export class XandrProfileClient {
   private readonly client: XandrClient;
 
-  private readonly endpoint = 'profiles';
+  private readonly endpoint = 'profile';
 
   private readonly defaultHeaders = {
     // eslint-disable-next-line @typescript-eslint/naming-convention

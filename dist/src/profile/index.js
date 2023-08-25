@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.XandrProfileClient = void 0;
 class XandrProfileClient {
     constructor(client) {
-        this.endpoint = 'profiles';
+        this.endpoint = 'profile';
         this.defaultHeaders = {
             // eslint-disable-next-line @typescript-eslint/naming-convention
             'Content-Type': 'application/json'
