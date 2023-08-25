@@ -365,10 +365,11 @@ export type ModifyProfileParameters = ProfileCode | ProfileId;
 
 export type ProfileFull = Profile & Targeting;
 
-export type ProfileResponse = ProfileBaseResponse & {
-  'profile': ProfileFull;
+export type ProfileGetResponse = ProfileBaseResponse & {
+  'profiles'?: ProfileFull[];
+  'profile'?: ProfileFull;
 };
 
-export type ProfileGetAllResponse = ProfileBaseResponse & {
-  'profiles': ProfileFull[];
+export type ProfileResponse = ProfileBaseResponse & {
+  'profile': ProfileFull;
 };

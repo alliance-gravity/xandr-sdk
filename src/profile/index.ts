@@ -2,14 +2,14 @@
 import type { XandrClient } from '..';
 
 import type {
-  ProfileGetAllResponse,
-  ProfileResponse,
+  ProfileGetResponse,
   ProfileFull,
   ModifyProfileParameters,
   GetProfileParameters,
   ProfileGeographyParameter,
   AddProfileParameters,
-  ProfileBaseResponse
+  ProfileBaseResponse,
+  ProfileResponse
 } from './types';
 
 export class XandrProfileClient {
@@ -30,12 +30,16 @@ export class XandrProfileClient {
     const profiles: ProfileFull[] = [];
     let done = false;
     do {
-      const response = await this.client.execute<ProfileGetAllResponse>({
+      const response = await this.client.execute<ProfileGetResponse>({
         method: 'GET',
         endpoint: this.endpoint,
         query: { start_element: profiles.length, ...params }     
       });
-      profiles.push(...response.profiles);
+      if (response.profiles) {
+        profiles.push(...response.profiles);
+      } else if (response.profile) {
+        profiles.push(response.profile);
+      }
       done = response.count === profiles.length;
     } while (!done);
     return profiles;
