@@ -328,7 +328,7 @@ export interface ProfileGeographyParameter {
 }
 export declare type ProfileBaseResponse = CommonResponse & Id;
 interface ProfileId {
-    profile_id?: number;
+    id?: number;
     advertiser_id: number;
     member_id: number;
 }
