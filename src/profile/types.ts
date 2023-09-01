@@ -26,14 +26,14 @@ interface SegmentTarget {
 interface SegmentGroupTarget {
   boolean_operator: 'and' | 'or';
   id: number;
-  code: string;
+  code?: string;
   action: Action;
-  start_minutes: number;
-  expire_minutes: number;
-  other_equals: number | null;
-  other_less: number | null;
-  other_greater: number | null;
-  other_in_list: string[] | null;
+  start_minutes?: number;
+  expire_minutes?: number;
+  other_equals?: number | null;
+  other_less?: number | null;
+  other_greater?: number | null;
+  other_in_list?: string[] | null;
 }
 
 interface Targeting {
@@ -186,7 +186,7 @@ interface Targeting {
   }[];
   postal_code_action_include: boolean;
   supply_type_targets?: string[];
-  supply_type_action?: 'mobile_app' | 'mobile_web' | 'web';
+  supply_type_action?: Action;
   user_group_targets?: {
     include_cookieless_users: boolean;
     groups: {
@@ -310,7 +310,7 @@ interface Profile {
   archived_on: string;
 }
 
-export interface ProfileGeographyParameter {
+export interface ProfileParameter {
   profile: {
     country_targets?: {
       id: number;
@@ -329,13 +329,35 @@ export interface ProfileGeographyParameter {
     region_action: Action;
     city_targets?: {
       id: number;
-      name: string;
-      region_name: string;
-      region_code: string;
-      country_code: string;
-      country_name: string;
+      name?: string;
+      region_name?: string;
+      region_code?: string;
+      country_code?: string;
+      country_name?: string;
     }[];
     city_action: Action;
+    supply_type_action: Action;
+    device_type_action: Action;
+    supply_type_targets?: string[];
+    device_type_targets?: string[];
+    dma_action: Action;
+    dma_targets?: {
+      dma: number;
+      name?: string;
+    }[];
+    engagement_rate_targets?: {
+      engagement_rate_type: string;
+      engagement_rate_pct: number;
+    }[];
+    segment_group_targets: SegmentGroupTarget[];
+    inventory_url_list_targets?: {
+      deleted?: boolean;
+      id: number;
+      list_type: string;
+      name?: string;
+      exclude: boolean;
+    }[];
+
   };
 }
 

@@ -6,7 +6,7 @@ import type {
   ProfileFull,
   ModifyProfileParameters,
   GetProfileParameters,
-  ProfileGeographyParameter,
+  ProfileParameter,
   AddProfileParameters,
   ProfileBaseResponse,
   ProfileResponse
@@ -45,7 +45,7 @@ export class XandrProfileClient {
     return profiles;
   }
 
-  public async add (params: AddProfileParameters, profile: ProfileGeographyParameter): Promise<ProfileFull> {
+  public async add (params: AddProfileParameters, profile: ProfileParameter): Promise<ProfileFull> {
     const response = await this.client.execute<ProfileResponse>({
       method: 'POST',
       headers: this.defaultHeaders,
@@ -57,7 +57,7 @@ export class XandrProfileClient {
     return response.profile;
   }
 
-  public async modify (params: ModifyProfileParameters, profile: ProfileGeographyParameter): Promise<ProfileBaseResponse> {
+  public async modify (params: ModifyProfileParameters, profile: ProfileParameter): Promise<ProfileBaseResponse> {
     const response = await this.client.execute<ProfileBaseResponse>({
       method: 'PUT',
       headers: this.defaultHeaders,
