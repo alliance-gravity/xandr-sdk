@@ -12,18 +12,18 @@ interface BrokerFee {
     description?: string;
 }
 interface BudgetInterval {
-    id: number;
+    id?: number;
     start_date: string;
     end_date: string;
     timezone: string;
-    code: string;
+    code?: string;
     lifetime_budget: number;
     lifetime_budget_imps?: number;
-    lifetime_pacing: boolean;
+    lifetime_pacing?: boolean;
     daily_budget?: number;
     daily_budget_imps?: number;
-    enable_pacing: boolean;
-    lifetime_pacing_pct: number;
+    enable_pacing?: boolean;
+    lifetime_pacing_pct?: number;
 }
 interface PoliticalContent {
     billing_name?: string;
@@ -80,11 +80,11 @@ export interface InsertionOrder {
     political_content: PoliticalContent;
 }
 export interface InsertionOrderParameters {
-    id: number;
+    id?: number;
     name: string;
-    code: string;
-    state?: 'active' | 'inactive';
-    advertiser_id: number;
+    code?: string;
+    state: 'active' | 'inactive';
+    advertiser_id?: number;
     start_date?: string;
     end_date?: string;
     remaining_days?: number;
@@ -95,9 +95,9 @@ export interface InsertionOrderParameters {
     comments?: string;
     billing_code?: string;
     line_item?: LineItem[];
-    labels: Labels[];
+    labels?: Labels[];
     broker_fees?: BrokerFee[];
-    budget_intervals: BudgetInterval[];
+    budget_intervals?: BudgetInterval[];
     budget_type: 'flexible' | 'impression' | 'revenue';
     profile_id?: number;
     viewability_standard_provider?: string;
