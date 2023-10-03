@@ -14,11 +14,17 @@ export interface City {
 }
 
 export type CityGetParameter = {
-  id: number;
+  country_code: string;
+} | {
+  dma_id: number;
+} | {
+  dma_name: string;
 } | {
   like_name: string;
 } | {
   name: string;
+} | { 
+  id: number;
 };
 
 export type CityResponse = CommonResponse & {
