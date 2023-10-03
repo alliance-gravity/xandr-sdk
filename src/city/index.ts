@@ -16,7 +16,7 @@ export class XandrCityClient {
     this.client = client;
   }
 
-  public async get (params: CityGetParameter): Promise<City[]> {
+  public async get (params?: CityGetParameter): Promise<City[]> {
     const cities: City[] = [];
     let done = false;
     do {

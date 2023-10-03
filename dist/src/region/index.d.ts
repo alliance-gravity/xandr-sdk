@@ -4,5 +4,5 @@ export declare class XandrRegionClient {
     private readonly client;
     private readonly endpoint;
     constructor(client: XandrClient);
-    get(params: RegionGetParameter): Promise<Region[]>;
+    get(params?: RegionGetParameter): Promise<Region[]>;
 }

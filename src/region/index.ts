@@ -16,7 +16,7 @@ export class XandrRegionClient {
     this.client = client;
   }
 
-  public async get (params: RegionGetParameter): Promise<Region[]> {
+  public async get (params?: RegionGetParameter): Promise<Region[]> {
     const regions: Region[] = [];
     let done = false;
     do {

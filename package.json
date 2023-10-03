@@ -2,7 +2,7 @@
   "name": "xandr-sdk",
   "description": "An SDK to use the Xandr API",
   "private": false,
-  "version": "1.0.42",
+  "version": "1.0.43",
   "license": "UNLICENSED",
   "repository": "https://github.com/alliance-gravity/xandr-sdk",
   "main": "dist/src/index.js",

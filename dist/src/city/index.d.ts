@@ -4,5 +4,5 @@ export declare class XandrCityClient {
     private readonly client;
     private readonly endpoint;
     constructor(client: XandrClient);
-    get(params: CityGetParameter): Promise<City[]>;
+    get(params?: CityGetParameter): Promise<City[]>;
 }

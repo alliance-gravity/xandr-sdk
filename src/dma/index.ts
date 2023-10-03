@@ -16,7 +16,7 @@ export class XandrDmaClient {
     this.client = client;
   }
 
-  public async get (params: DmaGetParameter): Promise<Dma[]> {
+  public async get (params?: DmaGetParameter): Promise<Dma[]> {
     const dmas: Dma[] = [];
     let done = false;
     do {
