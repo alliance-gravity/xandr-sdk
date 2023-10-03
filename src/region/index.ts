@@ -7,7 +7,7 @@ import type {
   Region
 } from './types';
 
-export class XandrRegionService {
+export class XandrRegionClient {
   private readonly client: XandrClient;
 
   private readonly endpoint = 'region';

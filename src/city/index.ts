@@ -7,7 +7,7 @@ import type {
   City
 } from './types';
 
-export class XandrCityService {
+export class XandrCityClient {
   private readonly client: XandrClient;
 
   private readonly endpoint = 'city';
