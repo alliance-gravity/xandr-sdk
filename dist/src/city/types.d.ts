@@ -10,11 +10,17 @@ export interface City {
     region_name: string;
 }
 export declare type CityGetParameter = {
-    id: number;
+    country_code: string;
+} | {
+    dma_id: number;
+} | {
+    dma_name: string;
 } | {
     like_name: string;
 } | {
     name: string;
+} | {
+    id: number;
 };
 export declare type CityResponse = CommonResponse & {
     'cities'?: City[];
