@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.XandrRegionService = void 0;
-class XandrRegionService {
+exports.XandrRegionClient = void 0;
+class XandrRegionClient {
     constructor(client) {
         this.endpoint = 'region';
         this.client = client;
@@ -29,4 +29,4 @@ class XandrRegionService {
         return regions;
     }
 }
-exports.XandrRegionService = XandrRegionService;
+exports.XandrRegionClient = XandrRegionClient;
