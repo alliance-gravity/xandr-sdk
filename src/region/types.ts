@@ -12,12 +12,15 @@ export interface Region {
   sales_tax_rate_pct: number;
 }
 
-export interface RegionGetParameter {
-  country_code?: string;
-  like_name?: string;
-  id?: number;
-  name?: string;
-}
+export type RegionGetParameter = {
+  country_code: string;
+} | {
+  id: number;
+} | {
+  like_name: string;
+} | {
+  name: string;
+};
 
 export type RegionResponse = CommonResponse & {
   'regions'?: Region[];
