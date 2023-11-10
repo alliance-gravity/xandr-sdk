@@ -3,6 +3,7 @@ import type { CommonResponse } from '../xandr-types';
 import type { 
   CreateCustomModelParameters,
   ModifyCustomModelParameters,
+  CustomModelParserResponse,
   CustomModelResponse,
   CustomModelsResponse,
   CustomModel 
@@ -45,6 +46,20 @@ export class XandrCustomModelClient {
       done = response.count !== customModels.length;
     } while (!done);
     return customModels;
+  }
+
+  public async parse (modelText: string): Promise<number> {
+    const response = await this.client.execute<CustomModelParserResponse>({
+      method: 'post',
+      endpoint: `${this.endpoint}-parser`,
+      body: {
+        'custom-model-parser': {
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          model_text: Buffer.from(modelText).toString('base64')
+        }
+      }
+    });
+    return response['custom-model-parser'].size;
   }
 
   public async create (props: CreateCustomModelParameters): Promise<CustomModel> {
