@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-
 import type {
   ReadOnlyAttributes,
   CommonResponse
@@ -20,7 +19,6 @@ export type CustomModel = ReadOnlyAttributes & Required<CustomModelInput> & {
   id: number;
   member_id: number;
   original_text: string;
-
 };
 
 export interface CreateCustomModelParameters {
@@ -43,6 +41,15 @@ export interface ModifyCustomModelParameters {
   model_output?: 'bid_modifier' | 'bid';
   model_text?: string;
   active?: boolean;
+}
+
+export interface CustomModelParserResponse {
+  service: string;
+  method: string;
+  'custom-model-parser': {
+    model_text: string;
+    size: number;
+  };
 }
 
 export type CustomModelsResponse = CommonResponse & {
