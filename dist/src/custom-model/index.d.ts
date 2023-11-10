@@ -7,6 +7,7 @@ export declare class XandrCustomModelClient {
     constructor(client: XandrClient);
     get(id: number): Promise<CustomModel>;
     getAll(): Promise<CustomModel[]>;
+    parse(modelText: string): Promise<number>;
     create(props: CreateCustomModelParameters): Promise<CustomModel>;
     modify(id: number, props: ModifyCustomModelParameters): Promise<CustomModel>;
     delete(id: number): Promise<void>;

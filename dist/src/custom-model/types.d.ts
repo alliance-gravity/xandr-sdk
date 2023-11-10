@@ -33,6 +33,14 @@ export interface ModifyCustomModelParameters {
     model_text?: string;
     active?: boolean;
 }
+export interface CustomModelParserResponse {
+    service: string;
+    method: string;
+    'custom-model-parser': {
+        model_text: string;
+        size: number;
+    };
+}
 export declare type CustomModelsResponse = CommonResponse & {
     custom_models: CustomModel[];
 };

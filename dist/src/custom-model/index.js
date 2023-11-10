@@ -33,6 +33,19 @@ class XandrCustomModelClient {
         } while (!done);
         return customModels;
     }
+    async parse(modelText) {
+        const response = await this.client.execute({
+            method: 'post',
+            endpoint: `${this.endpoint}-parser`,
+            body: {
+                'custom-model-parser': {
+                    // eslint-disable-next-line @typescript-eslint/naming-convention
+                    model_text: Buffer.from(modelText).toString('base64')
+                }
+            }
+        });
+        return response['custom-model-parser'].size;
+    }
     async create(props) {
         if (props.model_text !== undefined)
             props.model_text = Buffer.from(props.model_text).toString('base64');
