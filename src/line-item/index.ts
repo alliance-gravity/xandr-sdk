@@ -7,7 +7,9 @@ import type {
   ModifyLineItemParameters,
   LineItemBaseResponse,
   LineItemGetResponse,
-  LineItemOneResponse
+  LineItemOneResponse,
+  LineItemModel,
+  LineItemModelResponse
 } from './types';
 
 export class XandrLineItemClient { 
@@ -105,4 +107,15 @@ export class XandrLineItemClient {
         : { code: params.code, advertiser_code: params.advertiserCode}
     });
   }
+
+  public async getModel (lineItemId: number): Promise<LineItemModel> {
+    const response = await this.client.execute<LineItemModelResponse>({
+      method: 'GET',
+      endpoint: `${this.endpoint}-model`,
+      query: {id: lineItemId}
+    });
+    return response['line-item-models'];
+  }
+
+  public async associateModel (lineItemId: number, customModelId: number)
 }

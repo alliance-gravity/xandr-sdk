@@ -3,6 +3,7 @@
 type State = 'active' | 'inactive';
 type AdType = 'audio' | 'banner' | 'native' | 'video';
 type TriggerType = 'click' | 'hybrid' | 'view';
+type CustomModelType = 'bid_modifier' | 'cadence' | 'click_imp' | 'conv_click' | 'conv_imp' | 'creative_selection' | 'ev_click' | 'ev_conv' | 'expected_value' | 'nonvaluation';
 
 
 interface BudgetInterval {
@@ -242,6 +243,13 @@ export interface LineItemCode {
   advertiserCode: string;
 }
 
+export interface LineItemModelId {
+  custom_model_id: number;
+  type: CustomModelType;
+}
+
+export type LineItemModel = Record<string, LineItemModelId[]>;
+
 export type GetLineItemParameters = LineItemCode | {
   advertiserId: number;
 } | {
@@ -249,6 +257,8 @@ export type GetLineItemParameters = LineItemCode | {
 };
 
 export type ModifyLineItemParameters = LineItemCode | LineItemId;
+
+export type ModifyLineItemModelParameters = LineItemModelId | LineItemModelId[];
 
 export interface LineItemBaseResponse {
   status: string;
@@ -264,4 +274,9 @@ export type LineItemGetResponse = LineItemBaseResponse & {
 
 export type LineItemOneResponse = LineItemBaseResponse & {
   'line-item': LineItem;
+};
+
+export type LineItemModelResponse = LineItemBaseResponse & {
+  'line-item-models'?: LineItemModel;
+  'line-item-model'?: LineItemModel;
 };
