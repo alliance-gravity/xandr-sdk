@@ -89,11 +89,12 @@ export class XandrCustomModelClient {
     return response.custom_model;
   }
 
-  public async delete (id: number): Promise<void> {
-    await this.client.execute<CommonResponse>({
+  public async delete (id: number): Promise<CommonResponse> {
+    const response = await this.client.execute<CommonResponse>({
       method: 'DELETE',
       endpoint: this.endpoint,
       query: { id }
     });
+    return response;
   }
 }
