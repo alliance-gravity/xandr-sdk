@@ -1,4 +1,5 @@
 import type { XandrClient } from '..';
+import type { CommonResponse } from '../xandr-types';
 import type { CreateCustomModelParameters, ModifyCustomModelParameters, CustomModel } from './types';
 export declare class XandrCustomModelClient {
     private readonly client;
@@ -10,5 +11,5 @@ export declare class XandrCustomModelClient {
     parse(modelText: string): Promise<number>;
     create(props: CreateCustomModelParameters): Promise<CustomModel>;
     modify(id: number, props: ModifyCustomModelParameters): Promise<CustomModel>;
-    delete(id: number): Promise<void>;
+    delete(id: number): Promise<CommonResponse>;
 }
