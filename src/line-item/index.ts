@@ -117,7 +117,7 @@ export class XandrLineItemClient {
       endpoint: `${this.endpoint}-model`,
       query: {id: lineItemId}
     });
-    return response['line-item-models'].lineItemId;
+    return response['line-item-models'][`${lineItemId}`];
   }
 
   public async associateOrModify (lineItemId: number, lineItemModelId: ModifyLineItemModelParameters): Promise<LineItemModelId | LineItemModelId[]> {
@@ -125,9 +125,9 @@ export class XandrLineItemClient {
       method: 'PUT',
       endpoint: `${this.endpoint}-model`,
       query: {id: lineItemId},
-      body: lineItemModelId
+      body: Array.isArray(lineItemModelId) ? {'line-item-models':lineItemModelId} : {'line-item-model':lineItemModelId}
     });
-    return response['line-item-models'].lineItemId;
+    return response['line-item-models'][`${lineItemId}`];
   }
 
   public async deleteModel (lineItemId: number, lineItemModelId: ModifyLineItemModelParameters): Promise<void> {
@@ -135,7 +135,7 @@ export class XandrLineItemClient {
       method: 'DELETE',
       endpoint: `${this.endpoint}-model`,
       query: {id: lineItemId},
-      body: lineItemModelId
+      body: Array.isArray(lineItemModelId) ? {'line-item-models':lineItemModelId} : {'line-item-model':lineItemModelId}
     });
   }
 }
