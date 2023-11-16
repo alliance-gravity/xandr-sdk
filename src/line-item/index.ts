@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import type { XandrClient } from '..';
-import { CommonResponse } from '../xandr-types';
 import type {
   LineItem,
   LineItemParameters,
@@ -129,13 +128,12 @@ export class XandrLineItemClient {
     return response['line-item-models'];
   }
 
-  public async deleteModel (lineItemId: number, lineItemModelId: ModifyLineItemModelParameters): Promise<CommonResponse> {
-    const response = await this.client.execute<CommonResponse>({
+  public async deleteModel (lineItemId: number, lineItemModelId: ModifyLineItemModelParameters): Promise<void> {
+    await this.client.execute<CommonResponse>({
       method: 'DELETE',
       endpoint: `${this.endpoint}-model`,
       query: {id: lineItemId},
       body: lineItemModelId
     });
-    return response;
   }
 }
