@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import type { XandrClient } from '..';
+import type { CommonResponse } from '../xandr-types';
 import type {
   LineItem,
   LineItemParameters,
@@ -10,6 +11,7 @@ import type {
   LineItemGetResponse,
   LineItemOneResponse,
   LineItemModel,
+  LineItemModelId,
   LineItemModelResponse
 } from './types';
 
@@ -109,23 +111,23 @@ export class XandrLineItemClient {
     });
   }
 
-  public async getModel (lineItemId: number): Promise<LineItemModel> {
+  public async getModel (lineItemId: number): Promise<LineItemModelId | LineItemModelId[]> {
     const response = await this.client.execute<LineItemModelResponse>({
       method: 'GET',
       endpoint: `${this.endpoint}-model`,
       query: {id: lineItemId}
     });
-    return response['line-item-models'];
+    return response['line-item-models'].lineItemId;
   }
 
-  public async associateOrModify (lineItemId: number, lineItemModelId: ModifyLineItemModelParameters): Promise<LineItemModel> {
+  public async associateOrModify (lineItemId: number, lineItemModelId: ModifyLineItemModelParameters): Promise<LineItemModelId | LineItemModelId[]> {
     const response = await this.client.execute<LineItemModelResponse>({
       method: 'PUT',
       endpoint: `${this.endpoint}-model`,
       query: {id: lineItemId},
       body: lineItemModelId
     });
-    return response['line-item-models'];
+    return response['line-item-models'].lineItemId;
   }
 
   public async deleteModel (lineItemId: number, lineItemModelId: ModifyLineItemModelParameters): Promise<void> {
