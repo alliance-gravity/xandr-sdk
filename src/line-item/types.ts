@@ -277,6 +277,5 @@ export type LineItemOneResponse = LineItemBaseResponse & {
 };
 
 export type LineItemModelResponse = LineItemBaseResponse & {
-  'line-item-models'?: LineItemModel;
-  'line-item-model'?: LineItemModel;
+  'line-item-models': LineItemModel;
 };
