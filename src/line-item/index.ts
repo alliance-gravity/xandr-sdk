@@ -125,7 +125,7 @@ export class XandrLineItemClient {
       method: 'PUT',
       endpoint: `${this.endpoint}-model`,
       query: {id: lineItemId},
-      body: Array.isArray(lineItemModelId) ? {'line-item-models':lineItemModelId} : {'line-item-model':lineItemModelId}
+      body: Array.isArray(lineItemModelId) ? {'line_item_models':lineItemModelId} : {'line_item_model':lineItemModelId}
     });
     return response['line-item-models'][`${lineItemId}`];
   }
@@ -135,7 +135,7 @@ export class XandrLineItemClient {
       method: 'DELETE',
       endpoint: `${this.endpoint}-model`,
       query: {id: lineItemId},
-      body: Array.isArray(lineItemModelId) ? {'line-item-models':lineItemModelId} : {'line-item-model':lineItemModelId}
+      body: Array.isArray(lineItemModelId) ? {'line_item_models':lineItemModelId} : {'line_item_model':lineItemModelId}
     });
   }
 }
