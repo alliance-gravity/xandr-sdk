@@ -248,7 +248,7 @@ export interface LineItemModelId {
   type: CustomModelType;
 }
 
-export type LineItemModel = Record<string, LineItemModelId | LineItemModelId[]>;
+export type LineItemModel = Record<string, LineItemModelId[]>;
 
 export type GetLineItemParameters = LineItemCode | {
   advertiserId: number;
@@ -277,5 +277,5 @@ export type LineItemOneResponse = LineItemBaseResponse & {
 };
 
 export type LineItemModelResponse = LineItemBaseResponse & {
-  'line-item-models': LineItemModel;
+  'line_item_models': LineItemModel;
 };
