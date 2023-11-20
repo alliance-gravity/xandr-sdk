@@ -1,13 +1,17 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import type { XandrClient } from '..';
+import type { CommonResponse } from '../xandr-types';
 import type {
   LineItem,
   LineItemParameters,
   GetLineItemParameters,
   ModifyLineItemParameters,
+  ModifyLineItemModelParameters,
   LineItemBaseResponse,
   LineItemGetResponse,
-  LineItemOneResponse
+  LineItemOneResponse,
+  LineItemModelId,
+  LineItemModelResponse
 } from './types';
 
 export class XandrLineItemClient { 
@@ -103,6 +107,34 @@ export class XandrLineItemClient {
         ? { id: params.id, advertiser_id: params.advertiserId }
         // eslint-disable-next-line @typescript-eslint/naming-convention
         : { code: params.code, advertiser_code: params.advertiserCode}
+    });
+  }
+
+  public async getModel (lineItemId: number): Promise<LineItemModelId[]> {
+    const response = await this.client.execute<LineItemModelResponse>({
+      method: 'GET',
+      endpoint: `${this.endpoint}-model`,
+      query: {id: lineItemId}
+    });
+    return response.line_item_models[`${lineItemId}`];
+  }
+
+  public async associateOrModify (lineItemId: number, lineItemModelId: ModifyLineItemModelParameters): Promise<LineItemModelId[]> {
+    const response = await this.client.execute<LineItemModelResponse>({
+      method: 'PUT',
+      endpoint: `${this.endpoint}-model`,
+      query: {id: lineItemId},
+      body: Array.isArray(lineItemModelId) ? {'line_item_models':lineItemModelId} : {'line_item_model':lineItemModelId}
+    });
+    return response.line_item_models[`${lineItemId}`];
+  }
+
+  public async deleteModel (lineItemId: number, lineItemModelId: ModifyLineItemModelParameters): Promise<void> {
+    await this.client.execute<CommonResponse>({
+      method: 'DELETE',
+      endpoint: `${this.endpoint}-model`,
+      query: {id: lineItemId},
+      body: Array.isArray(lineItemModelId) ? {'line_item_models':lineItemModelId} : {'line_item_model':lineItemModelId}
     });
   }
 }
