@@ -72,12 +72,11 @@ class XandrCustomModelClient {
         return response.custom_model;
     }
     async delete(id) {
-        const response = await this.client.execute({
+        await this.client.execute({
             method: 'DELETE',
             endpoint: this.endpoint,
             query: { id }
         });
-        return response;
     }
 }
 exports.XandrCustomModelClient = XandrCustomModelClient;

@@ -1,6 +1,7 @@
 declare type State = 'active' | 'inactive';
 declare type AdType = 'audio' | 'banner' | 'native' | 'video';
 declare type TriggerType = 'click' | 'hybrid' | 'view';
+declare type CustomModelType = 'bid_modifier' | 'cadence' | 'click_imp' | 'conv_click' | 'conv_imp' | 'creative_selection' | 'ev_click' | 'ev_conv' | 'expected_value' | 'nonvaluation';
 interface BudgetInterval {
     id: number;
     start_date: string;
@@ -232,12 +233,18 @@ export interface LineItemCode {
     code: string;
     advertiserCode: string;
 }
+export interface LineItemModelId {
+    custom_model_id: number;
+    type: CustomModelType;
+}
+export declare type LineItemModel = Record<string, LineItemModelId[]>;
 export declare type GetLineItemParameters = LineItemCode | {
     advertiserId: number;
 } | {
     idList: number[];
 };
 export declare type ModifyLineItemParameters = LineItemCode | LineItemId;
+export declare type ModifyLineItemModelParameters = LineItemModelId | LineItemModelId[];
 export interface LineItemBaseResponse {
     status: string;
     count: number;
@@ -250,5 +257,8 @@ export declare type LineItemGetResponse = LineItemBaseResponse & {
 };
 export declare type LineItemOneResponse = LineItemBaseResponse & {
     'line-item': LineItem;
+};
+export declare type LineItemModelResponse = LineItemBaseResponse & {
+    'line_item_models': LineItemModel;
 };
 export {};

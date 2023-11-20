@@ -89,5 +89,30 @@ class XandrLineItemClient {
                 : { code: params.code, advertiser_code: params.advertiserCode }
         });
     }
+    async getModel(lineItemId) {
+        const response = await this.client.execute({
+            method: 'GET',
+            endpoint: `${this.endpoint}-model`,
+            query: { id: lineItemId }
+        });
+        return response.line_item_models[`${lineItemId}`];
+    }
+    async associateOrModify(lineItemId, lineItemModelId) {
+        const response = await this.client.execute({
+            method: 'PUT',
+            endpoint: `${this.endpoint}-model`,
+            query: { id: lineItemId },
+            body: Array.isArray(lineItemModelId) ? { 'line_item_models': lineItemModelId } : { 'line_item_model': lineItemModelId }
+        });
+        return response.line_item_models[`${lineItemId}`];
+    }
+    async deleteModel(lineItemId, lineItemModelId) {
+        await this.client.execute({
+            method: 'DELETE',
+            endpoint: `${this.endpoint}-model`,
+            query: { id: lineItemId },
+            body: Array.isArray(lineItemModelId) ? { 'line_item_models': lineItemModelId } : { 'line_item_model': lineItemModelId }
+        });
+    }
 }
 exports.XandrLineItemClient = XandrLineItemClient;

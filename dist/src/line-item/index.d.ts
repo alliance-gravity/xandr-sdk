@@ -1,5 +1,5 @@
 import type { XandrClient } from '..';
-import type { LineItem, LineItemParameters, GetLineItemParameters, ModifyLineItemParameters } from './types';
+import type { LineItem, LineItemParameters, GetLineItemParameters, ModifyLineItemParameters, ModifyLineItemModelParameters, LineItemModelId } from './types';
 export declare class XandrLineItemClient {
     private readonly client;
     private readonly endpoint;
@@ -10,4 +10,7 @@ export declare class XandrLineItemClient {
     add(advertiserId: number, lineItem: LineItemParameters): Promise<LineItem>;
     modify(params: ModifyLineItemParameters, lineItem: LineItemParameters): Promise<LineItem>;
     delete(params: ModifyLineItemParameters): Promise<void>;
+    getModel(lineItemId: number): Promise<LineItemModelId[]>;
+    associateOrModify(lineItemId: number, lineItemModelId: ModifyLineItemModelParameters): Promise<LineItemModelId[]>;
+    deleteModel(lineItemId: number, lineItemModelId: ModifyLineItemModelParameters): Promise<void>;
 }
