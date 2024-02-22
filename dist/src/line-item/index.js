@@ -104,7 +104,7 @@ class XandrLineItemClient {
             query: { id: lineItemId },
             body: Array.isArray(lineItemModelId) ? { 'line_item_models': lineItemModelId } : { 'line_item_model': lineItemModelId }
         });
-        return response.line_item_models[`${lineItemId}`];
+        return response.line_item_model;
     }
     async deleteModel(lineItemId, lineItemModelId) {
         await this.client.execute({

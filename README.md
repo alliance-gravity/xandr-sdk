@@ -29,4 +29,6 @@ The current available APIs are
 - report
 - segment
 - segment-billing-category
-
+- city
+- dma
+- region

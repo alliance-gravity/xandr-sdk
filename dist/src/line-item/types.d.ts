@@ -258,7 +258,10 @@ export declare type LineItemGetResponse = LineItemBaseResponse & {
 export declare type LineItemOneResponse = LineItemBaseResponse & {
     'line-item': LineItem;
 };
-export declare type LineItemModelResponse = LineItemBaseResponse & {
+export declare type GetLineItemModelResponse = LineItemBaseResponse & {
     'line_item_models': LineItemModel;
+};
+export declare type AssociateOrModifyLineItemModelResponse = LineItemBaseResponse & {
+    'line_item_model': LineItemModelId[];
 };
 export {};

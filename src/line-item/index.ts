@@ -11,7 +11,8 @@ import type {
   LineItemGetResponse,
   LineItemOneResponse,
   LineItemModelId,
-  LineItemModelResponse
+  GetLineItemModelResponse,
+  AssociateOrModifyLineItemModelResponse
 } from './types';
 
 export class XandrLineItemClient { 
@@ -111,7 +112,7 @@ export class XandrLineItemClient {
   }
 
   public async getModel (lineItemId: number): Promise<LineItemModelId[]> {
-    const response = await this.client.execute<LineItemModelResponse>({
+    const response = await this.client.execute<GetLineItemModelResponse>({
       method: 'GET',
       endpoint: `${this.endpoint}-model`,
       query: {id: lineItemId}
@@ -120,13 +121,13 @@ export class XandrLineItemClient {
   }
 
   public async associateOrModify (lineItemId: number, lineItemModelId: ModifyLineItemModelParameters): Promise<LineItemModelId[]> {
-    const response = await this.client.execute<LineItemModelResponse>({
+    const response = await this.client.execute<AssociateOrModifyLineItemModelResponse>({
       method: 'PUT',
       endpoint: `${this.endpoint}-model`,
       query: {id: lineItemId},
       body: Array.isArray(lineItemModelId) ? {'line_item_models':lineItemModelId} : {'line_item_model':lineItemModelId}
     });
-    return response.line_item_models[`${lineItemId}`];
+    return response.line_item_model;
   }
 
   public async deleteModel (lineItemId: number, lineItemModelId: ModifyLineItemModelParameters): Promise<void> {
