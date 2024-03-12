@@ -33,6 +33,7 @@
   "dependencies": {
     "node-fetch": "^2.6.1",
     "form-data": "^4.0.0",
-    "tldjs": "^2.3.1"
+    "tldjs": "^2.3.1",
+    "avsc": "^5.7.7"
   }
 }
