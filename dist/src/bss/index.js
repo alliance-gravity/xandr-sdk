@@ -45,14 +45,6 @@ class XandrBSSClient {
         });
         return response.batch_segment_upload_job;
     }
-    async get(memberId) {
-        const response = await this.client.execute({
-            method: 'GET',
-            endpoint: this.endpoint,
-            query: { member_id: memberId }
-        });
-        return response.batch_segment_upload_job;
-    }
     async upload(memberId, rows, chunkSize = 1000000) {
         var _a;
         const jobs = [];

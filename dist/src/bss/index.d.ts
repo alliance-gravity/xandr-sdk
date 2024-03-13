@@ -5,6 +5,5 @@ export declare class XandrBSSClient {
     private readonly endpoint;
     constructor(client: XandrClient);
     getStatus(memberId: number, jobId: string): Promise<BSSJobStatus>;
-    get(memberId: number): Promise<BSSJobStatus>;
     upload(memberId: number, rows: BSSDataRow[], chunkSize?: number): Promise<string[]>;
 }
