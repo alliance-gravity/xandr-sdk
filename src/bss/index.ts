@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import type { XandrClient } from '..';
+import { XandrError } from '../errors';
+import fetch from 'node-fetch';
 import * as avro from 'avsc';
 
 import schema from '../../assets/avro/bss.json';
@@ -10,8 +12,9 @@ import type {
   BSSJobStatusResponse,
   BSSJobStatus
 } from './types';
+import { Blob } from 'buffer';
 
-export class XandrInsertionBSS {
+export class XandrBSSClient {
   private readonly client: XandrClient;
 
   private readonly endpoint: string = 'batch-segment';
@@ -49,8 +52,17 @@ export class XandrInsertionBSS {
       jobs.push(response.batch_segment_upload_job.job_id);
       const url = response.batch_segment_upload_job.upload_url;
 
+      const data = new Blob(chunk.map(row => encoder.toBuffer(row)));
 
-      // Use `encoder` to process rows from `chunk` to POST to `url`
+      const up = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'octet-stream', Authorization: this.client.getToken() ?? '' },
+        body: await data.arrayBuffer()
+      });
+
+      if (up.status > 299) {
+        throw new XandrError(await up.text(), '', up.status, Object.fromEntries(up.headers.entries()));
+      }
     }
 
     return jobs;
