@@ -6,11 +6,7 @@
             "name": "uid",
             "doc": "User ID. Can be one of anid, ifa, xfa, external_id, device_id type.",
             "type": [
-                {
-                    "name": "anid",
-                    "type": "long",
-                    "doc": "Xandr user ID."
-                },
+                "long",
                 {
                     "name": "eid",
                     "type": "record",

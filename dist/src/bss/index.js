@@ -69,7 +69,7 @@ class XandrBSSClient {
             if (up.status > 299) {
                 throw new errors_1.XandrError(await up.text(), '', up.status, Object.fromEntries(up.headers.entries()));
             }
-            //await fs.promises.unlink(tempFile);
+            await fs_1.default.promises.unlink(tempFile);
         }
         return jobs;
     }

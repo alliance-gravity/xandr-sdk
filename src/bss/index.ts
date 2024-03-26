@@ -2,7 +2,25 @@
 import type { XandrClient } from '..';
 import { XandrError } from '../errors';
 import fetch from 'node-fetch';
-import * as avro from 'avsc';
+import avro from 'avsc';
+import fs from 'fs';
+
+const longType = avro.types.LongType.__with({
+  fromBuffer: (buf: Buffer) => buf.readBigInt64LE(),
+  toBuffer: (n: bigint) => {
+    const buf = Buffer.alloc(8);
+    buf.writeBigInt64LE(n);
+    return buf;
+  },
+  fromJSON: BigInt,
+  toJSON: Number,
+  isValid: (n: bigint) => typeof n == 'bigint',
+  compare: (n1: bigint, n2: bigint) => { 
+    // eslint-disable-next-line @typescript-eslint/no-extra-parens
+    return n1 === n2 ? 0 : (n1 < n2 ? -1 : 1);
+  }
+});
+
 
 import schema from '../../assets/avro/bss.json';
 
@@ -12,7 +30,6 @@ import type {
   BSSJobStatusResponse,
   BSSJobStatus
 } from './types';
-import { Blob } from 'buffer';
 
 export class XandrBSSClient {
   private readonly client: XandrClient;
@@ -34,9 +51,14 @@ export class XandrBSSClient {
 
   public async upload (memberId: number, rows: BSSDataRow[], chunkSize = 1000000): Promise<string[]> {
 
-    const jobs = [];
+    const jobs: string[] = [];
+    const tempFile = 'upload.avro';
     let processed = 0;
-    const encoder = avro.Type.forSchema(schema as avro.Schema);
+    const encoder = avro.Type.forSchema(schema as avro.Schema, {
+      registry: {
+        'long': longType
+      }
+    });
 
     while (processed < rows.length) {
 
@@ -52,20 +74,25 @@ export class XandrBSSClient {
       jobs.push(response.batch_segment_upload_job.job_id);
       const url = response.batch_segment_upload_job.upload_url;
 
-      const data = new Blob(chunk.map(row => encoder.toBuffer(row)));
+      const writer = avro.createFileEncoder(tempFile, encoder, { codec: 'deflate' });
+      chunk.map(row => writer.write(row));
+      writer.end();
+
+      await new Promise(resolve => writer.on('end', resolve));
 
       const up = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'octet-stream', Authorization: this.client.getToken() ?? '' },
-        body: await data.arrayBuffer()
+        body: await fs.promises.readFile(tempFile)
       });
 
       if (up.status > 299) {
         throw new XandrError(await up.text(), '', up.status, Object.fromEntries(up.headers.entries()));
       }
+
+      await fs.promises.unlink(tempFile);
     }
 
     return jobs;
-
   }
 }

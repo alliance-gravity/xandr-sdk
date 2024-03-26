@@ -79,7 +79,7 @@ export interface BSSDataRow {
       type: string;
     };
   } | {
-    long: number;
+    long: bigint;
   } | {
     xfa: {
       device_model_id?: number;
@@ -92,7 +92,7 @@ export interface BSSDataRow {
     code: string;
     member_id: number;
     expiration: number;
-    timestamp: number;
+    timestamp: bigint;
     value: number;
   }[];
 }
