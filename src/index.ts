@@ -15,6 +15,7 @@ import { XandrProfileClient } from './profile';
 import { XandrCityClient } from './city';
 import { XandrRegionClient } from './region';
 import { XandrDmaClient } from './dma';
+import { XandrBSSClient } from './bss';
 
 export const defaultApiUrl = 'https://api.appnexus.com';
 export { sanitizeUrlFormat } from './apd/utils';
@@ -48,6 +49,8 @@ export class XandrClient {
   public region: XandrRegionClient = new XandrRegionClient(this);
 
   public dma: XandrDmaClient = new XandrDmaClient(this);
+
+  public bss: XandrBSSClient = new XandrBSSClient(this);
 
   public readonly apiUrl: string;
 

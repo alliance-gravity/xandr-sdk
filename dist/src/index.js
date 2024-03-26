@@ -18,6 +18,7 @@ const profile_1 = require("./profile");
 const city_1 = require("./city");
 const region_1 = require("./region");
 const dma_1 = require("./dma");
+const bss_1 = require("./bss");
 exports.defaultApiUrl = 'https://api.appnexus.com';
 var utils_2 = require("./apd/utils");
 Object.defineProperty(exports, "sanitizeUrlFormat", { enumerable: true, get: function () { return utils_2.sanitizeUrlFormat; } });
@@ -37,6 +38,7 @@ class XandrClient {
         this.city = new city_1.XandrCityClient(this);
         this.region = new region_1.XandrRegionClient(this);
         this.dma = new dma_1.XandrDmaClient(this);
+        this.bss = new bss_1.XandrBSSClient(this);
         this.token = null;
         this.creds = params;
         this.apiUrl = apiUrl;
