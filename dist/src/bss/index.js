@@ -1,27 +1,4 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -29,9 +6,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.XandrBSSClient = void 0;
 const errors_1 = require("../errors");
 const node_fetch_1 = __importDefault(require("node-fetch"));
-const avro = __importStar(require("avsc"));
+const avsc_1 = __importDefault(require("avsc"));
+const fs_1 = __importDefault(require("fs"));
+const longType = avsc_1.default.types.LongType.__with({
+    fromBuffer: (buf) => buf.readBigInt64LE(),
+    toBuffer: (n) => {
+        const buf = Buffer.alloc(8);
+        buf.writeBigInt64LE(n);
+        return buf;
+    },
+    fromJSON: BigInt,
+    toJSON: Number,
+    isValid: (n) => typeof n == 'bigint',
+    compare: (n1, n2) => {
+        // eslint-disable-next-line @typescript-eslint/no-extra-parens
+        return n1 === n2 ? 0 : (n1 < n2 ? -1 : 1);
+    }
+});
 const bss_json_1 = __importDefault(require("../../assets/avro/bss.json"));
-const buffer_1 = require("buffer");
 class XandrBSSClient {
     constructor(client) {
         this.endpoint = 'batch-segment';
@@ -48,8 +40,13 @@ class XandrBSSClient {
     async upload(memberId, rows, chunkSize = 1000000) {
         var _a;
         const jobs = [];
+        const tempFile = 'upload.avro';
         let processed = 0;
-        const encoder = avro.Type.forSchema(bss_json_1.default);
+        const encoder = avsc_1.default.Type.forSchema(bss_json_1.default, {
+            registry: {
+                'long': longType
+            }
+        });
         while (processed < rows.length) {
             const chunk = rows.slice(processed, processed + chunkSize);
             processed += chunkSize;
@@ -60,15 +57,19 @@ class XandrBSSClient {
             });
             jobs.push(response.batch_segment_upload_job.job_id);
             const url = response.batch_segment_upload_job.upload_url;
-            const data = new buffer_1.Blob(chunk.map(row => encoder.toBuffer(row)));
+            const writer = avsc_1.default.createFileEncoder(tempFile, encoder, { codec: 'deflate' });
+            chunk.map(row => writer.write(row));
+            writer.end();
+            await new Promise(resolve => writer.on('end', resolve));
             const up = await (0, node_fetch_1.default)(url, {
                 method: 'POST',
                 headers: { 'Content-Type': 'octet-stream', Authorization: (_a = this.client.getToken()) !== null && _a !== void 0 ? _a : '' },
-                body: await data.arrayBuffer()
+                body: await fs_1.default.promises.readFile(tempFile)
             });
             if (up.status > 299) {
                 throw new errors_1.XandrError(await up.text(), '', up.status, Object.fromEntries(up.headers.entries()));
             }
+            //await fs.promises.unlink(tempFile);
         }
         return jobs;
     }
