@@ -357,7 +357,14 @@ export interface ProfileParameter {
       name?: string;
       exclude: boolean;
     }[];
-
+    platform_placement_targets?: {
+      id: number;
+      action: Action;
+    }[];
+    placement_targets?: {
+      id: number;
+      action: Action;
+    }[];
   };
 }
 
