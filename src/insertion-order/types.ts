@@ -87,7 +87,7 @@ export interface InsertionOrder {
   political_content: PoliticalContent;
 }
 
-export interface InsertionOrderParameters {
+export interface PostInsertionOrderParameters {
   id?: number;
   name: string;
   code?: string;
@@ -107,6 +107,32 @@ export interface InsertionOrderParameters {
   broker_fees?: BrokerFee[];
   budget_intervals?: BudgetInterval[];
   budget_type: 'flexible' | 'impression' | 'revenue';
+  profile_id?: number;
+  viewability_standard_provider?: string;
+  is_running_political_ads?: boolean;
+  political_content?: PoliticalContent;
+}
+
+export interface PutInsertionOrderParameters {
+  id?: number;
+  name?: string;
+  code?: string;
+  state: 'active' | 'inactive';
+  advertiser_id?: number;
+  start_date?: string;
+  end_date?: string;
+  remaining_days?: number;
+  total_days?: number;
+  last_modified?: string;
+  timezone?: string;
+  currency?: string;
+  comments?: string;
+  billing_code?: string;
+  line_item?: LineItem[];
+  labels?: Labels[];
+  broker_fees?: BrokerFee[];
+  budget_intervals?: BudgetInterval[];
+  budget_type?: 'flexible' | 'impression' | 'revenue';
   profile_id?: number;
   viewability_standard_provider?: string;
   is_running_political_ads?: boolean;

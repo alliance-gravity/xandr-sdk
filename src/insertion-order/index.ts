@@ -3,7 +3,8 @@ import type { XandrClient } from '..';
 
 import type {
   InsertionOrder,
-  InsertionOrderParameters,
+  PostInsertionOrderParameters,
+  PutInsertionOrderParameters,
   GetInsertionOrderParameters,
   ModifyInsertionOrderParameters,
   InsertionOrderBaseResponse,
@@ -66,7 +67,7 @@ export class XandrInsertionOrderClient {
     return insertionOrders;
   }
 
-  public async add (advertiserId: number, insertionOrder: InsertionOrderParameters): Promise<InsertionOrderResponse> {
+  public async add (advertiserId: number, insertionOrder: PostInsertionOrderParameters): Promise<InsertionOrderResponse> {
     const response = await this.client.execute<InsertionOrderResponse>({
       method: 'POST',
       headers: this.defaultHeaders,
@@ -78,7 +79,7 @@ export class XandrInsertionOrderClient {
     return response;
   }
   
-  public async modify (params: ModifyInsertionOrderParameters, insertionOrder: InsertionOrderParameters): Promise<InsertionOrderResponse> {
+  public async modify (params: ModifyInsertionOrderParameters, insertionOrder: PutInsertionOrderParameters): Promise<InsertionOrderResponse> {
     const response = await this.client.execute<InsertionOrderResponse>({
       method: 'PUT',
       headers: this.defaultHeaders,
