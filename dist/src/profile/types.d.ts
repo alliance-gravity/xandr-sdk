@@ -19,15 +19,17 @@ interface SegmentTarget {
 }
 interface SegmentGroupTarget {
     boolean_operator: 'and' | 'or';
-    id: number;
-    code?: string;
-    action: Action;
-    start_minutes?: number;
-    expire_minutes?: number;
-    other_equals?: number | null;
-    other_less?: number | null;
-    other_greater?: number | null;
-    other_in_list?: string[] | null;
+    segments: {
+        id: number;
+        code?: string;
+        action: Action;
+        start_minutes?: number;
+        expire_minutes?: number;
+        other_equals?: number | null;
+        other_less?: number | null;
+        other_greater?: number | null;
+        other_in_list?: string[] | null;
+    }[];
 }
 interface Targeting {
     graph_id: number;
