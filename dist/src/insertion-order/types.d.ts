@@ -69,7 +69,7 @@ export interface InsertionOrder {
     currency: string;
     comments: string;
     billing_code: string | null;
-    line_item: LineItem[] | null;
+    line_items: LineItem[] | null;
     labels: Labels[] | null;
     broker_fees: BrokerFee[] | null;
     budget_intervals: BudgetInterval[];
