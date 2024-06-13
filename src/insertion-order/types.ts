@@ -82,6 +82,7 @@ export interface InsertionOrder {
   budget_intervals: BudgetInterval[];
   budget_type: 'flexible' | 'impression' | 'revenue';
   profile_id: number;
+  member_id: number;
   viewability_standard_provider: string;
   is_running_political_ads: boolean;
   political_content: PoliticalContent;
