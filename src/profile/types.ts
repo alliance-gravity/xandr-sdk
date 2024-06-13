@@ -27,6 +27,7 @@ interface SegmentGroupTarget {
   boolean_operator: 'and' | 'or';
   segments: {
     id: number;
+    name: string;
     code?: string;
     action: Action;
     start_minutes?: number;
