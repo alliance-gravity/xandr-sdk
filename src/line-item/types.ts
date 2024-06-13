@@ -145,6 +145,8 @@ export interface LineItem {
   creative_distribution_type: 'ctr-optimized' | 'even' | 'weighted';
   prefer_delivery_over_performance: boolean;
   viewability_vendor: 'appnexus';
+  is_archived?: boolean;
+  archived_on?: string;
   partner_fees: {
     id: number;
   }[];
@@ -227,7 +229,7 @@ export interface PostLineItemParameters {
   prefer_delivery_over_performance?: boolean;
   viewability_vendor?: 'appnexus';
   is_archived?: boolean;
-  archived_on?: number;
+  archived_on?: string;
   partner_fees?: {
     id: number;
   }[];
@@ -309,7 +311,7 @@ export interface PutLineItemParameters {
   prefer_delivery_over_performance?: boolean;
   viewability_vendor?: 'appnexus';
   is_archived?: boolean;
-  archived_on?: number;
+  archived_on?: string;
   partner_fees?: {
     id: number;
   }[];
