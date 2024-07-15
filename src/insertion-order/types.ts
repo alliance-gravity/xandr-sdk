@@ -18,7 +18,7 @@ interface BrokerFee {
 interface BudgetInterval {
   id?: number;
   start_date: string;
-  end_date: string;
+  end_date: string | null;
   timezone: string;
   code?: string;
   lifetime_budget: number;
