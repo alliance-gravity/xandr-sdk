@@ -5,7 +5,7 @@ declare type CustomModelType = 'bid_modifier' | 'cadence' | 'click_imp' | 'conv_
 interface BudgetInterval {
     id: number;
     start_date: string;
-    end_date: string;
+    end_date: string | null;
     timezone: string;
     parent_interval_id: number;
     lifetime_budget: number;
