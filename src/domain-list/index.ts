@@ -5,7 +5,6 @@ import type {
   DomainList,
   DomainListPostParameters,
   DomainListPutParameters,
-  DomainListGetParameters,
   DomainListResponse,
   DomainListsResponse
 } from './types';
@@ -16,6 +15,7 @@ export class XandrDomainListClient {
   private readonly endpoint = 'domain-list';
 
   private readonly defaultHeaders = {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     'Content-Type': 'application/json'
   };
 
@@ -23,28 +23,45 @@ export class XandrDomainListClient {
     this.client = client;
   }
 
-  public async get (params: DomainListGetParameters): Promise<DomainList> {
+  public async get (id: number): Promise<DomainList> {
     const response = await this.client.execute<DomainListResponse>({
       method: 'GET',
       endpoint: this.endpoint,
-      query: { ...params }
+      query: { id }
     });
     return response['domain-list'];
   }
 
-  public async getAll (): Promise<DomainList[]> {
-    const DomainLists = [] as DomainList[];
+  public async search (search: string): Promise<DomainList[]> {
+    const domainLists = [] as DomainList[];
     let done = false;
     do {
       const response = await this.client.execute<DomainListsResponse>({
         method: 'GET',
         endpoint: this.endpoint,
-        query: { start_element: DomainLists.length }
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        query: { search, start_element: domainLists.length }
       });
-      DomainLists.push(...response['domain-lists']);
-      done = response.count !== DomainLists.length;
+      domainLists.push(...response['domain-lists']);
+      done = response.count !== domainLists.length;
     } while (!done);
-    return DomainLists;
+    return domainLists;
+  }
+
+  public async getAll (): Promise<DomainList[]> {
+    const domainLists = [] as DomainList[];
+    let done = false;
+    do {
+      const response = await this.client.execute<DomainListsResponse>({
+        method: 'GET',
+        endpoint: this.endpoint,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        query: { start_element: domainLists.length }
+      });
+      domainLists.push(...response['domain-lists']);
+      done = response.count !== domainLists.length;
+    } while (!done);
+    return domainLists;
   }
 
   public async create (props: DomainListPostParameters): Promise<DomainList> {

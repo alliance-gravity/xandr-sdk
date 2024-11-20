@@ -10,12 +10,6 @@ export interface DomainList {
   last_modified?: string;
 }
 
-export type DomainListGetParameters = {
-  id: number;
-} | {
-  search: string;
-};
-
 export interface DomainListPostParameters {
   description?: string;
   domains?: string[];
