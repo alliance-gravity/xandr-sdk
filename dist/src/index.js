@@ -20,11 +20,13 @@ const region_1 = require("./region");
 const dma_1 = require("./dma");
 const bss_1 = require("./bss");
 const domain_list_1 = require("./domain-list");
+const inventory_list_1 = require("./inventory-list");
 exports.defaultApiUrl = 'https://api.appnexus.com';
 var utils_2 = require("./apd/utils");
 Object.defineProperty(exports, "sanitizeUrlFormat", { enumerable: true, get: function () { return utils_2.sanitizeUrlFormat; } });
 class XandrClient {
     constructor(params, apiUrl = exports.defaultApiUrl) {
+        this.inventoryList = new inventory_list_1.XandrInventoryListClient(this);
         this.domainList = new domain_list_1.XandrDomainListClient(this);
         this.customModel = new custom_model_1.XandrCustomModelClient(this);
         this.advertiser = new advertiser_1.XandrAdvertiserClient(this);
