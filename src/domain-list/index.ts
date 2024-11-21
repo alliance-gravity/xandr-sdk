@@ -1,6 +1,5 @@
 import type { XandrClient } from '..';
 import type { CommonResponse } from '../xandr-types';
-
 import type {
   DomainList,
   DomainListPostParameters,

@@ -16,10 +16,12 @@ import { XandrCityClient } from './city';
 import { XandrRegionClient } from './region';
 import { XandrDmaClient } from './dma';
 import { XandrBSSClient } from './bss';
+import { XandrDomainListClient } from './domain-list';
 export declare const defaultApiUrl = "https://api.appnexus.com";
 export { sanitizeUrlFormat } from './apd/utils';
 export { XandrError };
 export declare class XandrClient {
+    domainList: XandrDomainListClient;
     customModel: XandrCustomModelClient;
     advertiser: XandrAdvertiserClient;
     publisher: XandrPublisherClient;
