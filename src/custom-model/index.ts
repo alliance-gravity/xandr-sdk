@@ -43,7 +43,7 @@ export class XandrCustomModelClient {
         query: { start_element: customModels.length }
       });
       customModels.push(...response.custom_models);
-      done = response.count !== customModels.length;
+      done = response.count === customModels.length;
     } while (!done);
     return customModels;
   }

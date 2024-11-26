@@ -56,7 +56,7 @@ export class XandrInventoryListClient {
         query: { search, start_element: inventoryLists.length }
       });
       inventoryLists.push(...response['inventory-lists']);
-      done = response.count !== inventoryLists.length;
+      done = response.count === inventoryLists.length;
     } while (!done);
     return inventoryLists;
   }
@@ -88,7 +88,7 @@ export class XandrInventoryListClient {
         query: { start_element: inventoryLists.length }
       });
       inventoryLists.push(...response['inventory-lists']);
-      done = response.count !== inventoryLists.length;
+      done = response.count === inventoryLists.length;
     } while (!done);
     return inventoryLists;
   }
@@ -104,7 +104,7 @@ export class XandrInventoryListClient {
         query: { start_element: inventoryListItems.length }
       });
       inventoryListItems.push(...response['inventory-list-items']);
-      done = response.count !== inventoryListItems.length;
+      done = response.count === inventoryListItems.length;
     } while (!done);
     return inventoryListItems;
   }

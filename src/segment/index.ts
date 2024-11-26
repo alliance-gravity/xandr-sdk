@@ -114,7 +114,7 @@ export class XandrSegmentClient {
       });
       segments = segments.concat(response.segments);
       index += response.count;
-      done = response.count !== response.num_elements;
+      done = response.count === response.num_elements;
     } while (!done);
     return segments;
   }
@@ -132,7 +132,7 @@ export class XandrSegmentClient {
       });
       segments = segments.concat(response.segments);
       index += response.count;
-      done = response.count !== response.num_elements;
+      done = response.count === response.num_elements;
     } while (!done);
     return segments;
   }
