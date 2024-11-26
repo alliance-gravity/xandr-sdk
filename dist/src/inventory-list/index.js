@@ -17,7 +17,7 @@ class XandrInventoryListClient {
             // eslint-disable-next-line @typescript-eslint/naming-convention
             query: { inventory_url_list_id: id }
         });
-        return response;
+        return response['inventory-list'].id;
     }
     async get(id) {
         const response = await this.client.execute({
@@ -72,11 +72,19 @@ class XandrInventoryListClient {
         return inventoryLists;
     }
     async getAllItems(listId) {
-        const response = await this.client.execute({
-            method: 'GET',
-            endpoint: `${this.endpoint}/${listId}/item`
-        });
-        return response['inventory-list-items'];
+        const inventoryListItems = [];
+        let done = false;
+        do {
+            const response = await this.client.execute({
+                method: 'GET',
+                endpoint: `${this.endpoint}/${listId}/item`,
+                // eslint-disable-next-line @typescript-eslint/naming-convention
+                query: { start_element: inventoryListItems.length }
+            });
+            inventoryListItems.push(...response['inventory-list-items']);
+            done = response.count !== inventoryListItems.length;
+        } while (!done);
+        return inventoryListItems;
     }
     async create(props) {
         const response = await this.client.execute({
