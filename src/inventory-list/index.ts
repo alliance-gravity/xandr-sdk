@@ -28,13 +28,13 @@ export class XandrInventoryListClient {
   }
 
   public async getInventoryListId (id: number): Promise<number> {
-    const response = await this.client.execute<number>({
+    const response = await this.client.execute<InventoryListResponse>({
       method: 'GET',
       endpoint: this.endpoint,
       // eslint-disable-next-line @typescript-eslint/naming-convention
       query: { inventory_url_list_id: id }
     });
-    return response;
+    return response['inventory-list'].id;
   }
 
   public async get (id: number): Promise<InventoryList[]> {
@@ -94,11 +94,19 @@ export class XandrInventoryListClient {
   }
 
   public async getAllItems (listId: number): Promise<InventoryListItem[]> {
-    const response = await this.client.execute<InventoryListItemsResponse>({
-      method: 'GET',
-      endpoint: `${this.endpoint}/${listId}/item`
-    });
-    return response['inventory-list-items'];
+    const inventoryListItems = [] as InventoryListItem[];
+    let done = false;
+    do {
+      const response = await this.client.execute<InventoryListItemsResponse>({
+        method: 'GET',
+        endpoint: `${this.endpoint}/${listId}/item`,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        query: { start_element: inventoryListItems.length }
+      });
+      inventoryListItems.push(...response['inventory-list-items']);
+      done = response.count !== inventoryListItems.length;
+    } while (!done);
+    return inventoryListItems;
   }
 
   public async create (props: InventoryListPostParameters): Promise<InventoryList> {
