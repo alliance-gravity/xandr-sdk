@@ -17,7 +17,7 @@ class XandrInventoryListClient {
             // eslint-disable-next-line @typescript-eslint/naming-convention
             query: { inventory_url_list_id: id }
         });
-        return response['inventory-list'].id;
+        return response['inventory-lists'][0].id;
     }
     async get(id) {
         const response = await this.client.execute({

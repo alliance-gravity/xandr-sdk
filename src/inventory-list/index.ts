@@ -28,13 +28,13 @@ export class XandrInventoryListClient {
   }
 
   public async getInventoryListId (id: number): Promise<number> {
-    const response = await this.client.execute<InventoryListResponse>({
+    const response = await this.client.execute<InventoryListsResponse>({
       method: 'GET',
       endpoint: this.endpoint,
       // eslint-disable-next-line @typescript-eslint/naming-convention
       query: { inventory_url_list_id: id }
     });
-    return response['inventory-list'].id;
+    return response['inventory-lists'][0].id;
   }
 
   public async get (id: number): Promise<InventoryList[]> {
