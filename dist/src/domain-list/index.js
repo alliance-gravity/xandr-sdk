@@ -16,7 +16,7 @@ class XandrDomainListClient {
             endpoint: this.endpoint,
             query: { id }
         });
-        return response['domain-list'];
+        return response['domain-lists'];
     }
     async search(search) {
         const domainLists = [];

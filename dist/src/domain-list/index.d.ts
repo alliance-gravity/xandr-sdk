@@ -5,7 +5,7 @@ export declare class XandrDomainListClient {
     private readonly endpoint;
     private readonly defaultHeaders;
     constructor(client: XandrClient);
-    get(id: number): Promise<DomainList>;
+    get(id: number): Promise<DomainList[]>;
     search(search: string): Promise<DomainList[]>;
     getAll(): Promise<DomainList[]>;
     create(props: DomainListPostParameters): Promise<DomainList>;

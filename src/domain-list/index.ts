@@ -22,13 +22,13 @@ export class XandrDomainListClient {
     this.client = client;
   }
 
-  public async get (id: number): Promise<DomainList> {
-    const response = await this.client.execute<DomainListResponse>({
+  public async get (id: number): Promise<DomainList[]> {
+    const response = await this.client.execute<DomainListsResponse>({
       method: 'GET',
       endpoint: this.endpoint,
       query: { id }
     });
-    return response['domain-list'];
+    return response['domain-lists'];
   }
 
   public async search (search: string): Promise<DomainList[]> {
