@@ -29,7 +29,7 @@ class XandrDomainListClient {
                 query: { search, start_element: domainLists.length }
             });
             domainLists.push(...response['domain-lists']);
-            done = response.count !== domainLists.length;
+            done = response.count === domainLists.length;
         } while (!done);
         return domainLists;
     }
@@ -44,7 +44,7 @@ class XandrDomainListClient {
                 query: { start_element: domainLists.length }
             });
             domainLists.push(...response['domain-lists']);
-            done = response.count !== domainLists.length;
+            done = response.count === domainLists.length;
         } while (!done);
         return domainLists;
     }
