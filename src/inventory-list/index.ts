@@ -143,8 +143,7 @@ export class XandrInventoryListClient {
     const response = await this.client.execute<InventoryListResponse>({
       method: 'PUT',
       headers: this.defaultHeaders,
-      endpoint: this.endpoint,
-      query: { id },
+      endpoint: `${this.endpoint}/${id}`,
       body: { 'inventory-list': props }
     });
     return response['inventory-list'];
