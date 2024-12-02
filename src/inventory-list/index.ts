@@ -72,7 +72,7 @@ export class XandrInventoryListClient {
         query: { search, start_element: inventoryListItems.length }
       });
       inventoryListItems.push(...response['inventory-list-items']);
-      done = response.count !== inventoryListItems.length;
+      done = response.count === inventoryListItems.length;
     } while (!done);
     return inventoryListItems;
   }
