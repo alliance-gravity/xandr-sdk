@@ -61,8 +61,7 @@ class XandrDomainListClient {
         const response = await this.client.execute({
             method: 'PUT',
             headers: this.defaultHeaders,
-            endpoint: this.endpoint,
-            query: { id },
+            endpoint: `${this.endpoint}/${id}`,
             body: { 'domain-list': props }
         });
         return response['domain-list'];
