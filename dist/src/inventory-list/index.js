@@ -47,7 +47,7 @@ class XandrInventoryListClient {
         do {
             const response = await this.client.execute({
                 method: 'GET',
-                endpoint: `${this.endpoint}/${listId}/item/`,
+                endpoint: `${this.endpoint}/${listId}/item`,
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 query: { search, start_element: inventoryListItems.length }
             });
