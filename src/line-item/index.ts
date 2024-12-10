@@ -13,7 +13,8 @@ import type {
   LineItemOneResponse,
   LineItemModelId,
   GetLineItemModelResponse,
-  AssociateOrModifyLineItemModelResponse
+  AssociateOrModifyLineItemModelResponse,
+  Split
 } from './types';
 
 export class XandrLineItemClient { 
@@ -137,6 +138,39 @@ export class XandrLineItemClient {
       endpoint: `${this.endpoint}-model`,
       query: {id: lineItemId},
       body: Array.isArray(lineItemModelId) ? {'line_item_models':lineItemModelId} : {'line_item_model':lineItemModelId}
+    });
+  }
+
+  public async getSplits (lineItemId: number): Promise<Split[]> {
+    const response = await this.client.execute<Split[]>({
+      method: 'GET',
+      endpoint: `budget-splitter/${lineItemId}/splits`
+    });
+    return response;
+  }
+
+  public async setSplits (lineItemId: number, splits: Split[]): Promise<Split[]> {
+    const response = await this.client.execute<Split[]>({
+      method: 'PUT',
+      endpoint: `budget-splitter/${lineItemId}/splits`,
+      body: splits
+    });
+    return response;
+  }
+
+  public async updateSplit (lineItemId: number, split: Split): Promise<Split[]> {
+    const response = await this.client.execute<Split[]>({
+      method: 'PATCH',
+      endpoint: `budget-splitter/${lineItemId}/splits`,
+      body: [ split ]
+    });
+    return response;
+  }
+
+  public async deleteSplits (lineItemId: number): Promise<void> {
+    await this.client.execute<CommonResponse>({
+      method: 'DELETE',
+      endpoint: `budget-splitter/${lineItemId}/splits`
     });
   }
 }

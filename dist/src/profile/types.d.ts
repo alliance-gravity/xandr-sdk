@@ -1,6 +1,6 @@
 import type { Placement } from '../placement/types';
 import type { CommonResponse, Id } from '../xandr-types';
-declare type Action = 'exclude' | 'include';
+type Action = 'exclude' | 'include';
 interface DaypartTarget {
     day: 'all' | 'friday' | 'monday' | 'saturday' | 'sunday' | 'thursday' | 'tuesday' | 'wednesday';
     start_hour: number;
@@ -358,7 +358,7 @@ export interface ProfileParameter {
         }[];
     };
 }
-export declare type ProfileBaseResponse = CommonResponse & Id;
+export type ProfileBaseResponse = CommonResponse & Id;
 interface ProfileId {
     id?: number;
     advertiser_id: number;
@@ -368,20 +368,20 @@ interface ProfileCode {
     profile_code?: string;
     advertiser_code: string;
 }
-export declare type AddProfileParameters = {
+export type AddProfileParameters = {
     advertiser_code: string;
 } | {
     advertiser_id: number;
     member_id: number;
 };
-export declare type GetProfileParameters = ProfileCode | ProfileId;
-export declare type ModifyProfileParameters = ProfileCode | ProfileId;
-export declare type ProfileFull = Profile & Targeting;
-export declare type ProfileGetResponse = ProfileBaseResponse & {
+export type GetProfileParameters = ProfileCode | ProfileId;
+export type ModifyProfileParameters = ProfileCode | ProfileId;
+export type ProfileFull = Profile & Targeting;
+export type ProfileGetResponse = ProfileBaseResponse & {
     'profiles'?: ProfileFull[];
     'profile'?: ProfileFull;
 };
-export declare type ProfileResponse = ProfileBaseResponse & {
+export type ProfileResponse = ProfileBaseResponse & {
     'profile': ProfileFull;
 };
 export {};

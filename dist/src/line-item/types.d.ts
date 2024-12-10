@@ -1,7 +1,7 @@
-declare type State = 'active' | 'inactive';
-declare type AdType = 'audio' | 'banner' | 'native' | 'video';
-declare type TriggerType = 'click' | 'hybrid' | 'view';
-declare type CustomModelType = 'bid_modifier' | 'cadence' | 'click_imp' | 'conv_click' | 'conv_imp' | 'creative_selection' | 'ev_click' | 'ev_conv' | 'expected_value' | 'nonvaluation';
+type State = 'active' | 'inactive';
+type AdType = 'audio' | 'banner' | 'native' | 'video';
+type TriggerType = 'click' | 'hybrid' | 'view';
+type CustomModelType = 'bid_modifier' | 'cadence' | 'click_imp' | 'conv_click' | 'conv_imp' | 'creative_selection' | 'ev_click' | 'ev_conv' | 'expected_value' | 'nonvaluation';
 interface BudgetInterval {
     id: number;
     start_date: string;
@@ -321,31 +321,52 @@ export interface LineItemModelId {
     custom_model_id: number;
     type: CustomModelType;
 }
-export declare type LineItemModel = Record<string, LineItemModelId[]>;
-export declare type GetLineItemParameters = LineItemCode | {
+export type LineItemModel = Record<string, LineItemModelId[]>;
+export type GetLineItemParameters = LineItemCode | {
     advertiserId: number;
 } | {
     idList: number[];
 };
-export declare type ModifyLineItemParameters = LineItemCode | LineItemId;
-export declare type ModifyLineItemModelParameters = LineItemModelId | LineItemModelId[];
+export type ModifyLineItemParameters = LineItemCode | LineItemId;
+export type ModifyLineItemModelParameters = LineItemModelId | LineItemModelId[];
 export interface LineItemBaseResponse {
     status: string;
     count: number;
     start_element?: number;
     num_elements?: number;
 }
-export declare type LineItemGetResponse = LineItemBaseResponse & {
+export type LineItemGetResponse = LineItemBaseResponse & {
     'line-items'?: LineItem[];
     'line-item'?: LineItem;
 };
-export declare type LineItemOneResponse = LineItemBaseResponse & {
+export type LineItemOneResponse = LineItemBaseResponse & {
     'line-item': LineItem;
 };
-export declare type GetLineItemModelResponse = LineItemBaseResponse & {
+export type GetLineItemModelResponse = LineItemBaseResponse & {
     'line_item_models': LineItemModel;
 };
-export declare type AssociateOrModifyLineItemModelResponse = LineItemBaseResponse & {
+export type AssociateOrModifyLineItemModelResponse = LineItemBaseResponse & {
     'line_item_model': LineItemModelId[];
 };
+export interface Split {
+    id: number;
+    name: string;
+    is_default: boolean;
+    conditions: {
+        field: string;
+        operator: string;
+        value: unknown[];
+    }[];
+    active: boolean;
+    order: number;
+    allocation_percent: number;
+    allocation_strategy: 'constrained' | 'unconstrained';
+    bid_modifier: number;
+    expected_value: number;
+    creatives: {
+        creative_id: number;
+    }[];
+    creative_macros: string[];
+    user_test_group_percent: number;
+}
 export {};
