@@ -14,4 +14,7 @@ export declare class XandrLineItemClient {
     associateOrModify(lineItemId: number, lineItemModelId: ModifyLineItemModelParameters): Promise<LineItemModelId[]>;
     deleteModel(lineItemId: number, lineItemModelId: ModifyLineItemModelParameters): Promise<void>;
     getSplits(lineItemId: number): Promise<Split[]>;
+    setSplits(lineItemId: number, splits: Split[]): Promise<Split[]>;
+    updateSplit(lineItemId: number, split: Split): Promise<Split[]>;
+    deleteSplits(lineItemId: number): Promise<void>;
 }

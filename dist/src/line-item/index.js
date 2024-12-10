@@ -121,5 +121,27 @@ class XandrLineItemClient {
         });
         return response;
     }
+    async setSplits(lineItemId, splits) {
+        const response = await this.client.execute({
+            method: 'PUT',
+            endpoint: `budget-splitter/${lineItemId}/splits`,
+            body: splits
+        });
+        return response;
+    }
+    async updateSplit(lineItemId, split) {
+        const response = await this.client.execute({
+            method: 'PATCH',
+            endpoint: `budget-splitter/${lineItemId}/splits`,
+            body: [split]
+        });
+        return response;
+    }
+    async deleteSplits(lineItemId) {
+        await this.client.execute({
+            method: 'DELETE',
+            endpoint: `budget-splitter/${lineItemId}/splits`
+        });
+    }
 }
 exports.XandrLineItemClient = XandrLineItemClient;
