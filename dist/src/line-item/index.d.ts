@@ -1,5 +1,5 @@
 import type { XandrClient } from '..';
-import type { LineItem, PostLineItemParameters, PutLineItemParameters, GetLineItemParameters, ModifyLineItemParameters, ModifyLineItemModelParameters, LineItemModelId } from './types';
+import type { LineItem, PostLineItemParameters, PutLineItemParameters, GetLineItemParameters, ModifyLineItemParameters, ModifyLineItemModelParameters, LineItemModelId, Split } from './types';
 export declare class XandrLineItemClient {
     private readonly client;
     private readonly endpoint;
@@ -13,4 +13,5 @@ export declare class XandrLineItemClient {
     getModel(lineItemId: number): Promise<LineItemModelId[]>;
     associateOrModify(lineItemId: number, lineItemModelId: ModifyLineItemModelParameters): Promise<LineItemModelId[]>;
     deleteModel(lineItemId: number, lineItemModelId: ModifyLineItemModelParameters): Promise<void>;
+    getSplits(lineItemId: number): Promise<Split[]>;
 }

@@ -114,5 +114,12 @@ class XandrLineItemClient {
             body: Array.isArray(lineItemModelId) ? { 'line_item_models': lineItemModelId } : { 'line_item_model': lineItemModelId }
         });
     }
+    async getSplits(lineItemId) {
+        const response = await this.client.execute({
+            method: 'GET',
+            endpoint: `budget-splitter/${lineItemId}/splits`
+        });
+        return response;
+    }
 }
 exports.XandrLineItemClient = XandrLineItemClient;
