@@ -369,6 +369,12 @@ export type AssociateOrModifyLineItemModelResponse = LineItemBaseResponse & {
   'line_item_model': LineItemModelId[];
 };
 
+type SplitConditionUnsupportedField = 'browser' | 'carrier' | 'city' | 'content_category' | 'country' | 'creative'
+| 'deal_id' | 'deal_list' | 'device_model' | 'device_type' | 'dma' | 'domain' | 'estimated_video_completion_rate'
+| 'inventory_url_id' | 'key_group' | 'language' | 'mobile_app_bundle' | 'os_extended' | 'os_family' | 'placement'
+| 'postal_code_list' | 'postal_code' | 'predicted_iab_video_view_rate' | 'predicted_iab_view_rate' | 'publisher'
+| 'region' | 'seller_member_id' | 'size';
+
 type SplitCondition = {
   field: 'segment_group';
   operator: 'and' | 'or';
@@ -376,7 +382,7 @@ type SplitCondition = {
     segment_ID: number;
   }[]];
 } | {
-  field: string;
+  field: SplitConditionUnsupportedField;
   operator: string;
   value: unknown[];
 };
