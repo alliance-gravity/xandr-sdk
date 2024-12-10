@@ -369,15 +369,23 @@ export type AssociateOrModifyLineItemModelResponse = LineItemBaseResponse & {
   'line_item_model': LineItemModelId[];
 };
 
+type SplitCondition = {
+  field: 'segment_group';
+  operator: 'and' | 'or';
+  value: [{
+    segment_ID: number;
+  }[]];
+} | {
+  field: string;
+  operator: string;
+  value: unknown[];
+};
+
 export interface Split {
   id: number;
   name: string;
   is_default: boolean;
-  conditions?: {
-    field: string;
-    operator: string;
-    value: unknown[];
-  }[];
+  conditions?: SplitCondition;
   active: boolean;
   order: number;
   allocation_percent: number;
