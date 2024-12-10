@@ -368,3 +368,25 @@ export type GetLineItemModelResponse = LineItemBaseResponse & {
 export type AssociateOrModifyLineItemModelResponse = LineItemBaseResponse & {
   'line_item_model': LineItemModelId[];
 };
+
+export interface Split {
+  id: number;
+  name: string;
+  is_default: boolean;
+  conditions?: {
+    field: string;
+    operator: string;
+    value: unknown[];
+  }[];
+  active: boolean;
+  order: number;
+  allocation_percent: number;
+  allocation_strategy: 'constrained' | 'unconstrained';
+  bid_modifier: number | null;
+  expected_value: number;
+  creatives: {
+    creative_id: number;
+  }[];
+  creative_macros: string[];
+  user_test_group_percent: number | null;
+}
