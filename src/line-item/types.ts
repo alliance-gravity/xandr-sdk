@@ -385,7 +385,7 @@ export interface Split {
   id: number;
   name: string;
   is_default: boolean;
-  conditions?: SplitCondition;
+  conditions?: SplitCondition[];
   active: boolean;
   order: number;
   allocation_percent: number;
