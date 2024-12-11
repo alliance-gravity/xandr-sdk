@@ -379,7 +379,7 @@ type SplitCondition = {
   field: 'segment_group';
   operator: 'and' | 'or';
   value: [{
-    segment_ID: number;
+    segment_id: number;
   }[]];
 } | {
   field: SplitConditionUnsupportedField;
