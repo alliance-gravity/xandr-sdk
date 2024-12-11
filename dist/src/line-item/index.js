@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.XandrLineItemClient = void 0;
+const errors_1 = require("../errors");
 class XandrLineItemClient {
     constructor(client) {
         this.endpoint = 'line-item';
@@ -115,11 +116,19 @@ class XandrLineItemClient {
         });
     }
     async getSplits(lineItemId) {
-        const response = await this.client.execute({
-            method: 'GET',
-            endpoint: `budget-splitter/${lineItemId}/splits`
-        });
-        return response;
+        try {
+            return await this.client.execute({
+                method: 'GET',
+                endpoint: `budget-splitter/${lineItemId}/splits`
+            });
+        }
+        catch (err) {
+            // HTTP 404 in case of no splits found
+            if (err instanceof errors_1.XandrError && err.status === 404) {
+                return [];
+            }
+            throw err;
+        }
     }
     async setSplits(lineItemId, splits) {
         const response = await this.client.execute({

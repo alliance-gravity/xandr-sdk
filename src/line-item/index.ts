@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import type { XandrClient } from '..';
-import { XandrError } from '../../dist/src';
+import { XandrError } from '../errors';
 import type { CommonResponse } from '../xandr-types';
 import type {
   LineItem,
