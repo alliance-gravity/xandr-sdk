@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import type { XandrClient } from '..';
+import { XandrError } from '../../dist/src';
 import type { CommonResponse } from '../xandr-types';
 import type {
   LineItem,
@@ -142,11 +143,18 @@ export class XandrLineItemClient {
   }
 
   public async getSplits (lineItemId: number): Promise<Split[]> {
-    const response = await this.client.execute<Split[]>({
-      method: 'GET',
-      endpoint: `budget-splitter/${lineItemId}/splits`
-    });
-    return response;
+    try {
+      return await this.client.execute<Split[]>({
+        method: 'GET',
+        endpoint: `budget-splitter/${lineItemId}/splits`
+      });
+    } catch (err: unknown) {
+      // HTTP 404 in case of no splits found
+      if (err instanceof XandrError && err.status === 404) {
+        return [];
+      }
+      throw err;
+    }
   }
 
   public async setSplits (lineItemId: number, splits: Split[]): Promise<Split[]> {
