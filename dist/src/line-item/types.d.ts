@@ -1,7 +1,7 @@
-type State = 'active' | 'inactive';
-type AdType = 'audio' | 'banner' | 'native' | 'video';
-type TriggerType = 'click' | 'hybrid' | 'view';
-type CustomModelType = 'bid_modifier' | 'cadence' | 'click_imp' | 'conv_click' | 'conv_imp' | 'creative_selection' | 'ev_click' | 'ev_conv' | 'expected_value' | 'nonvaluation';
+declare type State = 'active' | 'inactive';
+declare type AdType = 'audio' | 'banner' | 'native' | 'video';
+declare type TriggerType = 'click' | 'hybrid' | 'view';
+declare type CustomModelType = 'bid_modifier' | 'cadence' | 'click_imp' | 'conv_click' | 'conv_imp' | 'creative_selection' | 'ev_click' | 'ev_conv' | 'expected_value' | 'nonvaluation';
 interface BudgetInterval {
     id: number;
     start_date: string;
@@ -321,35 +321,35 @@ export interface LineItemModelId {
     custom_model_id: number;
     type: CustomModelType;
 }
-export type LineItemModel = Record<string, LineItemModelId[]>;
-export type GetLineItemParameters = LineItemCode | {
+export declare type LineItemModel = Record<string, LineItemModelId[]>;
+export declare type GetLineItemParameters = LineItemCode | {
     advertiserId: number;
 } | {
     idList: number[];
 };
-export type ModifyLineItemParameters = LineItemCode | LineItemId;
-export type ModifyLineItemModelParameters = LineItemModelId | LineItemModelId[];
+export declare type ModifyLineItemParameters = LineItemCode | LineItemId;
+export declare type ModifyLineItemModelParameters = LineItemModelId | LineItemModelId[];
 export interface LineItemBaseResponse {
     status: string;
     count: number;
     start_element?: number;
     num_elements?: number;
 }
-export type LineItemGetResponse = LineItemBaseResponse & {
+export declare type LineItemGetResponse = LineItemBaseResponse & {
     'line-items'?: LineItem[];
     'line-item'?: LineItem;
 };
-export type LineItemOneResponse = LineItemBaseResponse & {
+export declare type LineItemOneResponse = LineItemBaseResponse & {
     'line-item': LineItem;
 };
-export type GetLineItemModelResponse = LineItemBaseResponse & {
+export declare type GetLineItemModelResponse = LineItemBaseResponse & {
     'line_item_models': LineItemModel;
 };
-export type AssociateOrModifyLineItemModelResponse = LineItemBaseResponse & {
+export declare type AssociateOrModifyLineItemModelResponse = LineItemBaseResponse & {
     'line_item_model': LineItemModelId[];
 };
-type SplitConditionUnsupportedField = 'browser' | 'carrier' | 'city' | 'content_category' | 'country' | 'creative' | 'deal_id' | 'deal_list' | 'device_model' | 'device_type' | 'dma' | 'domain' | 'estimated_video_completion_rate' | 'inventory_url_id' | 'key_group' | 'language' | 'mobile_app_bundle' | 'os_extended' | 'os_family' | 'placement' | 'postal_code_list' | 'postal_code' | 'predicted_iab_video_view_rate' | 'predicted_iab_view_rate' | 'publisher' | 'region' | 'seller_member_id' | 'size';
-type SplitCondition = {
+declare type SplitConditionUnsupportedField = 'browser' | 'carrier' | 'city' | 'content_category' | 'country' | 'creative' | 'deal_id' | 'deal_list' | 'device_model' | 'device_type' | 'dma' | 'domain' | 'estimated_video_completion_rate' | 'inventory_url_id' | 'key_group' | 'language' | 'mobile_app_bundle' | 'os_extended' | 'os_family' | 'placement' | 'postal_code_list' | 'postal_code' | 'predicted_iab_video_view_rate' | 'predicted_iab_view_rate' | 'publisher' | 'region' | 'seller_member_id' | 'size';
+declare type SplitCondition = {
     field: 'segment_group';
     operator: 'and' | 'or';
     value: [

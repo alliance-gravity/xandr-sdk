@@ -8,7 +8,7 @@ export interface CustomModelInput {
     model_text: string;
     active?: boolean;
 }
-export type CustomModel = ReadOnlyAttributes & Required<CustomModelInput> & {
+export declare type CustomModel = ReadOnlyAttributes & Required<CustomModelInput> & {
     id: number;
     member_id: number;
     original_text: string;
@@ -41,9 +41,9 @@ export interface CustomModelParserResponse {
         size: number;
     };
 }
-export type CustomModelsResponse = CommonResponse & {
+export declare type CustomModelsResponse = CommonResponse & {
     custom_models: CustomModel[];
 };
-export type CustomModelResponse = CommonResponse & {
+export declare type CustomModelResponse = CommonResponse & {
     custom_model: CustomModel;
 };

@@ -31,7 +31,7 @@ interface UploadRowLocation {
     add: boolean;
     segment: SegmentParameters;
 }
-export type UploadRow = UploadRowLocation | UploadRowUrl;
+export declare type UploadRow = UploadRowLocation | UploadRowUrl;
 export interface UploadParameters {
     memberId: number;
     uploadData: UploadRow[];

@@ -85,7 +85,7 @@ export class XandrInsertionOrderClient {
       headers: this.defaultHeaders,
       endpoint: this.endpoint,
       query: { id: params.id, advertiser_id: params.advertiserId },
-      body: insertionOrder
+      body: { 'insertion-order': insertionOrder }
     });
     return response;
   }
