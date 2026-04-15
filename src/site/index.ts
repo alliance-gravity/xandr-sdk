@@ -56,25 +56,6 @@ export class XandrSiteClient {
     return sites;
   }
 
-  public async search (searchTerm: string): Promise<Site[]> {
-    const sites: Site[] = [];
-    let done = false;
-    do {
-      const response = await this.client.execute<SiteResponse>({
-        method: 'GET',
-        endpoint: this.endpoint,
-        query: { search: searchTerm, start_element: sites.length }
-      });
-      if (response.sites) {
-        sites.push(...response.sites);
-      } else if (response.site) {
-        sites.push(response.site);
-      }
-      done = response.count === sites.length;
-    } while (!done);
-    return sites;
-  }
-
   public async add (publisherId: number, site: PostSiteParameters): Promise<SiteResponse> {
     const response = await this.client.execute<SiteResponse>({
       method: 'POST',
