@@ -18,6 +18,7 @@ import { XandrDmaClient } from './dma';
 import { XandrBSSClient } from './bss';
 import { XandrDomainListClient } from './domain-list';
 import { XandrInventoryListClient } from './inventory-list';
+import { XandrSiteClient } from './site';
 export declare const defaultApiUrl = "https://api.appnexus.com";
 export { sanitizeUrlFormat } from './apd/utils';
 export { XandrError };
@@ -39,6 +40,7 @@ export declare class XandrClient {
     region: XandrRegionClient;
     dma: XandrDmaClient;
     bss: XandrBSSClient;
+    site: XandrSiteClient;
     readonly apiUrl: string;
     private readonly creds;
     private token;
