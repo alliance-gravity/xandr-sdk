@@ -126,13 +126,17 @@ export interface PlacementInput {
     width: number;
     height: number;
   }[];
-  video?: VideoSettings | null;
-  ad_types: PlacementAdType[];
+  sizes?: {
+    width: number;
+    height: number;
+  }[];
+  video?: Partial<VideoSettings> | null;
+  ad_types?: PlacementAdType[];
   use_detected_domain?: boolean;
   mime_types?: string[];
   supported_mime_types_action_include?: boolean;
   handles_mixed_media?: boolean;
-  tinytag_renderer_asset_floor_prices: {
+  tinytag_renderer_asset_floor_prices?: {
     renderer_id: number;
     ad_type_id: number;
     asset_type: number;
