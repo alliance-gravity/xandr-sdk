@@ -7,7 +7,7 @@ type ReportType = 'advertiser_analytics' | 'advertiser_frequency_recency' | 'att
   'key_value_analytics' | 'network_advertiser_analytics' | 'network_advertiser_frequency_recency' | 'network_analytics_feed' | 'network_analytics_provisional' | 'network_analytics' |
   'network_billing' | 'network_creative_search' | 'network_publisher_analytics' | 'network_site_domain_performance' | 'pixel_fired' |
   'prebid_server_analytics' | 'psp_health_analytics' | 'publisher_analytics' | 'publisher_brand_review' | 'publisher_creative_search' |
-  'segment_load' | 'seller_brand_review' | 'seller_invoice_report' | 'seller_site_domain' | 'site_domain_performance' | 'video_analytics_network_advertiser' |
+  'segment_load' | 'seller_brand_review' | 'seller_fill_and_delivery_network' | 'seller_invoice_report' | 'seller_site_domain' | 'site_domain_performance' | 'video_analytics_network_advertiser' |
   'video_analytics_network_publisher' | 'video_analytics_network';
 
 
