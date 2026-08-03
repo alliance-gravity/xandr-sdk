@@ -1,7 +1,7 @@
 import type { CommonResponse, Id, State } from '../xandr-types';
-export declare type SiteSupplyType = 'facebook_sidebar' | 'mobile_app' | 'mobile_web' | 'web';
-export declare type SiteIntendedAudience = 'children' | 'general' | 'mature' | 'young_adult';
-export declare type SiteCreativeFormatAction = 'exclude' | 'include';
+export type SiteSupplyType = 'facebook_sidebar' | 'mobile_app' | 'mobile_web' | 'web';
+export type SiteIntendedAudience = 'children' | 'general' | 'mature' | 'young_adult';
+export type SiteCreativeFormatAction = 'exclude' | 'include';
 interface SiteContentCategory {
     id: number;
     is_system?: boolean;
@@ -85,7 +85,7 @@ export interface PutSiteParameters {
     marketplace_map?: SiteMarketplaceMap;
     mobile_app_instance?: SiteMobileAppInstance;
 }
-export declare type GetSiteParameters = {
+export type GetSiteParameters = {
     id: number;
     publisherId?: number;
 } | {
@@ -97,8 +97,8 @@ export interface ModifySiteParameters {
     id: number;
     publisherId?: number;
 }
-export declare type SiteBaseResponse = CommonResponse & Id;
-export declare type SiteResponse = SiteBaseResponse & {
+export type SiteBaseResponse = CommonResponse & Id;
+export type SiteResponse = SiteBaseResponse & {
     sites?: Site[];
     site?: Site;
 };

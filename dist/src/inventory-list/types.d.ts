@@ -1,5 +1,5 @@
 import type { CommonResponse } from '../xandr-types';
-export declare type AuditStatus = 'audited' | 'is_adserver' | 'masked' | 'pending' | 'rejected' | 'unauditable' | 'unaudited';
+export type AuditStatus = 'audited' | 'is_adserver' | 'masked' | 'pending' | 'rejected' | 'unauditable' | 'unaudited';
 export interface InventoryList {
     id: number;
     advertiser_id: number;
@@ -47,15 +47,15 @@ export interface InventoryListPutParameters {
 export interface InventoryListItemPutParameters {
     include_children?: boolean;
 }
-export declare type InventoryListResponse = CommonResponse & {
+export type InventoryListResponse = CommonResponse & {
     'inventory-list': InventoryList;
 };
-export declare type InventoryListsResponse = CommonResponse & {
+export type InventoryListsResponse = CommonResponse & {
     'inventory-lists': InventoryList[];
 };
-export declare type InventoryListItemResponse = CommonResponse & {
+export type InventoryListItemResponse = CommonResponse & {
     'inventory-list-item': InventoryListItem;
 };
-export declare type InventoryListItemsResponse = CommonResponse & {
+export type InventoryListItemsResponse = CommonResponse & {
     'inventory-list-items': InventoryListItem[];
 };

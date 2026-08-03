@@ -16,6 +16,6 @@ export interface PartnerFeeInput {
     required?: boolean;
     value: number;
 }
-export declare type PartnerFee = Required<PartnerFeeInput> & {
+export type PartnerFee = Required<PartnerFeeInput> & {
     id: number;
 };

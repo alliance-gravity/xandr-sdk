@@ -9,7 +9,7 @@ export interface City {
     region_id: number;
     region_name: string;
 }
-export declare type CityGetParameter = {
+export type CityGetParameter = {
     country_code: string;
 } | {
     dma_id: number;
@@ -22,7 +22,7 @@ export declare type CityGetParameter = {
 } | {
     id: number;
 };
-export declare type CityResponse = CommonResponse & {
+export type CityResponse = CommonResponse & {
     'cities'?: City[];
     'city'?: City;
 };

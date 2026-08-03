@@ -20,9 +20,9 @@ export interface DomainListPutParameters {
     name: string;
     type?: string;
 }
-export declare type DomainListResponse = CommonResponse & {
+export type DomainListResponse = CommonResponse & {
     'domain-list': DomainList;
 };
-export declare type DomainListsResponse = CommonResponse & {
+export type DomainListsResponse = CommonResponse & {
     'domain-lists': DomainList[];
 };
