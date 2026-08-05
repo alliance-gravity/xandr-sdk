@@ -22,6 +22,7 @@ const bss_1 = require("./bss");
 const domain_list_1 = require("./domain-list");
 const inventory_list_1 = require("./inventory-list");
 const site_1 = require("./site");
+const currency_1 = require("./currency");
 exports.defaultApiUrl = 'https://api.appnexus.com';
 var utils_2 = require("./apd/utils");
 Object.defineProperty(exports, "sanitizeUrlFormat", { enumerable: true, get: function () { return utils_2.sanitizeUrlFormat; } });
@@ -45,6 +46,7 @@ class XandrClient {
         this.dma = new dma_1.XandrDmaClient(this);
         this.bss = new bss_1.XandrBSSClient(this);
         this.site = new site_1.XandrSiteClient(this);
+        this.currency = new currency_1.XandrCurrencyClient(this);
         this.token = null;
         this.creds = params;
         this.apiUrl = apiUrl;

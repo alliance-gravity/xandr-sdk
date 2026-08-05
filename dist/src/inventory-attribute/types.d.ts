@@ -1,4 +1,4 @@
 import type { IdName } from '../xandr-types';
-export type InventoryAttribute = IdName & {
+export declare type InventoryAttribute = IdName & {
     last_modified: string;
 };

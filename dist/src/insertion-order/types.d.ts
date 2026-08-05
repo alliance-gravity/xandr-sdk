@@ -130,7 +130,7 @@ export interface PutInsertionOrderParameters {
     is_running_political_ads?: boolean;
     political_content?: PoliticalContent;
 }
-export type GetInsertionOrderParameters = {
+export declare type GetInsertionOrderParameters = {
     advertiserId: number;
 } | {
     id: number;
@@ -141,8 +141,8 @@ export interface ModifyInsertionOrderParameters {
     id: number;
     advertiserId: number;
 }
-export type InsertionOrderBaseResponse = CommonResponse & Id;
-export type InsertionOrderResponse = InsertionOrderBaseResponse & {
+export declare type InsertionOrderBaseResponse = CommonResponse & Id;
+export declare type InsertionOrderResponse = InsertionOrderBaseResponse & {
     'insertion-orders'?: InsertionOrder[];
     'insertion-order'?: InsertionOrder;
 };

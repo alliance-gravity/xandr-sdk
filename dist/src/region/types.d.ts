@@ -9,7 +9,7 @@ export interface Region {
     name: string;
     sales_tax_rate_pct: number;
 }
-export type RegionGetParameter = {
+export declare type RegionGetParameter = {
     country_code: string;
 } | {
     id: number;
@@ -18,7 +18,7 @@ export type RegionGetParameter = {
 } | {
     name: string;
 };
-export type RegionResponse = CommonResponse & {
+export declare type RegionResponse = CommonResponse & {
     'regions'?: Region[];
     'region'?: Region;
 };

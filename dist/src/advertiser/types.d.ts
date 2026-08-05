@@ -3,7 +3,7 @@ import type { Brand } from '../brand/types';
 import type { Category } from '../category/types';
 import type { PartnerFee } from '../partner-fee/types';
 import type { ThirdPartyPixel } from '../third-party-pixel/types';
-export type GetAdvertiserParameters = {
+export declare type GetAdvertiserParameters = {
     advertiserCode: string;
 } | {
     advertiserId: number[];
@@ -11,7 +11,7 @@ export type GetAdvertiserParameters = {
 export interface SearchAdvertiserParameters {
     searchTerm: string;
 }
-export type ModifyAdvertiserParameters = {
+export declare type ModifyAdvertiserParameters = {
     advertiserCode: string;
 } | {
     advertiserId: number;
@@ -55,12 +55,12 @@ export interface AdvertiserInput {
     time_format?: TimeFormat | null;
     use_insertion_orders?: boolean | null;
 }
-export type Advertiser = ReadOnlyAttributes & Required<AdvertiserInput> & {
+export declare type Advertiser = ReadOnlyAttributes & Required<AdvertiserInput> & {
     id: number;
     thirdparty_pixels: ThirdPartyPixel[] | null;
     partner_fees: PartnerFee[] | null;
 };
-export type AdvertiserResponse = CommonResponse & {
+export declare type AdvertiserResponse = CommonResponse & {
     advertiser?: Advertiser;
     advertisers?: Advertiser[];
 };

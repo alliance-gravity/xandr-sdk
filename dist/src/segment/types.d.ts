@@ -1,6 +1,6 @@
-type State = 'active' | 'inactive';
-type pixelType = 'image' | 'js';
-type valueType = 'none' | 'numeric' | 'text';
+declare type State = 'active' | 'inactive';
+declare type pixelType = 'image' | 'js';
+declare type valueType = 'none' | 'numeric' | 'text';
 export interface SegmentResponse {
     status: string;
     count: number;
@@ -77,19 +77,19 @@ export interface SegmentParameters {
         qs_value: string;
     };
 }
-export type Advertiser = {
+export declare type Advertiser = {
     adverstiserCode: string;
 } | {
     advertiserId: number;
 };
-export type SegmentReference = {
+export declare type SegmentReference = {
     member_id: number;
     code: string;
 } | {
     member_id: number;
     id: number;
 };
-export type AdvertiserSegmentReference = {
+export declare type AdvertiserSegmentReference = {
     segmentCode: string;
     advertiserCode: string;
 } | {

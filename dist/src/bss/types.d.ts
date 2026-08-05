@@ -1,6 +1,6 @@
 /// <reference types="node" />
 import type { CommonResponse } from '../xandr-types';
-export type BSSUploadRequestResponse = CommonResponse & {
+export declare type BSSUploadRequestResponse = CommonResponse & {
     batch_segment_upload_job: {
         job_id: string;
         id: number;
@@ -36,10 +36,10 @@ export interface BSSJobStatus {
     created_on: string;
     last_modified: string;
 }
-export type BSSJobStatusResponse = CommonResponse & {
+export declare type BSSJobStatusResponse = CommonResponse & {
     batch_segment_upload_job: BSSJobStatus;
 };
-type DeviceIdDomain = 'aaid' | 'idfa' | 'md5udid' | 'openudid' | 'rida' | 'sha1udid' | 'windowsadid';
+declare type DeviceIdDomain = 'aaid' | 'idfa' | 'md5udid' | 'openudid' | 'rida' | 'sha1udid' | 'windowsadid';
 export interface BSSDataRow {
     uid: {
         aes_encrypted: {

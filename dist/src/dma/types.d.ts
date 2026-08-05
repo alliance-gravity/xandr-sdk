@@ -8,14 +8,14 @@ export interface Dma {
     country_id: number;
     country_name: string;
 }
-export type DmaGetParameter = {
+export declare type DmaGetParameter = {
     id: number;
 } | {
     like_name: string;
 } | {
     name: string;
 };
-export type DmaResponse = CommonResponse & {
+export declare type DmaResponse = CommonResponse & {
     'dmas'?: Dma[];
     'dma'?: Dma;
 };
