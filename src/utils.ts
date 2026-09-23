@@ -6,6 +6,22 @@ export async function sleep (ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+export async function withTimeout<T> (promise: Promise<T>, timeoutMs: number, label: string): Promise<T> {
+  const timers: NodeJS.Timeout[] = [];
+  const expiry = new Promise<never>((_resolve, reject) => {
+    timers.push(setTimeout(() => {
+      reject(new Error(`${label} did not settle within ${timeoutMs}ms`));
+    }, timeoutMs));
+  });
+  try {
+    return await Promise.race([ promise, expiry ]);
+  } finally {
+    timers.forEach(timer => {
+      clearTimeout(timer);
+    });
+  }
+}
+
 export async function request<ExpectedResponseType> (params: RequestParameters, baseUrl: string): Promise<ExpectedResponseType> {
   const url = new URL(baseUrl);
   url.pathname = params.endpoint;
