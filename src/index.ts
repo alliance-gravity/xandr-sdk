@@ -23,6 +23,22 @@ import { XandrCurrencyClient } from './currency';
 
 export const defaultApiUrl = 'https://api.appnexus.com';
 export { sanitizeUrlFormat } from './apd/utils';
+export {
+  getExpectedPlacement,
+  getPlacementArchetype,
+  validatePlacementArchetype,
+  verifyPlacement
+} from './placement/validation';
+export type {
+  ExpectedPlacement,
+  PlacementArchetype,
+  PlacementDimensions,
+  PlacementFieldIssue,
+  PlacementVerification,
+  PlacementVerificationStatus,
+  PlacementVerificationTarget,
+  VerifyPlacementOptions
+} from './placement/types';
 export { XandrError };
 
 export class XandrClient {

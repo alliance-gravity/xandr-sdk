@@ -6,8 +6,15 @@ import type {
   GetPlacementParams,
   CreatePlacementParams,
   ModifyPlacementParams,
-  PlacementResponse
+  PlacementResponse,
+  PlacementVerification,
+  PlacementVerificationTarget,
+  VerifyPlacementOptions
 } from './types';
+import { withTimeout } from '../utils';
+import { getFailedVerification, verifyPlacement } from './validation';
+
+const MAX_TIMEOUT_MS = 2147483647;
 
 export class XandrPlacementClient {
   private readonly client: XandrClient;
@@ -36,11 +43,13 @@ export class XandrPlacementClient {
           : { id: params.placementIds.join(',') }
         }
       });
+      const fetchedCount = placements.length;
       if (response.placement)
         placements.push(response.placement);
       if (response.placements)
         placements.push(...response.placements);
-      done = response.count === placements.length;
+      const count: unknown = response.count;
+      done = typeof count !== 'number' || count <= placements.length || placements.length === fetchedCount;
     } while (!done);
     return placements;
   }
@@ -73,6 +82,35 @@ export class XandrPlacementClient {
       body: { placement }
     });
     return response.placement;
+  }
+
+  public async verify (targets: PlacementVerificationTarget[], options: VerifyPlacementOptions = {}): Promise<PlacementVerification[]> {
+    const { batchSize = 100, timeoutMs = 60000 } = options;
+    if (!Number.isInteger(batchSize) || batchSize < 1)
+      throw new Error(`batchSize must be a positive integer, received ${batchSize}`);
+    if (!Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > MAX_TIMEOUT_MS)
+      throw new Error(`timeoutMs must be an integer between 1 and ${MAX_TIMEOUT_MS}, received ${timeoutMs}`);
+
+    const placementIds = [ ...new Set(targets.map(target => target.placementId)) ];
+    const placements = new Map<number, Placement>();
+    const failures = new Map<number, unknown>();
+    for (let offset = 0; offset < placementIds.length; offset += batchSize) {
+      const batch = placementIds.slice(offset, offset + batchSize);
+      try {
+        const batchPlacements = await withTimeout(
+          this.get({ placementIds: batch }),
+          timeoutMs,
+          `the GET of the ${batch.length} placement(s) at offset ${offset}`
+        );
+        batchPlacements.forEach(placement => placements.set(placement.id, placement));
+      } catch (error: unknown) {
+        batch.forEach(placementId => failures.set(placementId, error));
+      }
+    }
+
+    return targets.map(target => failures.has(target.placementId)
+      ? getFailedVerification(target, failures.get(target.placementId))
+      : verifyPlacement(target, placements.get(target.placementId) ?? null));
   }
 
   public async remove (params: ModifyPlacementParams): Promise<void> {
