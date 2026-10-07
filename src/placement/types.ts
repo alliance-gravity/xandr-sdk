@@ -180,9 +180,8 @@ export type InstreamVideoContext = 'mid-roll' | 'post-roll' | 'pre-roll';
 export interface PlacementDimensions {
   channels?: readonly string[] | null;
   formats?: readonly string[] | null;
-  adPositions?: readonly string[] | null;
+  ad_positions?: readonly string[] | null;
   environments?: readonly string[] | null;
-  ad_positions?: never;
 }
 
 export interface ExpectedMediaType<TId extends number, TName extends string> {

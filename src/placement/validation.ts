@@ -44,7 +44,17 @@ function childPath (path: string, key: number | string): string {
 }
 
 function describeValue (value: unknown): string {
-  return value === undefined ? 'undefined' : JSON.stringify(value);
+  if (value === undefined)
+    return 'undefined';
+  if (typeof value === 'bigint')
+    return `${value}n`;
+  if (typeof value === 'number' && !Number.isFinite(value))
+    return String(value);
+  try {
+    return JSON.stringify(value);
+  } catch {
+    return Object.prototype.toString.call(value);
+  }
 }
 
 function addIssue (issues: PlacementFieldIssue[], path: string, expected: string, received: unknown): void {
@@ -94,6 +104,10 @@ function exactly (expected: unknown): FieldRule {
   ));
 }
 
+function mediaTypeRule (id: number, name: string): FieldRule {
+  return shape({ id: oneOf(id), name: oneOf(name), is_private: oneOf(false, undefined) });
+}
+
 function emptyArrayOrNull (value: unknown, path: string, issues: PlacementFieldIssue[]): void {
   if (value !== null && !(Array.isArray(value) && value.length === 0))
     addIssue(issues, path, 'an empty array or null', value);
@@ -104,7 +118,7 @@ const ARCHETYPE_RULES: Record<PlacementArchetype, Record<string, FieldRule>> = {
     width: oneOf(null),
     height: oneOf(null),
     is_resizable: oneOf(true),
-    supported_media_types: arrayOf(exactly(mediaType(1, 'Banner'))),
+    supported_media_types: arrayOf(mediaTypeRule(1, 'Banner')),
     ad_types: emptyArrayOrNull,
     video: oneOf(null)
   },
@@ -112,7 +126,7 @@ const ARCHETYPE_RULES: Record<PlacementArchetype, Record<string, FieldRule>> = {
     width: oneOf(1, null),
     height: oneOf(1, null),
     is_resizable: oneOf(true),
-    supported_media_types: arrayOf(exactly(mediaType(3, 'Interstitial'))),
+    supported_media_types: arrayOf(mediaTypeRule(3, 'Interstitial')),
     ad_types: emptyArrayOrNull,
     video: oneOf(null)
   },
@@ -120,7 +134,7 @@ const ARCHETYPE_RULES: Record<PlacementArchetype, Record<string, FieldRule>> = {
     width: oneOf(1),
     height: oneOf(1),
     is_resizable: oneOf(true),
-    supported_media_types: arrayOf(exactly(mediaType(4, 'Video'))),
+    supported_media_types: arrayOf(mediaTypeRule(4, 'Video')),
     ad_types: emptyArrayOrNull,
     video: shape({ context: oneOf(...INSTREAM_VIDEO_CONTEXTS) })
   },
@@ -128,7 +142,7 @@ const ARCHETYPE_RULES: Record<PlacementArchetype, Record<string, FieldRule>> = {
     width: oneOf(1),
     height: oneOf(1),
     is_resizable: oneOf(true),
-    supported_media_types: arrayOf(exactly(mediaType(4, 'Video'))),
+    supported_media_types: arrayOf(mediaTypeRule(4, 'Video')),
     ad_types: arrayOf(exactly(videoAdType())),
     video: shape({ context: oneOf('outstream') })
   },
@@ -136,7 +150,7 @@ const ARCHETYPE_RULES: Record<PlacementArchetype, Record<string, FieldRule>> = {
     width: oneOf(null),
     height: oneOf(null),
     is_resizable: oneOf(true),
-    supported_media_types: arrayOf(exactly(mediaType(8, 'Skin'))),
+    supported_media_types: arrayOf(mediaTypeRule(8, 'Skin')),
     ad_types: emptyArrayOrNull,
     video: oneOf(null)
   },
@@ -144,7 +158,7 @@ const ARCHETYPE_RULES: Record<PlacementArchetype, Record<string, FieldRule>> = {
     width: oneOf(1),
     height: oneOf(1),
     is_resizable: oneOf(true),
-    supported_media_types: arrayOf(exactly(mediaType(12, 'Native'))),
+    supported_media_types: arrayOf(mediaTypeRule(12, 'Native')),
     ad_types: arrayOf(exactly(nativeAdType())),
     video: oneOf(null)
   }
@@ -164,7 +178,7 @@ function describeDimensions (dimensions: PlacementDimensions): string {
   return [
     `channels=[${(dimensions.channels ?? []).join(', ')}]`,
     `formats=[${(dimensions.formats ?? []).join(', ')}]`,
-    `adPositions=[${(dimensions.adPositions ?? []).join(', ')}]`,
+    `ad_positions=[${(dimensions.ad_positions ?? []).join(', ')}]`,
     `environments=[${(dimensions.environments ?? []).join(', ')}]`
   ].join(' ');
 }
@@ -224,7 +238,7 @@ export function getExpectedPlacement (dimensions: PlacementDimensions): Expected
         is_resizable: true,
         supported_media_types: [ mediaType(4, 'Video') ],
         ad_types: [],
-        video: { context: getInstreamVideoContext(dimensions.adPositions ?? []) }
+        video: { context: getInstreamVideoContext(dimensions.ad_positions ?? []) }
       };
     }
     if (formats.includes('video_outstream')) {
@@ -332,6 +346,8 @@ export function verifyPlacement (target: PlacementVerificationTarget, placement:
   }
 
   const issues = validatePlacementArchetype(placement, expected.type);
+  if (expected.type === 'video-instream' && !issues.some(issue => issue.path.startsWith('video')))
+    oneOf(expected.video.context)(placement.video?.context, 'video.context', issues);
   if (issues.length > 0) {
     return {
       ...verification,

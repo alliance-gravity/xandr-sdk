@@ -43,11 +43,13 @@ export class XandrPlacementClient {
           : { id: params.placementIds.join(',') }
         }
       });
+      const fetchedCount = placements.length;
       if (response.placement)
         placements.push(response.placement);
       if (response.placements)
         placements.push(...response.placements);
-      done = response.count === placements.length;
+      const count: unknown = response.count;
+      done = typeof count !== 'number' || count <= placements.length || placements.length === fetchedCount;
     } while (!done);
     return placements;
   }

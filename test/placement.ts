@@ -17,15 +17,15 @@ import type { Placement, PlacementDimensions } from '../src/placement/types';
 const endpoint = '/placement';
 
 const displayDesktop: PlacementDimensions = {
-  environments: ['web'], channels: ['display'], formats: ['banner'], adPositions: ['top']
+  environments: ['web'], channels: ['display'], formats: ['banner'], ad_positions: ['top']
 };
 
 const instreamVideo: PlacementDimensions = {
-  environments: ['web'], channels: ['video'], formats: ['video_instream'], adPositions: ['midroll']
+  environments: ['web'], channels: ['video'], formats: ['video_instream'], ad_positions: ['midroll']
 };
 
 const outstreamVideo: PlacementDimensions = {
-  environments: ['web'], channels: ['video'], formats: ['video_outstream'], adPositions: ['incontent']
+  environments: ['web'], channels: ['video'], formats: ['video_outstream'], ad_positions: ['incontent']
 };
 
 const nativeWeb: PlacementDimensions = {
@@ -33,13 +33,13 @@ const nativeWeb: PlacementDimensions = {
 };
 
 const interstitialApp: PlacementDimensions = {
-  environments: ['app'], channels: ['display'], formats: ['interstitial'], adPositions: ['fullscreen']
+  environments: ['app'], channels: ['display'], formats: ['interstitial'], ad_positions: ['fullscreen']
 };
 
 const interstitialWeb: PlacementDimensions = { ...interstitialApp, environments: ['web'] };
 
 const skinWeb: PlacementDimensions = {
-  environments: ['web'], channels: ['display'], formats: ['skin'], adPositions: ['static']
+  environments: ['web'], channels: ['display'], formats: ['skin'], ad_positions: ['static']
 };
 
 const audioWeb: PlacementDimensions = {
@@ -141,25 +141,23 @@ describe('Placement validation: expected placement', () => {
 
   it('maps the instream ad positions to the Xandr video context, preroll first', () => {
     expect(getExpectedPlacement(instreamVideo)?.video).to.deep.equal({ context: 'mid-roll' });
-    expect(getExpectedPlacement({ ...instreamVideo, adPositions: ['midroll', 'preroll'] })?.video).to.deep.equal({ context: 'pre-roll' });
-    expect(getExpectedPlacement({ ...instreamVideo, adPositions: ['postroll', 'midroll'] })?.video).to.deep.equal({ context: 'mid-roll' });
-    expect(getExpectedPlacement({ ...instreamVideo, adPositions: ['postroll'] })?.video).to.deep.equal({ context: 'post-roll' });
-    expect(getExpectedPlacement({ ...instreamVideo, adPositions: ['player'] })?.video).to.deep.equal({ context: 'pre-roll' });
-    expect(getExpectedPlacement({ ...instreamVideo, adPositions: null })?.video).to.deep.equal({ context: 'pre-roll' });
+    expect(getExpectedPlacement({ ...instreamVideo, ad_positions: ['midroll', 'preroll'] })?.video).to.deep.equal({ context: 'pre-roll' });
+    expect(getExpectedPlacement({ ...instreamVideo, ad_positions: ['postroll', 'midroll'] })?.video).to.deep.equal({ context: 'mid-roll' });
+    expect(getExpectedPlacement({ ...instreamVideo, ad_positions: ['postroll'] })?.video).to.deep.equal({ context: 'post-roll' });
+    expect(getExpectedPlacement({ ...instreamVideo, ad_positions: ['player'] })?.video).to.deep.equal({ context: 'pre-roll' });
+    expect(getExpectedPlacement({ ...instreamVideo, ad_positions: null })?.video).to.deep.equal({ context: 'pre-roll' });
   });
 
   it('returns null for dimensions no archetype handles', () => {
     expect(getExpectedPlacement(audioWeb)).to.be.null;
     expect(getExpectedPlacement({ ...instreamVideo, formats: ['rewarded_video'] })).to.be.null;
     expect(getExpectedPlacement({})).to.be.null;
-    expect(getExpectedPlacement({ channels: null, formats: null, adPositions: null, environments: null })).to.be.null;
+    expect(getExpectedPlacement({ channels: null, formats: null, ad_positions: null, environments: null })).to.be.null;
   });
 
-  it('refuses snake_case dimensions at compile time', () => {
-    const row = { channels: ['video'], formats: ['video_instream'], ad_positions: ['midroll'] };
-    // @ts-expect-error: snake_case dimensions are refused
-    const dimensions: PlacementDimensions = row;
-    expect(dimensions).to.equal(row);
+  it('reads the ad positions of a wrapper row passed as is', () => {
+    const row = { id: 'uuid', name: 'row', channels: ['video'], formats: ['video_instream'], ad_positions: ['midroll'], environments: ['web'] };
+    expect(getExpectedPlacement(row)?.video).to.deep.equal({ context: 'mid-roll' });
   });
 
   it('returns a fresh object on every call', () => {
@@ -254,6 +252,23 @@ describe('Placement validation: archetype fields', () => {
     expect(nativeIssues[0].message).to.equal('expected "null", received null');
   });
 
+  it('accepts a media type without is_private', () => {
+    expect(validatePlacementArchetype(xandrPlacement({ supported_media_types: [{ id: 1, name: 'Banner' }] }), 'banner')).to.deep.equal([]);
+    expect(validatePlacementArchetype(xandrPlacement({ supported_media_types: [{ ...bannerMediaType, is_private: true }] }), 'banner'))
+      .to.have.nested.property('[0].path', 'supported_media_types.0.is_private');
+  });
+
+  it('describes circular, bigint and non finite values without throwing', () => {
+    const circular: Record<string, unknown> = {};
+    circular.self = circular;
+    const issues = validatePlacementArchetype(xandrPlacement({ video: circular, width: BigInt(1), height: NaN }), 'banner');
+    expect(issues.map(issue => issue.message)).to.deep.equal([
+      'expected null, received 1n',
+      'expected null, received NaN',
+      'expected null, received [object Object]'
+    ]);
+  });
+
   it('rejects a missing array', () => {
     expect(validatePlacementArchetype(xandrPlacement({ ...outstreamPlacement, ad_types: null }), 'video-outstream'))
       .to.deep.equal([{ path: 'ad_types', expected: 'an array', received: null, message: 'expected an array, received null' }]);
@@ -312,6 +327,18 @@ describe('Placement validation: verification', () => {
     expect(unknownVerification.status).to.equal('TYPE_MISMATCH');
     expect(unknownVerification.actualType).to.be.null;
     expect(unknownVerification.reason).to.contain('holds a unknown one');
+  });
+
+  it('reports an instream context other than the ad positions call for', () => {
+    const verification = verifyPlacement(
+      { placementId, dimensions: instreamVideo },
+      xandrPlacement({ ...instreamPlacement, video: { context: 'pre-roll' } })
+    );
+
+    expect(verification.status).to.equal('FIELD_MISMATCH');
+    expect(verification.issues).to.deep.equal([
+      { path: 'video.context', expected: '"mid-roll"', received: 'pre-roll', message: 'expected "mid-roll", received "pre-roll"' }
+    ]);
   });
 
   it('reports a field mismatch with its issues', () => {
@@ -391,6 +418,18 @@ describe('Placement API verify (nock intercepted)', () => {
 
     expect(verifications[0].status).to.equal('GET_FAILED');
     expect(String(verifications[0].error)).to.contain('did not settle within 50ms');
+  });
+
+  it('stops paging when the response carries no count or an empty page', async () => {
+    const client = new XandrClient({ username, password });
+    nock(defaultApiUrl).post('/auth').reply(200, { response: { token: 'token' }});
+    nock(defaultApiUrl).get(endpoint).query(true).reply(200, { response: { status: 'OK', placements: [xandrPlacement({ id: 1 })] }});
+    nock(defaultApiUrl).get(endpoint).query(true).reply(200, { response: { status: 'OK', count: 5, placements: [xandrPlacement({ id: 2 })] }});
+    const lastPage = nock(defaultApiUrl).get(endpoint).query({ start_element: '1', id: '2' }).reply(200, { response: { status: 'OK', count: 5, placements: [] }});
+
+    expect((await client.placement.get({ placementIds: [1] })).length).to.equal(1);
+    expect((await client.placement.get({ placementIds: [2] })).length).to.equal(1);
+    expect(lastPage.isDone()).to.be.true;
   });
 
   it('rejects invalid options', async () => {

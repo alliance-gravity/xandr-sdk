@@ -45,7 +45,7 @@ const client = new XandrClient({ username, password });
 
 // Fetches the placements by batch of 100 (60s timeout per batch) and verifies each target
 const verifications = await client.placement.verify([
-  { placementId: 123, dimensions: { channels: ['video'], formats: ['video_instream'], adPositions: ['midroll'], environments: ['web'] } }
+  { placementId: 123, dimensions: { channels: ['video'], formats: ['video_instream'], ad_positions: ['midroll'], environments: ['web'] } }
 ], { batchSize: 100, timeoutMs: 60000 });
 
 for (const verification of verifications) {
@@ -69,6 +69,6 @@ Each verification carries one status:
 `getPlacementArchetype`, `validatePlacementArchetype` and `verifyPlacement` expose the same checks on placements
 already fetched.
 
-Dimensions are camelCase (`adPositions`), a snake_case `ad_positions` is refused at compile time. A null or missing list
-counts as empty. The batch timeout only stops waiting: the timed-out GET is not cancelled and may keep the process alive,
+Dimensions use the wrapper column names (`ad_positions`), so a wrapper row can be passed as is. A null or missing list
+counts as empty. An instream placement must hold the roll context its ad positions call for. The batch timeout only stops waiting: the timed-out GET is not cancelled and may keep the process alive,
 so a script should still force its exit once done.
